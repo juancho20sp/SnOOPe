@@ -7,9 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameSetup extends JPanel{
-    private JFrame frame;
-    private JPanel gameSetupPanel;
+public class GameSetup extends DaddyPanel{
     private JLabel title;
     private JButton namePlayerOne;
     private JButton colorPlayerOne;
@@ -34,29 +32,24 @@ public class GameSetup extends JPanel{
      * Constructor for the GameSetup class
      */
     public GameSetup(JFrame frame, GUIConfiguration guiConfig, String gameMode){
-        this.frame = frame;
+        super(frame);
 
         this.guiConfig = guiConfig;
 
         this.gameMode = gameMode;
 
         this.prepareLayout();
-
-        add(this.gameSetupPanel);
     }
 
     /**
      * Method for preparing the layour
      */
     private void prepareLayout(){
-        // Frame size
-        Dimension frameSize = this.frame.getSize();
-
         // Main Panel
         setLayout(null);
 
         // Panel
-        this.createPanel(frameSize);
+        this.createPanel();
 
         // Label
         this.createLabels();
@@ -74,11 +67,9 @@ public class GameSetup extends JPanel{
     /**
      * Method for creating the main panel of the view
      */
-    private void createPanel(Dimension frameSize){
+    private void createPanel(){
         // Panel
-        this.gameSetupPanel = new JPanel();
-        this.gameSetupPanel.setSize(frameSize.width, frameSize.height);
-        this.gameSetupPanel.setLayout(new GridLayout(8, 1));
+        setLayout(new GridLayout(8, 1));
         //this.selectModePanel.setBackground(this.guiConfig.getBackgroundColor());
     }
 
@@ -121,21 +112,21 @@ public class GameSetup extends JPanel{
         System.out.println(this.gameMode);
 
         // Label
-        this.gameSetupPanel.add(this.title);
+        add(this.title);
 
         // Buttons
         if (this.gameMode.equals(SINGLE_PLAYER)){
-            this.gameSetupPanel.add(this.namePlayerOne);
-            this.gameSetupPanel.add(this.colorPlayerOne);;
+            add(this.namePlayerOne);
+            add(this.colorPlayerOne);;
         } else {
-            this.gameSetupPanel.add(this.namePlayerOne);
-            this.gameSetupPanel.add(this.colorPlayerOne);
-            this.gameSetupPanel.add(this.namePlayerTwo);
-            this.gameSetupPanel.add(this.colorPlayerTwo);
+            add(this.namePlayerOne);
+            add(this.colorPlayerOne);
+            add(this.namePlayerTwo);
+            add(this.colorPlayerTwo);
         }
 
-        this.gameSetupPanel.add(this.startGame);
-        this.gameSetupPanel.add(this.goBack);
+        add(this.startGame);
+        add(this.goBack);
     }
 
     /**

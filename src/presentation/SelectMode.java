@@ -7,9 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SelectMode extends JPanel {
-    private JFrame frame;
-    private JPanel selectModePanel;
+public class SelectMode extends DaddyPanel {
     private JLabel title;
     private JButton singlePlayerButton;
     private JButton playerAndPlayer;
@@ -26,27 +24,23 @@ public class SelectMode extends JPanel {
      * Constructor for the SelectMode class
      */
     public SelectMode(JFrame frame, GUIConfiguration guiConfig){
-        this.frame = frame;
+        super(frame);
 
         this.guiConfig = guiConfig;
 
         this.prepareLayout();
 
-        add(this.selectModePanel);
     }
 
     /**
-     * Method for preparing the layour
+     * Method for preparing the layout
      */
     private void prepareLayout(){
-        // Frame size
-        Dimension frameSize = this.frame.getSize();
-
         // Main Panel
         setLayout(null);
 
         // Panel
-        this.createPanel(frameSize);
+        this.createPanel();
 
         // Label
         this.createLabels();
@@ -64,11 +58,9 @@ public class SelectMode extends JPanel {
     /**
      * Method for creating the main panel of the view
      */
-    private void createPanel(Dimension frameSize){
+    private void createPanel(){
         // Panel
-        this.selectModePanel = new JPanel();
-        this.selectModePanel.setSize(frameSize.width, frameSize.height);
-        this.selectModePanel.setLayout(new GridLayout(7, 1));
+        setLayout(new GridLayout(7, 1));
         //this.selectModePanel.setBackground(this.guiConfig.getBackgroundColor());
     }
 
@@ -95,13 +87,13 @@ public class SelectMode extends JPanel {
      */
     private void addElements(){
         // Label
-        this.selectModePanel.add(this.title);
+       add(this.title);
 
         // Buttons
-        this.selectModePanel.add(this.singlePlayerButton);
-        this.selectModePanel.add(this.playerAndPlayer);
-        this.selectModePanel.add(this.playerAndComputer);
-        this.selectModePanel.add(this.goBack);
+        add(this.singlePlayerButton);
+        add(this.playerAndPlayer);
+        add(this.playerAndComputer);
+        add(this.goBack);
     }
 
     /**
@@ -141,7 +133,7 @@ public class SelectMode extends JPanel {
      * Method for going to the single player game setup
      */
     private void singlePlayerClicked(){
-        this.gameSetup = new GameSetup(this.frame, this.guiConfig, GameSetup.SINGLE_PLAYER);
+        this.gameSetup = new GameSetup(super.getFrame(), this.guiConfig, GameSetup.SINGLE_PLAYER);
         changeCard(this.gameSetup);
     }
 
@@ -149,7 +141,7 @@ public class SelectMode extends JPanel {
      * Method for going to the multiplayer game setup
      */
     private void multiplayerClicked(){
-        this.gameSetup = new GameSetup(this.frame, this.guiConfig, GameSetup.MULTIPLAYER);
+        this.gameSetup = new GameSetup(super.getFrame(), this.guiConfig, GameSetup.MULTIPLAYER);
         changeCard(this.gameSetup);
     }
 
@@ -157,7 +149,7 @@ public class SelectMode extends JPanel {
      * Method for going to the player machine game setup
      */
     private void playerMachineClicked(){
-        this.gameSetup = new GameSetup(this.frame, this.guiConfig, GameSetup.PLAYER_MACHINE);
+        this.gameSetup = new GameSetup(super.getFrame(), this.guiConfig, GameSetup.PLAYER_MACHINE);
         changeCard(this.gameSetup);
     }
 
