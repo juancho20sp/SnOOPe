@@ -1,6 +1,12 @@
 package presentation;
 
 import domain.GUIConfiguration;
+import domain.GameData;
+import domain.exceptions.SnOOPeExceptions;
+import domain.players.Player;
+import domain.players.PlayerMachine;
+import domain.players.PlayerOne;
+import domain.players.PlayerTwo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +24,7 @@ public class GameSetup extends DaddyPanel{
 
     // Config
     private GUIConfiguration guiConfig;
+    private GameData data;
 
     // Game Modes
     public static final String SINGLE_PLAYER = "single player";
@@ -27,18 +34,45 @@ public class GameSetup extends DaddyPanel{
     // Strings
     private String gameMode;
 
+    // Players
+    Player playerOne;
+    Player playerTwo;
+    Player playerMachine;
+
+    // Color setup
+    ColorSetup colorSetup;
+
 
     /**
      * Constructor for the GameSetup class
      */
-    public GameSetup(JFrame frame, GUIConfiguration guiConfig, String gameMode){
-        super(frame);
+    public GameSetup(JFrame frame, GUIConfiguration guiConfig, GameData data, String gameMode){
+        super(frame, guiConfig, data);
 
-        this.guiConfig = guiConfig;
+        // Configuration
+        //this.guiConfig = guiConfig;
+        //this.data = data;
 
         this.gameMode = gameMode;
 
+        // Players
+        this.createPlayers(this.gameMode);
+
         this.prepareLayout();
+    }
+
+    /**
+     * Method for creating the players for the game
+     * @param gameMode A game mode (static variable of this class)
+     */
+    private void createPlayers(String gameMode){
+        this.playerOne = new PlayerOne();
+
+        if (gameMode.equals(MULTIPLAYER)){
+            this.playerTwo = new PlayerTwo();
+        } else {
+            this.playerMachine = new PlayerMachine();
+        }
     }
 
     /**
@@ -143,7 +177,7 @@ public class GameSetup extends DaddyPanel{
         this.colorPlayerOne.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "color player one clicked");
+                colorSetupClicked(playerOne);
             }
         });
 
@@ -158,7 +192,7 @@ public class GameSetup extends DaddyPanel{
             this.colorPlayerTwo.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(null, "color player two clicked");
+                    colorSetupClicked(playerTwo);
                 }
             });
         }
@@ -174,16 +208,21 @@ public class GameSetup extends DaddyPanel{
         this.goBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                goBack();
+                goToCard(SnOOPe.SELECT_GAME_MODE);
             }
         });
     }
 
     /**
-     * Method for going back
+     * Method for going to the ColorSetupView
+     * @param player The player that will be modified
      */
-    private void goBack(){
-        SnOOPe.selectCard(SnOOPe.SELECT_GAME_MODE);
+    private void colorSetupClicked(Player player){
+
+            this.colorSetup = new ColorSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(), player);
+
+            changeCard(this.colorSetup, SnOOPe.SELECT_GAME_COLOR_SETUP);
+
     }
 
 

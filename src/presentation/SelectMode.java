@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.GUIConfiguration;
+import domain.GameData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,7 @@ public class SelectMode extends DaddyPanel {
 
     // Config
     private GUIConfiguration guiConfig;
+    private GameData data;
 
     // Game setup
     private GameSetup gameSetup;
@@ -23,10 +25,12 @@ public class SelectMode extends DaddyPanel {
     /**
      * Constructor for the SelectMode class
      */
-    public SelectMode(JFrame frame, GUIConfiguration guiConfig){
-        super(frame);
+    public SelectMode(JFrame frame, GUIConfiguration guiConfig, GameData data){
+        super(frame, guiConfig, data);
 
-        this.guiConfig = guiConfig;
+        // Configuration
+        //this.guiConfig = guiConfig;
+        //this.data = data;
 
         this.prepareLayout();
 
@@ -124,7 +128,7 @@ public class SelectMode extends DaddyPanel {
         this.goBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                goBack();
+                goToCard(SnOOPe.MAIN_MENU);
             }
         });
     }
@@ -133,38 +137,27 @@ public class SelectMode extends DaddyPanel {
      * Method for going to the single player game setup
      */
     private void singlePlayerClicked(){
-        this.gameSetup = new GameSetup(super.getFrame(), this.guiConfig, GameSetup.SINGLE_PLAYER);
-        changeCard(this.gameSetup);
+        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(), GameSetup.SINGLE_PLAYER);
+        changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }
 
     /**
      * Method for going to the multiplayer game setup
      */
     private void multiplayerClicked(){
-        this.gameSetup = new GameSetup(super.getFrame(), this.guiConfig, GameSetup.MULTIPLAYER);
-        changeCard(this.gameSetup);
+        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(), GameSetup.MULTIPLAYER);
+        changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }
 
     /**
      * Method for going to the player machine game setup
      */
     private void playerMachineClicked(){
-        this.gameSetup = new GameSetup(super.getFrame(), this.guiConfig, GameSetup.PLAYER_MACHINE);
-        changeCard(this.gameSetup);
+        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(),GameSetup.PLAYER_MACHINE);
+        changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }
 
-    /**
-     * Method for switching the main frame cards
-     */
-    private void changeCard(GameSetup gameSetup){
-        SnOOPe.cards.add(gameSetup, SnOOPe.SELECT_GAME_SETUP);
-        SnOOPe.selectCard(SnOOPe.SELECT_GAME_SETUP);
-    }
 
-    /**
-     * Method for going back
-     */
-    private void goBack(){
-        SnOOPe.selectCard(SnOOPe.MAIN_MENU);
-    }
+
+
 }

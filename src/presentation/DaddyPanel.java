@@ -1,17 +1,24 @@
 package presentation;
 
+import domain.GUIConfiguration;
+import domain.GameData;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class DaddyPanel extends JPanel{
     private JFrame frame;
+    private GameData data;
+    private GUIConfiguration guiConfig;
 
     /**
      * Constructor of the DaddyPanel class
      * @param frame
      */
-    public DaddyPanel(JFrame frame){
+    public DaddyPanel(JFrame frame, GUIConfiguration guiConfig, GameData data){
         this.frame = frame;
+        this.data = data;
+        this.guiConfig = guiConfig;
 
         // Configure panel
         this.setupPanel();
@@ -30,10 +37,40 @@ public class DaddyPanel extends JPanel{
     }
 
     /**
-     * Method for getting the configured panel
+     * Method for switching the main frame cards
+     */
+    public void changeCard(JPanel card, String cardName){
+        SnOOPe.cards.add(card, cardName);
+        SnOOPe.selectCard(cardName);
+    }
+
+    /**
+     * Method for getting the frame
      */
     public JFrame getFrame(){
         return this.frame;
+    }
+
+    /**
+     * Method for getting the GUI configuration
+     */
+    public GUIConfiguration getGUIConfig(){
+        return this.guiConfig;
+    }
+
+    /**
+     * Method for getting the game data
+     */
+    public GameData getGameData(){
+        return this.data;
+    }
+
+    /**
+     * Method for going back
+     * @param card The name of the card we want to go
+     */
+    public void goToCard(String card){
+        SnOOPe.selectCard(card);
     }
 
 
