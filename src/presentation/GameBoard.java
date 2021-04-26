@@ -2,6 +2,7 @@ package presentation;
 
 import domain.GUIConfiguration;
 import domain.GameData;
+import domain.players.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,13 +16,40 @@ public class GameBoard extends DaddyPanel{
     private JLabel playerOnePointsLabel;
     private JLabel playerTwoPointsLabel;
 
+    Player playerOne;
+    Player playerTwo;
+
+    // Game type
+    private String gameType;
+
     /**
      * Constructor for the GameBoard class
      */
     public GameBoard(JFrame frame, GUIConfiguration guiConfig, GameData data){
         super(frame, guiConfig, data);
 
+        // Start game
+        super.getGameData().setGameRunning(true);
+
+        // Set Players
+        this.setupPlayers();
+
         this.prepareLayout();
+    }
+
+    /**
+     * Method for setting up the players
+     */
+    private void setupPlayers(){
+        this.setPlayerOne(super.getGameData().getPlayerOne());
+
+        if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)){
+            this.setPlayerTwo(super.getGameData().getPlayerTwo());
+        }
+
+        if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)){
+            this.setPlayerTwo(super.getGameData().getPlayerMachine());
+        }
     }
 
     /**
@@ -33,19 +61,7 @@ public class GameBoard extends DaddyPanel{
 
         // Panel
         this.createUpperPanel();
-       /* this.createGameBoardPanel();
-
-        // Label
-        this.createLabels();
-
-        // Buttons
-        this.createButtons();
-
-        // Actions
-        this.addActionsToButtons();
-
-        // Add
-        this.addElements();*/
+        this.createGameBoardPanel();
     }
 
     /**
@@ -59,13 +75,13 @@ public class GameBoard extends DaddyPanel{
         this.createUpperPanelButtons();
 
         // Labels
-        //this.createUpperPanelLabels();
+        this.createUpperPanelLabels();
 
         // Actions
         this.createUpperPanelActions();
 
         // Add
-        //this.addElementsToUpperPanel();
+        this.addElementsToUpperPanel();
     }
 
     /**
@@ -89,11 +105,30 @@ public class GameBoard extends DaddyPanel{
     /**
      * Method for creating the upper panel labels
      */
-   /* private void createUpperPanelLabels(){
-        this.playerOnePointsLabel(new JLabel(, SwingConstants.CENTER));
-        this.playerTwoPointsLabel( new JLabel("Puntos: " + + logicBoard.getPoints(),
-                SwingConstants.CENTER));
-    }*/
+   private void createUpperPanelLabels(){
+        this.playerOnePointsLabel = new JLabel(this.getPlayerOne().getNumber() + " : 0", SwingConstants.CENTER);
+
+        if (!this.getGameType().equals(GameSetup.SINGLE_PLAYER)){
+            this.playerTwoPointsLabel = new JLabel(this.getPlayerTwo().getNumber() + " : 0", SwingConstants.CENTER);
+        }
+
+    }
+
+    /**
+     * Method for adding elements to the upper panel
+     */
+    private void addElementsToUpperPanel(){
+        // Elements
+        this.upperPanel.add(mainMenuButton);
+        this.upperPanel.add(this.playerOnePointsLabel);
+
+        if (!this.getGameType().equals(GameSetup.SINGLE_PLAYER)) {
+            this.upperPanel.add(this.playerTwoPointsLabel);
+        }
+
+        // Add panel
+        add(upperPanel);
+    }
 
     /**+
      * Method for adding actions to the upper panel buttons
@@ -108,4 +143,40 @@ public class GameBoard extends DaddyPanel{
         });
     }
 
+    /**
+     * Method for creating the game board panel
+     * @return
+     */
+    private void createGameBoardPanel(){
+        JLabel test = new JLabel("Aquí va el tablero de juego");
+
+        this.boardPanel = new JPanel();
+        this.boardPanel.setBackground(Color.YELLOW);
+        this.boardPanel.setBounds(0, 30, super.getWidth(), super.getHeight() - 30);
+
+        this.boardPanel.add(test);
+
+        // Add panel
+        add(boardPanel);
+    }
+
+    public Player getPlayerOne() {
+        return playerOne;
+    }
+
+    public void setPlayerOne(Player playerOne) {
+        this.playerOne = playerOne;
+    }
+
+    public Player getPlayerTwo() {
+        return playerTwo;
+    }
+
+    public void setPlayerTwo(Player playerTwo) {
+        this.playerTwo = playerTwo;
+    }
+
+    public String getGameType() {
+        return super.getGameData().getGameType();
+    }
 }

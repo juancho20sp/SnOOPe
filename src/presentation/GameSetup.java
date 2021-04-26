@@ -35,6 +35,9 @@ public class GameSetup extends DaddyPanel{
     // Color setup
     ColorSetup colorSetup;
 
+    // Game board
+    GameBoard gameBoard;
+
 
     /**
      * Constructor for the GameSetup class
@@ -54,11 +57,14 @@ public class GameSetup extends DaddyPanel{
      */
     private void createPlayers(String gameMode){
         this.playerOne = new PlayerOne();
+        super.getGameData().setPlayerOne(this.playerOne);
 
         if (gameMode.equals(MULTIPLAYER)){
             this.playerTwo = new PlayerTwo();
+            super.getGameData().setPlayerTwo(this.playerTwo);
         } else {
             this.playerMachine = new PlayerMachine();
+            super.getGameData().setPlayerMachine(this.playerMachine);
         }
     }
 
@@ -188,7 +194,7 @@ public class GameSetup extends DaddyPanel{
         this.startGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "start game clicked");
+                startGame();
             }
         });
 
@@ -205,11 +211,19 @@ public class GameSetup extends DaddyPanel{
      * @param player The player that will be modified
      */
     private void colorSetupClicked(Player player){
+        this.colorSetup = new ColorSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(), player);
 
-            this.colorSetup = new ColorSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(), player);
+        changeCard(this.colorSetup, SnOOPe.SELECT_GAME_COLOR_SETUP);
 
-            changeCard(this.colorSetup, SnOOPe.SELECT_GAME_COLOR_SETUP);
+    }
 
+    /**
+     * Method for starting up the game
+     */
+    private void startGame(){
+        this.gameBoard = new GameBoard(super.getFrame(), super.getGUIConfig(), super.getGameData());
+
+        changeCard(this.gameBoard, SnOOPe.GAME_BOARD);
     }
 
 

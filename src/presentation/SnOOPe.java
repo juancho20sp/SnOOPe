@@ -26,6 +26,7 @@ public class SnOOPe extends JFrame{
     public final static String SELECT_GAME_MODE = "select game mode";
     public final static String SELECT_GAME_SETUP = "select game setup";
     public final static String SELECT_GAME_COLOR_SETUP = "select game color setup";
+    public final static String GAME_BOARD = "game board";
     public final static String CONFIGURATION = "configuration";
 
     // Configuration

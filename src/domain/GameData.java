@@ -1,64 +1,16 @@
 package domain;
 
+import domain.players.Player;
+
 import java.awt.*;
 
 public class GameData {
-    private String namePlayerOne;
-    private String namePlayerTwo;
-    private Color colorPlayerOne;
-    private Color colorPlayerTwo;
-    private int pointsPlayerOne;
-    private int pointsPlayerTwo;
-
+    private boolean isGameRunning = false;
     private String gameType;
+    private Player playerOne;
+    private Player playerTwo;
+    private Player playerMachine;
 
-    public String getNamePlayerOne() {
-        return namePlayerOne;
-    }
-
-    public void setNamePlayerOne(String namePlayerOne) {
-        this.namePlayerOne = namePlayerOne;
-    }
-
-    public String getNamePlayerTwo() {
-        return namePlayerTwo;
-    }
-
-    public void setNamePlayerTwo(String namePlayerTwo) {
-        this.namePlayerTwo = namePlayerTwo;
-    }
-
-    public Color getColorPlayerOne() {
-        return colorPlayerOne;
-    }
-
-    public void setColorPlayerOne(Color colorPlayerOne) {
-        this.colorPlayerOne = colorPlayerOne;
-    }
-
-    public Color getColorPlayerTwo() {
-        return colorPlayerTwo;
-    }
-
-    public void setColorPlayerTwo(Color colorPlayerTwo) {
-        this.colorPlayerTwo = colorPlayerTwo;
-    }
-
-    public int getPointsPlayerOne() {
-        return pointsPlayerOne;
-    }
-
-    public void setPointsPlayerOne(int pointsPlayerOne) {
-        this.pointsPlayerOne = pointsPlayerOne;
-    }
-
-    public int getPointsPlayerTwo() {
-        return pointsPlayerTwo;
-    }
-
-    public void setPointsPlayerTwo(int pointsPlayerTwo) {
-        this.pointsPlayerTwo = pointsPlayerTwo;
-    }
 
     public String getGameType() {
         return gameType;
@@ -66,5 +18,37 @@ public class GameData {
 
     public void setGameType(String gameType) {
         this.gameType = gameType;
+    }
+
+    public boolean isGameRunning() {
+        return isGameRunning;
+    }
+
+    public void setGameRunning(boolean gameRunning) {
+        isGameRunning = gameRunning;
+    }
+
+    public Player getPlayerOne() {
+        return playerOne;
+    }
+
+    public void setPlayerOne(Player playerOne) {
+        this.playerOne = playerOne;
+    }
+
+    public Player getPlayerTwo() {
+        return playerTwo;
+    }
+
+    public void setPlayerTwo(Player playerTwo) {
+        this.playerTwo = playerTwo;
+    }
+
+    public Player getPlayerMachine() {
+        return playerMachine;
+    }
+
+    public void setPlayerMachine(Player playerMachine) {
+        this.playerMachine = playerMachine;
     }
 }
