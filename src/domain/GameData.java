@@ -10,6 +10,8 @@ public class GameData {
     private int pointsPlayerOne;
     private int pointsPlayerTwo;
 
+    private String gameType;
+
     public String getNamePlayerOne() {
         return namePlayerOne;
     }
@@ -56,5 +58,13 @@ public class GameData {
 
     public void setPointsPlayerTwo(int pointsPlayerTwo) {
         this.pointsPlayerTwo = pointsPlayerTwo;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
     }
 }

@@ -15,10 +15,6 @@ public class SelectMode extends DaddyPanel {
     private JButton playerAndComputer;
     private JButton goBack;
 
-    // Config
-    private GUIConfiguration guiConfig;
-    private GameData data;
-
     // Game setup
     private GameSetup gameSetup;
 
@@ -137,7 +133,11 @@ public class SelectMode extends DaddyPanel {
      * Method for going to the single player game setup
      */
     private void singlePlayerClicked(){
-        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(), GameSetup.SINGLE_PLAYER);
+        // Set game type
+        super.getGameData().setGameType(GameSetup.SINGLE_PLAYER);
+
+        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData());
+
         changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }
 
@@ -145,7 +145,11 @@ public class SelectMode extends DaddyPanel {
      * Method for going to the multiplayer game setup
      */
     private void multiplayerClicked(){
-        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(), GameSetup.MULTIPLAYER);
+        // Set game type
+        super.getGameData().setGameType(GameSetup.MULTIPLAYER);
+
+        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData());
+
         changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }
 
@@ -153,7 +157,11 @@ public class SelectMode extends DaddyPanel {
      * Method for going to the player machine game setup
      */
     private void playerMachineClicked(){
-        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(),GameSetup.PLAYER_MACHINE);
+        // Set game type
+        super.getGameData().setGameType(GameSetup.PLAYER_MACHINE);
+
+        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData());
+
         changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }
 

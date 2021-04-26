@@ -22,17 +22,10 @@ public class GameSetup extends DaddyPanel{
     private JButton startGame;
     private JButton goBack;
 
-    // Config
-    private GUIConfiguration guiConfig;
-    private GameData data;
-
     // Game Modes
     public static final String SINGLE_PLAYER = "single player";
     public static final String MULTIPLAYER = "multiplayer";
     public static final String PLAYER_MACHINE = "player machine";
-
-    // Strings
-    private String gameMode;
 
     // Players
     Player playerOne;
@@ -46,17 +39,11 @@ public class GameSetup extends DaddyPanel{
     /**
      * Constructor for the GameSetup class
      */
-    public GameSetup(JFrame frame, GUIConfiguration guiConfig, GameData data, String gameMode){
+    public GameSetup(JFrame frame, GUIConfiguration guiConfig, GameData data){
         super(frame, guiConfig, data);
 
-        // Configuration
-        //this.guiConfig = guiConfig;
-        //this.data = data;
-
-        this.gameMode = gameMode;
-
         // Players
-        this.createPlayers(this.gameMode);
+        this.createPlayers(super.getGameData().getGameType());
 
         this.prepareLayout();
     }
@@ -122,7 +109,7 @@ public class GameSetup extends DaddyPanel{
         this.namePlayerOne = new JButton("Ingresar nombre del jugador");
         this.colorPlayerOne = new JButton("Seleccionar colores del jugador");
 
-        switch (this.gameMode){
+        switch (super.getGameData().getGameType()){
             case MULTIPLAYER:
                 this.namePlayerOne = new JButton("Ingresar nombre del jugador 1");
                 this.colorPlayerOne = new JButton("Seleccionar colores del jugador 1");
@@ -143,13 +130,13 @@ public class GameSetup extends DaddyPanel{
      * Method for adding the elements to the panel
      */
     private void addElements(){
-        System.out.println(this.gameMode);
+        System.out.println(super.getGameData().getGameType());
 
         // Label
         add(this.title);
 
         // Buttons
-        if (this.gameMode.equals(SINGLE_PLAYER)){
+        if (super.getGameData().getGameType().equals(SINGLE_PLAYER)){
             add(this.namePlayerOne);
             add(this.colorPlayerOne);;
         } else {
@@ -181,7 +168,7 @@ public class GameSetup extends DaddyPanel{
             }
         });
 
-        if (!this.gameMode.equals(SINGLE_PLAYER)){
+        if (!super.getGameData().getGameType().equals(SINGLE_PLAYER)){
             this.namePlayerTwo.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
