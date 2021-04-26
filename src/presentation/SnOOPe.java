@@ -27,6 +27,7 @@ public class SnOOPe extends JFrame{
     public final static String SELECT_GAME_SETUP = "select game setup";
     public final static String SELECT_GAME_COLOR_SETUP = "select game color setup";
     public final static String GAME_BOARD = "game board";
+    public final static String GAME_PAUSE_MENU = "game board pause menu";
     public final static String CONFIGURATION = "configuration";
 
     // Configuration
@@ -284,7 +285,7 @@ public class SnOOPe extends JFrame{
      */
     private void askBeforeClosing() {
         String ObjButtons[] = {"Sí","No"};
-        int PromptResult = JOptionPane.showOptionDialog(null,"¿Desea salir del programa?","JewelQuest",
+        int PromptResult = JOptionPane.showOptionDialog(null,"¿Desea salir del programa?","SnOOPe",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
 
         if(PromptResult==JOptionPane.YES_OPTION)

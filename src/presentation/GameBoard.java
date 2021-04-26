@@ -22,6 +22,9 @@ public class GameBoard extends DaddyPanel{
     // Game type
     private String gameType;
 
+    // Main menu
+    private MainMenu mainMenu;
+
     /**
      * Constructor for the GameBoard class
      */
@@ -138,7 +141,7 @@ public class GameBoard extends DaddyPanel{
         this.mainMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //toggleMainMenu();
+                mainMenuClicked();
             }
         });
     }
@@ -158,6 +161,15 @@ public class GameBoard extends DaddyPanel{
 
         // Add panel
         add(boardPanel);
+    }
+
+    /**
+     * Method for going to the menu
+     */
+    private void mainMenuClicked(){
+        this.mainMenu = new MainMenu(super.getFrame(), super.getGUIConfig(), super.getGameData());
+
+        changeCard(this.mainMenu, SnOOPe.GAME_PAUSE_MENU);
     }
 
     public Player getPlayerOne() {

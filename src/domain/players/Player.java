@@ -2,7 +2,7 @@ package domain.players;
 
 import java.awt.*;
 
-public class Player {
+public abstract class Player {
     private String name;
     private Color headColor;
     private Color bodyColor;

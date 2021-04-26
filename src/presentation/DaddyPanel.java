@@ -45,6 +45,23 @@ public class DaddyPanel extends JPanel{
     }
 
     /**
+     * Method for ending the actual game
+     * @return true if clicked "Sí" false otherwise
+     */
+    public boolean askForConfirmation(String msg){
+        String ObjButtons[] = {"Sí","No"};
+        int PromptResult = JOptionPane.showOptionDialog(null,msg,"SnOOPe",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,null,ObjButtons,ObjButtons[1]);
+
+        if(PromptResult==JOptionPane.YES_OPTION)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Method for getting the frame
      */
     public JFrame getFrame(){

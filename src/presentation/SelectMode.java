@@ -29,7 +29,6 @@ public class SelectMode extends DaddyPanel {
         //this.data = data;
 
         this.prepareLayout();
-
     }
 
     /**
