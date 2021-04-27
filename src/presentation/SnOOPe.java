@@ -90,6 +90,7 @@ public class SnOOPe extends JFrame{
         // Size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize.width / 2, screenSize.height / 2);
+        //setSize(guiConfig.getFrameWidth(), guiConfig.getFrameHeight());
 
         // Position
         setLocationRelativeTo(null);
