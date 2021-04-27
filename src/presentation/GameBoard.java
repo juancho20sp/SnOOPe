@@ -67,7 +67,8 @@ public class GameBoard extends DaddyPanel implements ActionListener{
         this.refresh();
 
         // Keys
-        this.addKeyListener(new Keys());
+        Keys keys = new Keys();
+        this.addKeyListener(keys);
 
         // Thread
         MainThread mainThread = new MainThread();
@@ -199,7 +200,7 @@ public class GameBoard extends DaddyPanel implements ActionListener{
         this.boardPanel.setLayout(new GridLayout(this.rows, this.cols));
 
         // Create grid
-        for (int i = 0; i < rows; i++) {
+        /*for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 // Create the label
                 JLabel box = new JLabel();
@@ -224,11 +225,37 @@ public class GameBoard extends DaddyPanel implements ActionListener{
 
                 // Add label
                 this.boardPanel.add(box);
-            }
-        }
+            }*/
+        //}
 
         // Add panel
-        add(boardPanel);
+        //add(boardPanel);
+    }
+
+    /**
+     * Paint
+     */
+    @Override
+    public void paint(Graphics g){
+        // Horizontal skew
+        int horizontalSkew = 5;
+
+        super.paint(g);
+
+        // Color
+        g.setColor(Color.black);
+
+        // Vertical lines
+        for (int i = 0; i < cols + 1; i++) {
+            g.drawLine((i*CELL_SIZE) + horizontalSkew, upperPanel.getHeight() + 5, (i*CELL_SIZE) + horizontalSkew,
+                    HEIGHT + upperPanel.getHeight() - 6);
+        }
+
+        // Horizontal lines
+        for (int i = 0; i < rows + 2; i++) {
+            g.drawLine(horizontalSkew, upperPanel.getHeight() + (i*CELL_SIZE) + 5, WIDTH - (horizontalSkew + 4),
+                    upperPanel.getHeight() + (i*CELL_SIZE) + 5);
+        }
     }
 
     /**
@@ -350,6 +377,7 @@ public class GameBoard extends DaddyPanel implements ActionListener{
      * Inner class for handling key events
      */
     public class Keys extends KeyAdapter {
+        @Override
         public void keyPressed(KeyEvent e){
             if (!gameOver){
                 System.out.println("Game over");
