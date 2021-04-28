@@ -125,6 +125,17 @@ public class Snake {
         }
     }
 
+    /**
+     * Method for increasing the size of the snake
+     * @param size The number of units to increase
+     */
+    public void increaseSize(int size){
+        for (int i = 0; i < size; i++){
+            int[] lastPosition = this.positions.get(this.positions.size() - 1);
+            this.positions.add(lastPosition);
+        }
+    }
+
     public int getSize() {
         return size;
     }
