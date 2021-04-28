@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class GameBoard extends DaddyPanel implements ActionListener{
+public class GameBoard extends DaddyPanel{
     private JPanel upperPanel;
     private JPanel boardPanel;
     private JButton mainMenuButton;
@@ -42,11 +42,18 @@ public class GameBoard extends DaddyPanel implements ActionListener{
     // Snakes
     Snake snake1;
 
+    // Snake directions
+    int snake1Direction = KeyEvent.VK_RIGHT;
+
     // Fruits
     private int fruit[] = {0,0};
 
     // Game over
     private boolean gameOver = super.getGameData().isGameRunning();
+
+    // Thread
+    MainThread mainThread;
+    Thread thread;
 
     /**
      * Constructor for the GameBoard class
@@ -67,12 +74,12 @@ public class GameBoard extends DaddyPanel implements ActionListener{
         this.refresh();
 
         // Keys
-        Keys keys = new Keys();
-        this.addKeyListener(keys);
+        this.setFocusable(true);
+        this.addKeyListener(new myKeys());
 
         // Thread
-        MainThread mainThread = new MainThread();
-        Thread thread = new Thread(mainThread);
+        mainThread = new MainThread();
+        thread = new Thread(mainThread);
         thread.start();
     }
 
@@ -81,7 +88,7 @@ public class GameBoard extends DaddyPanel implements ActionListener{
      */
     private void setupPlayers(){
         this.setPlayerOne(super.getGameData().getPlayerOne());
-        this.snake1 = new Snake(5, new int[]{0, 0}, Color.black, Color.black);
+        this.snake1 = new Snake(3, new int[]{2, 0}, Color.red, Color.black);
 
         if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)){
             this.setPlayerTwo(super.getGameData().getPlayerTwo());
@@ -233,6 +240,13 @@ public class GameBoard extends DaddyPanel implements ActionListener{
     }
 
     /**
+     * Method for moving the snakes
+     */
+    public void moveSnakes(){
+        snake1.move(this.snake1Direction);
+    }
+
+    /**
      * Paint
      */
     @Override
@@ -240,22 +254,69 @@ public class GameBoard extends DaddyPanel implements ActionListener{
         // Horizontal skew
         int horizontalSkew = 5;
 
+        // Reset rows and cols
+        int newCols = cols + 1;
+        int newRows = rows + 1;
+
         super.paint(g);
 
         // Color
         g.setColor(Color.black);
 
         // Vertical lines
-        for (int i = 0; i < cols + 1; i++) {
+        for (int i = 0; i < newCols; i++) {
             g.drawLine((i*CELL_SIZE) + horizontalSkew, upperPanel.getHeight() + 5, (i*CELL_SIZE) + horizontalSkew,
                     HEIGHT + upperPanel.getHeight() - 6);
         }
 
         // Horizontal lines
-        for (int i = 0; i < rows + 2; i++) {
+        for (int i = 0; i < newRows; i++) {
             g.drawLine(horizontalSkew, upperPanel.getHeight() + (i*CELL_SIZE) + 5, WIDTH - (horizontalSkew + 4),
                     upperPanel.getHeight() + (i*CELL_SIZE) + 5);
         }
+
+        // Snake 1
+        // Body
+        g.setColor(snake1.getBodyColor());
+        for(int[] pos : snake1.getPositions()){
+            g.fillRect(fixXPosition(pos[0]), fixYPosition(pos[1]), CELL_SIZE, CELL_SIZE);
+        }
+
+        // Head
+        g.setColor(snake1.getHeadColor());
+        g.fillRect(fixXPosition(snake1.getHeadPosition()[0]), fixYPosition(snake1.getHeadPosition()[1]), CELL_SIZE, CELL_SIZE);
+
+
+        /*g.setColor(Color.red);
+        g.fillRect(fixXPosition(0), fixYPosition(0), CELL_SIZE, CELL_SIZE);
+
+        g.setColor(Color.blue);
+        g.fillRect(fixXPosition(2), fixYPosition(2), CELL_SIZE, CELL_SIZE);
+
+        g.setColor(Color.black);
+        g.fillRect(fixXPosition(36), fixYPosition(17), CELL_SIZE, CELL_SIZE);
+
+        g.setColor(Color.blue);
+        g.fillRect(fixXPosition(10), fixYPosition(10), CELL_SIZE, CELL_SIZE);*/
+
+    }
+
+    /**
+     * Method for fixing the locations of the boxes
+     * @param x The x position of the elements
+     * @return The position fixed
+     */
+    private int fixXPosition(int x){
+        return (x * CELL_SIZE) + 5;
+    }
+
+    /**
+     * Method for fixing the locations of the boxes
+     * @param y The y position of the elements
+     * @return The position fixed
+     */
+    private int fixYPosition(int y){
+        return (y * CELL_SIZE) + upperPanel.getHeight() + 5;
     }
 
     /**
@@ -337,11 +398,14 @@ public class GameBoard extends DaddyPanel implements ActionListener{
         }
     }
 
+
+
+
     /**
      * Method for going to the menu
      */
-    private void mainMenuClicked(){
-        this.mainMenu = new MainMenu(super.getFrame(), super.getGUIConfig(), super.getGameData());
+    private void mainMenuClicked()  {
+          this.mainMenu = new MainMenu(super.getFrame(), super.getGUIConfig(), super.getGameData());
 
         changeCard(this.mainMenu, SnOOPe.GAME_PAUSE_MENU);
     }
@@ -366,19 +430,18 @@ public class GameBoard extends DaddyPanel implements ActionListener{
         return super.getGameData().getGameType();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("ok");
-        refresh();
-    }
-
-
     /**
      * Inner class for handling key events
      */
-    public class Keys extends KeyAdapter {
+    public class myKeys extends KeyAdapter {
+        public myKeys() {
+            System.out.println("keys creado");
+        }
+
         @Override
-        public void keyPressed(KeyEvent e){
+        public void keyPressed (KeyEvent e){
+            System.out.println("Tecla presionad");
+
             if (!gameOver){
                 System.out.println("Game over");
             }
@@ -387,25 +450,25 @@ public class GameBoard extends DaddyPanel implements ActionListener{
 
             switch (e.getKeyCode()){
                 case KeyEvent.VK_UP:
-                    System.out.println("UP");
+                    //System.out.println("UP");
                     if (snake1.getDirection() != KeyEvent.VK_DOWN){
                         snake1.setDirection(KeyEvent.VK_UP);
                     }
                     break;
                 case KeyEvent.VK_DOWN:
-                    System.out.println("DOWN");
+                    //System.out.println("DOWN");
                     if (snake1.getDirection() != KeyEvent.VK_UP){
                         snake1.setDirection(KeyEvent.VK_DOWN);
                     }
                     break;
                 case KeyEvent.VK_LEFT:
-                    System.out.println("LEFT");
+                    //System.out.println("LEFT");
                     if (snake1.getDirection() != KeyEvent.VK_RIGHT){
                         snake1.setDirection(KeyEvent.VK_LEFT);
                     }
                     break;
                 case KeyEvent.VK_RIGHT:
-                    System.out.println("RIGHT");
+                    //System.out.println("RIGHT");
                     if (snake1.getDirection() != KeyEvent.VK_LEFT){
                         snake1.setDirection(KeyEvent.VK_RIGHT);
                     }
@@ -423,7 +486,7 @@ public class GameBoard extends DaddyPanel implements ActionListener{
         public void run(){
             while(true){
                 if((java.lang.System.currentTimeMillis() - last) > snake1.getFrequency()) {
-                    int x = snake1.getHeadPosition()[0];
+                    /*int x = snake1.getHeadPosition()[0];
                     int y = snake1.getHeadPosition()[1];
 
                     switch (snake1.getDirection()){
@@ -478,7 +541,9 @@ public class GameBoard extends DaddyPanel implements ActionListener{
                             }
                             break;
 
-                    }
+                    }*/
+                    snake1.move(snake1.getDirection());
+                    snake1.updatePositions(rows, cols);
 
                     refresh();
 
