@@ -94,7 +94,8 @@ public class GameBoard extends DaddyPanel{
      */
     private void setupPlayers(){
         this.setPlayerOne(super.getGameData().getPlayerOne());
-        this.snake1 = new Snake(3, new int[]{2, 0}, Color.red, Color.black);
+        this.snake1 = new Snake(3, new int[]{2, 0}, this.getPlayerOne().getHeadColor(), this.playerOne.getBodyColor()
+                , super.getGameData());
 
         if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)){
             this.setPlayerTwo(super.getGameData().getPlayerTwo());
@@ -418,6 +419,8 @@ public class GameBoard extends DaddyPanel{
 
         for(int[] position : snake1.getPositions()){
             if (head[0] == position[0] && head[1] == position[1]){
+
+                super.getGameData().setGameRunning(false);
                 System.out.println("GAME OVER");
             }
         }
@@ -502,72 +505,22 @@ public class GameBoard extends DaddyPanel{
         public void run(){
             while(true){
                 if((java.lang.System.currentTimeMillis() - last) > snake1.getFrequency()) {
-                    /*int x = snake1.getHeadPosition()[0];
-                    int y = snake1.getHeadPosition()[1];
+                   if (getGameData().isGameRunning()){
+                       snake1.move(snake1.getDirection());
+                       snake1.updatePositions(rows, cols);
 
-                    switch (snake1.getDirection()){
-                        case KeyEvent.VK_UP:
-                            y = y-1;
-                            snake1.setHeadPosition(new int[]{x, y});
+                       refresh();
 
-                            if (y > rows){
-                                snake1.setHeadPosition(new int[]{x, 0});
-                            }
+                       last = java.lang.System.currentTimeMillis();
+                   } else {
+                       EndGame endGame = new EndGame(getFrame(), getGUIConfig(), getGameData());
 
-                            if (y < 0){
-                                snake1.setHeadPosition(new int[]{x, rows - 1});
-                            }
-                            break;
-
-                        case KeyEvent.VK_DOWN:
-                            y = y + 1;
-                            snake1.setHeadPosition(new int[]{x, y});
-
-                            if (y > rows){
-                                snake1.setHeadPosition(new int[]{x, 0});
-                            }
-
-                            if (y < 0){
-                                snake1.setHeadPosition(new int[]{x, rows - 1});
-                            }
-                            break;
-
-                        case KeyEvent.VK_LEFT:
-                            x = x - 1;
-                            snake1.setHeadPosition(new int[]{x, y});
-
-                            if (x > cols){
-                                snake1.setHeadPosition(new int[]{0, y});
-                            }
-
-                            if (x < 0){
-                                snake1.setHeadPosition(new int[]{cols - 1, y});
-                            }
-                            break;
-                        case KeyEvent.VK_RIGHT:
-                            x = x + 1;
-                            snake1.setHeadPosition(new int[]{x, y});
-
-                            if (x > cols){
-                                snake1.setHeadPosition(new int[]{0, y});
-                            }
-
-                            if (x < 0){
-                                snake1.setHeadPosition(new int[]{cols - 1, y});
-                            }
-                            break;
-
-                    }*/
-                    snake1.move(snake1.getDirection());
-                    snake1.updatePositions(rows, cols);
-
-                    refresh();
-
-                    last = java.lang.System.currentTimeMillis();
-                    }
+                       changeCard(endGame, SnOOPe.END_GAME);
+                   }
                 }
             }
         }
+    }
 
     /**
      * Inner class for handling key events

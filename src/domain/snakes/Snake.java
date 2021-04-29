@@ -1,5 +1,7 @@
 package domain.snakes;
 
+import domain.GameData;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -10,10 +12,13 @@ public class Snake {
     private ArrayList<int[]> positions;
     private Color headColor;
     private Color bodyColor;
-    private int direction = KeyEvent.VK_UP;
-    private int frequency = 50;
+    private int direction = KeyEvent.VK_RIGHT;
+    private int frequency = 80;
 
-    public Snake(int size, int[] headPosition, Color headColor, Color bodyColor) {
+    // Game data
+    private GameData gameData;
+
+    public Snake(int size, int[] headPosition, Color headColor, Color bodyColor, GameData gameData) {
         this.size = size;
         this.headPosition = headPosition;
         this.headColor = headColor;
@@ -25,6 +30,8 @@ public class Snake {
        // this.positions.add(this.headPosition);
         this.positions.add(new int[]{1,0});
         this.positions.add(new int[]{0,0});
+
+        this.gameData = gameData;
     }
 
     /**
@@ -76,11 +83,13 @@ public class Snake {
                 this.setHeadPosition(new int[]{x, y});
 
                 if (y >= rows - 1){
-                    this.setHeadPosition(new int[]{x, 0});
+                    //this.setHeadPosition(new int[]{x, 0});
+                    gameData.setGameRunning(false);
                 }
 
                 if (y <= 0){
-                    this.setHeadPosition(new int[]{x, rows - 1});
+                    //this.setHeadPosition(new int[]{x, rows - 1});
+                    gameData.setGameRunning(false);
                 }
                 break;
 
@@ -89,11 +98,13 @@ public class Snake {
                 this.setHeadPosition(new int[]{x, y});
 
                 if (y >= rows - 1){
-                    this.setHeadPosition(new int[]{x, 0});
+                    //this.setHeadPosition(new int[]{x, 0});
+                    gameData.setGameRunning(false);
                 }
 
                 if (y <= 0){
-                    this.setHeadPosition(new int[]{x, rows - 1});
+                    //this.setHeadPosition(new int[]{x, rows - 1});
+                    gameData.setGameRunning(false);
                 }
                 break;
 
@@ -102,11 +113,13 @@ public class Snake {
                 this.setHeadPosition(new int[]{x, y});
 
                 if (x >= cols - 1){
-                    this.setHeadPosition(new int[]{0, y});
+                    //this.setHeadPosition(new int[]{0, y});
+                    gameData.setGameRunning(false);
                 }
 
                 if (x <= 0){
-                    this.setHeadPosition(new int[]{cols - 1, y});
+                    //this.setHeadPosition(new int[]{cols - 1, y});
+                    gameData.setGameRunning(false);
                 }
                 break;
             case KeyEvent.VK_RIGHT:
@@ -114,11 +127,13 @@ public class Snake {
                 this.setHeadPosition(new int[]{x, y});
 
                 if (x >= cols - 1){
-                    this.setHeadPosition(new int[]{0, y});
+                    //this.setHeadPosition(new int[]{0, y});
+                    gameData.setGameRunning(false);
                 }
 
                 if (x <= 0){
-                    this.setHeadPosition(new int[]{cols - 1, y});
+                    //this.setHeadPosition(new int[]{cols - 1, y});
+                    gameData.setGameRunning(false);
                 }
                 break;
 

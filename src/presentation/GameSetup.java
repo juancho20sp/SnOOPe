@@ -69,7 +69,7 @@ public class GameSetup extends DaddyPanel{
     }
 
     /**
-     * Method for preparing the layour
+     * Method for preparing the layout
      */
     private void prepareLayout(){
         // Main Panel
@@ -144,7 +144,7 @@ public class GameSetup extends DaddyPanel{
         // Buttons
         if (super.getGameData().getGameType().equals(SINGLE_PLAYER)){
             add(this.namePlayerOne);
-            add(this.colorPlayerOne);;
+            add(this.colorPlayerOne);
         } else {
             add(this.namePlayerOne);
             add(this.colorPlayerOne);
@@ -223,9 +223,47 @@ public class GameSetup extends DaddyPanel{
      * Method for starting up the game
      */
     private void startGame(){
-        this.gameBoard = new GameBoard(super.getFrame(), super.getGUIConfig(), super.getGameData());
+        if (this.validateFields() || true){
+            this.gameBoard = new GameBoard(super.getFrame(), super.getGUIConfig(), super.getGameData());
 
-        changeCard(this.gameBoard, SnOOPe.GAME_BOARD);
+            changeCard(this.gameBoard, SnOOPe.GAME_BOARD);
+        } else {
+            JOptionPane.showMessageDialog(null, SnOOPeExceptions.ALL_FIELDS_ARE_MANDATORY);
+        }
+
+    }
+
+    /**
+     * Validate fields
+     * @return true if the fields are filled, false otherwise
+     */
+    private boolean validateFields(){
+        boolean valid = true;
+
+        Player player1 = super.getGameData().getPlayerOne();
+        Player player2 = super.getGameData().getPlayerTwo();
+        Player machine = super.getGameData().getPlayerMachine();
+
+        // First player
+        if (player1.getName() == null || player1.getHeadColor() == null || player1.getBodyColor() == null){
+            valid = false;
+        }
+
+        // Multiplayer
+        if (super.getGameData().getGameType().equals(MULTIPLAYER)){
+            if (player2.getName() == null || player2.getHeadColor() == null || player2.getBodyColor() == null){
+                valid = false;
+            }
+        }
+
+        // Machine
+        if (super.getGameData().getGameType().equals(PLAYER_MACHINE)){
+            if (machine.getHeadColor() == null || machine.getBodyColor() == null){
+                valid = false;
+            }
+        }
+
+        return valid;
     }
 
 

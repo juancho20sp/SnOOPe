@@ -36,11 +36,8 @@ public class ColorSetup extends DaddyPanel{
         // Player
         this.player = player;
 
-
-            this.prepareLayout();
-
-
-
+        // Layout
+        this.prepareLayout();
     }
 
     /**
@@ -54,10 +51,7 @@ public class ColorSetup extends DaddyPanel{
         this.createPanel();
 
         // Label
-
-            this.createLabels();
-
-
+        this.createLabels();
 
         // Buttons
         this.createButtons();
@@ -115,14 +109,14 @@ public class ColorSetup extends DaddyPanel{
         this.headButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "head color clicked");
+                setHeadColor(player);
             }
         });
 
         this.bodyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "body color clicked");
+                setBodyColor(player);
             }
         });
 
@@ -132,5 +126,32 @@ public class ColorSetup extends DaddyPanel{
                 goToCard(SnOOPe.SELECT_GAME_SETUP);
             }
         });
+    }
+
+    /**
+     * Method for selecting the head color
+     * @param player The player choosing the colors
+     */
+    private void setHeadColor(Player player){
+        player.setHeadColor(this.chooseColor("Seleccione el color de la cabeza de la serpiente: "));
+    }
+
+    /**
+     * Method for selecting the body color
+     * @param player The player choosing the colors
+     */
+    private void setBodyColor(Player player){
+        player.setBodyColor(this.chooseColor("Seleccione el color del cuerpo de la serpiente: "));
+    }
+
+
+    /**
+     * Method for selecting colors
+     * @oaram msg The message to be displayed to the user
+     * @return The color chosen
+     */
+    private Color chooseColor(String msg){
+        JColorChooser chooser = new JColorChooser();
+        return chooser.showDialog(null, msg, Color.black);
     }
 }
