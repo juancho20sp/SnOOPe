@@ -21,6 +21,8 @@ public class EndGame extends DaddyPanel{
     public EndGame(JFrame frame, GUIConfiguration guiConfig, GameData data){
         super(frame, guiConfig, data);
 
+        setFocusable(true);
+
         // Layout
         this.prepareLayout();
     }
@@ -148,7 +150,7 @@ public class EndGame extends DaddyPanel{
         }
 
         // Machine
-        if (gameType.equals(GameSetup.MULTIPLAYER)){
+        if (gameType.equals(GameSetup.PLAYER_MACHINE)){
             if (players[0].getPoints() > players[2].getPoints()){
                 return new Player[]{players[0], players[2]};
             }
