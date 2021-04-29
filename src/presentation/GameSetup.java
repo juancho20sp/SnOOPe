@@ -163,7 +163,9 @@ public class GameSetup extends DaddyPanel{
         this.namePlayerOne.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "name player one clicked");
+                String name = JOptionPane.showInputDialog("Ingresar nombre del jugador");
+
+                GameSetup.super.getGameData().getPlayerOne().setName(name);
             }
         });
 

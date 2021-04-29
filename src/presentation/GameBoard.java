@@ -162,7 +162,8 @@ public class GameBoard extends DaddyPanel{
      * Method for creating the upper panel labels
      */
    private void createUpperPanelLabels(){
-        this.playerOnePointsLabel = new JLabel(this.getPlayerOne().getNumber() + " : 0", SwingConstants.CENTER);
+        this.playerOnePointsLabel = new JLabel(this.getPlayerOne().getName() + " : " + this.getPlayerOne().getPoints(),
+                SwingConstants.CENTER);
 
         if (!this.getGameType().equals(GameSetup.SINGLE_PLAYER)){
             this.playerTwoPointsLabel = new JLabel(this.getPlayerTwo().getNumber() + " : 0", SwingConstants.CENTER);
@@ -335,7 +336,8 @@ public class GameBoard extends DaddyPanel{
      * Method for redrawing the board
      */
     private void refresh(){
-        remove(boardPanel);
+        //remove(boardPanel);
+        removeAll();
         revalidate();
         repaint();
 
@@ -345,6 +347,7 @@ public class GameBoard extends DaddyPanel{
         // Check collisions
         this.checkCollision();
 
+        this.createUpperPanel();
         this.createGameBoardPanel();
         revalidate();
         repaint();
@@ -391,9 +394,18 @@ public class GameBoard extends DaddyPanel{
         int appleY = fruit1.getY();
 
 
-
+        // Fruta 1 - Snake 1
         if((snakeX == appleX) && (snakeY == appleY)){
-            this.snake1.increaseSize(5);
+            if (fruit1 instanceof Apple)
+            {
+                // Add points
+                int newPoints = this.playerOne.getPoints() + 1;
+                this.playerOne.setPoints(newPoints);
+
+                // Increase size
+                this.snake1.increaseSize(fruit1.getPoints());
+            }
+
             this.addFruit();
         }
     }

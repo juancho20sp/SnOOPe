@@ -6,7 +6,7 @@ public abstract class Player {
     private String name;
     private Color headColor;
     private Color bodyColor;
-    private int points;
+    private int points = 0;
     private int number;
 
     public String getName() {
