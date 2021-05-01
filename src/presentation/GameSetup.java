@@ -163,9 +163,7 @@ public class GameSetup extends DaddyPanel{
         this.namePlayerOne.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name = JOptionPane.showInputDialog("Ingresar nombre del jugador");
-
-                GameSetup.super.getGameData().getPlayerOne().setName(name);
+                setPlayerOneName();
             }
         });
 
@@ -180,7 +178,7 @@ public class GameSetup extends DaddyPanel{
             this.namePlayerTwo.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(null, "name player two clicked");
+                    setPlayerTwoName();
                 }
             });
 
@@ -206,6 +204,24 @@ public class GameSetup extends DaddyPanel{
                 goToCard(SnOOPe.SELECT_GAME_MODE);
             }
         });
+    }
+
+    /**
+     * Method for adding the name of the player one
+     */
+    private void setPlayerOneName(){
+        String name = JOptionPane.showInputDialog("Ingresar nombre del jugador");
+
+        GameSetup.super.getGameData().getPlayerOne().setName(name);
+    }
+
+    /**
+     * Method for adding the name of the player two
+     */
+    private void setPlayerTwoName(){
+        String name = JOptionPane.showInputDialog("Ingresar nombre del jugador");
+
+        GameSetup.super.getGameData().getPlayerTwo().setName(name);
     }
 
     /**

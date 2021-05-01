@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class Snake {
+public abstract class Snake {
     private int size = 3;
     private int[] headPosition;
     private ArrayList<int[]> positions;
@@ -26,11 +26,6 @@ public class Snake {
 
         this.positions = new ArrayList<>();
 
-        this.headPosition = new int[]{2, 0};
-       // this.positions.add(this.headPosition);
-        this.positions.add(new int[]{1,0});
-        this.positions.add(new int[]{0,0});
-
         this.gameData = gameData;
     }
 
@@ -38,34 +33,7 @@ public class Snake {
      * Method for moving the snake
      * @param key The keycode of the key pressed
      */
-    public void move(int key){
-        switch (key){
-            case KeyEvent.VK_UP:
-               // System.out.println("UP");
-                if (this.direction != KeyEvent.VK_DOWN){
-                    this.setDirection(KeyEvent.VK_UP);
-                }
-                break;
-            case KeyEvent.VK_DOWN:
-               // System.out.println("DOWN");
-                if (this.direction != KeyEvent.VK_UP){
-                    this.setDirection(KeyEvent.VK_DOWN);
-                }
-                break;
-            case KeyEvent.VK_LEFT:
-                //System.out.println("LEFT");
-                if (this.direction != KeyEvent.VK_RIGHT){
-                    this.setDirection(KeyEvent.VK_LEFT);
-                }
-                break;
-            case KeyEvent.VK_RIGHT:
-                //System.out.println("RIGHT");
-                if (this.direction != KeyEvent.VK_LEFT){
-                    this.setDirection(KeyEvent.VK_RIGHT);
-                }
-                break;
-        }
-    }
+    public abstract void move(int key);
 
     /**
      * Method for changing positions
@@ -73,72 +41,8 @@ public class Snake {
      * @param rows The number of rows of the board
      * @return
      */
-    public void updatePositions(int rows, int cols){
-        int x = this.getHeadPosition()[0];
-        int y = this.getHeadPosition()[1];
+    public abstract void updatePositions(int rows, int cols);
 
-        switch (this.getDirection()){
-            case KeyEvent.VK_UP:
-                y = y-1;
-                this.setHeadPosition(new int[]{x, y});
-
-                if (y >= rows - 1){
-                    //this.setHeadPosition(new int[]{x, 0});
-                    gameData.setGameRunning(false);
-                }
-
-                if (y <= 0){
-                    //this.setHeadPosition(new int[]{x, rows - 1});
-                    gameData.setGameRunning(false);
-                }
-                break;
-
-            case KeyEvent.VK_DOWN:
-                y = y + 1;
-                this.setHeadPosition(new int[]{x, y});
-
-                if (y >= rows - 1){
-                    //this.setHeadPosition(new int[]{x, 0});
-                    gameData.setGameRunning(false);
-                }
-
-                if (y <= 0){
-                    //this.setHeadPosition(new int[]{x, rows - 1});
-                    gameData.setGameRunning(false);
-                }
-                break;
-
-            case KeyEvent.VK_LEFT:
-                x = x - 1;
-                this.setHeadPosition(new int[]{x, y});
-
-                if (x >= cols - 1){
-                    //this.setHeadPosition(new int[]{0, y});
-                    gameData.setGameRunning(false);
-                }
-
-                if (x <= 0){
-                    //this.setHeadPosition(new int[]{cols - 1, y});
-                    gameData.setGameRunning(false);
-                }
-                break;
-            case KeyEvent.VK_RIGHT:
-                x = x + 1;
-                this.setHeadPosition(new int[]{x, y});
-
-                if (x >= cols - 1){
-                    //this.setHeadPosition(new int[]{0, y});
-                    gameData.setGameRunning(false);
-                }
-
-                if (x <= 0){
-                    //this.setHeadPosition(new int[]{cols - 1, y});
-                    gameData.setGameRunning(false);
-                }
-                break;
-
-        }
-    }
 
     /**
      * Method for increasing the size of the snake
@@ -149,6 +53,13 @@ public class Snake {
             int[] lastPosition = this.positions.get(this.positions.size() - 1);
             this.positions.add(lastPosition);
         }
+    }
+
+    /**
+     * Method for adding new blocks to the body of the snake
+     */
+    public void addPosition(int[] position) {
+        this.positions.add(position);
     }
 
     public int getSize() {
@@ -194,20 +105,20 @@ public class Snake {
         return positions;
     }
 
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
     public int getFrequency() {
         return frequency;
     }
 
     public void setFrequency(int frequency) {
         this.frequency = frequency;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
 
