@@ -21,6 +21,8 @@ public class EndGame extends DaddyPanel{
     public EndGame(JFrame frame, GUIConfiguration guiConfig, GameData data){
         super(frame, guiConfig, data);
 
+        super.setFocusable(false);
+
         setFocusable(true);
 
         // Layout

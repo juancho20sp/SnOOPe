@@ -30,6 +30,9 @@ public class GameBoard extends DaddyPanel {
     // Game type
     private String gameType;
 
+    // Is single player
+    private boolean singlePlayer;
+
     // Main menu
     private MainMenu mainMenu;
 
@@ -47,9 +50,6 @@ public class GameBoard extends DaddyPanel {
     // Snakes
     Snake snake1;
     Snake snake2;
-
-    // Snake directions
-    int snake1Direction = KeyEvent.VK_RIGHT;
 
     // Fruits
     Edible fruit1;
@@ -179,7 +179,7 @@ public class GameBoard extends DaddyPanel {
         this.playerOnePointsLabel = new JLabel(this.getPlayerOne().getName() + " : " + this.getPlayerOne().getPoints(),
                 SwingConstants.CENTER);
 
-        if (!this.getGameType().equals(GameSetup.SINGLE_PLAYER)) {
+        if (!this.isSinglePlayer()) {
             this.playerTwoPointsLabel = new JLabel(this.getPlayerTwo().getName() + " : " + this.getPlayerTwo().getPoints(),
                     SwingConstants.CENTER);
         }
@@ -194,7 +194,7 @@ public class GameBoard extends DaddyPanel {
         this.upperPanel.add(mainMenuButton);
         this.upperPanel.add(this.playerOnePointsLabel);
 
-        if (!this.getGameType().equals(GameSetup.SINGLE_PLAYER)) {
+        if (!this.isSinglePlayer()) {
             this.upperPanel.add(this.playerTwoPointsLabel);
         }
 
@@ -232,38 +232,6 @@ public class GameBoard extends DaddyPanel {
 
         // Layout
         this.boardPanel.setLayout(new GridLayout(this.rows, this.cols));
-
-        // Create grid
-        /*for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                // Create the label
-                JLabel box = new JLabel();
-                box.setBorder(BorderFactory.createLineBorder(Color.black));
-
-                // Fruit 1
-                if (i == fruit[0] && j == fruit[1]){
-                    //box.setOpaque(true);
-                    //box.setBackground(Color.RED);
-                    //this.fruit = null;
-                }
-
-                // Snake 1
-                if (i == snake1.getHeadPosition()[0] && j == snake1.getHeadPosition()[1]){
-                    box.setOpaque(true);
-                    box.setBackground(snake1.getHeadColor());
-                }
-
-
-
-                box.setBounds(i, j, CELL_SIZE, CELL_SIZE);
-
-                // Add label
-                this.boardPanel.add(box);
-            }*/
-        //}
-
-        // Add panel
-        //add(boardPanel);
     }
 
     /**
@@ -307,16 +275,19 @@ public class GameBoard extends DaddyPanel {
         g.fillRect(fixXPosition(snake1.getHeadPosition()[0]), fixYPosition(snake1.getHeadPosition()[1]), CELL_SIZE, CELL_SIZE);
 
         // Snake 2
-        // Body
-        g.setColor(snake2.getBodyColor());
-        for (int[] pos : snake2.getPositions()) {
-            g.fillRect(fixXPosition(pos[0]), fixYPosition(pos[1]), CELL_SIZE, CELL_SIZE);
+        if (!this.isSinglePlayer()){
+            // Body
+            g.setColor(snake2.getBodyColor());
+            for (int[] pos : snake2.getPositions()) {
+                g.fillRect(fixXPosition(pos[0]), fixYPosition(pos[1]), CELL_SIZE, CELL_SIZE);
+            }
+
+            // Head
+            g.setColor(snake2.getHeadColor());
+            g.fillRect(fixXPosition(snake2.getHeadPosition()[0]), fixYPosition(snake2.getHeadPosition()[1]), CELL_SIZE,
+                    CELL_SIZE);
         }
 
-        // Head
-        g.setColor(snake2.getHeadColor());
-        g.fillRect(fixXPosition(snake2.getHeadPosition()[0]), fixYPosition(snake2.getHeadPosition()[1]), CELL_SIZE,
-                CELL_SIZE);
 
 
         // Fruits
@@ -416,8 +387,14 @@ public class GameBoard extends DaddyPanel {
         int snake1Y = snake1.getHeadPosition()[1];
 
         // Snake 2
-        int snake2X = snake2.getHeadPosition()[0];
-        int snake2Y = snake2.getHeadPosition()[1];
+        int snake2X = 0;
+        int snake2Y = 0;
+
+        if (!this.isSinglePlayer()) {
+            snake2X = snake2.getHeadPosition()[0];
+            snake2Y = snake2.getHeadPosition()[1];
+        }
+
 
         int appleX = fruit1.getX();
         int appleY = fruit1.getY();
@@ -438,18 +415,21 @@ public class GameBoard extends DaddyPanel {
         }
 
         // Fruta 1 - Snake 2
-        if ((snake2X == appleX) && (snake2Y == appleY)) {
-            if (fruit1 instanceof Apple) {
-                // Add points
-                int newPoints = this.playerTwo.getPoints() + 1;
-                this.playerTwo.setPoints(newPoints);
+        if (!this.isSinglePlayer()){
+            if ((snake2X == appleX) && (snake2Y == appleY)) {
+                if (fruit1 instanceof Apple) {
+                    // Add points
+                    int newPoints = this.playerTwo.getPoints() + 1;
+                    this.playerTwo.setPoints(newPoints);
 
-                // Increase size
-                this.snake2.increaseSize(fruit1.getPoints());
+                    // Increase size
+                    this.snake2.increaseSize(fruit1.getPoints());
+                }
+
+                this.addFruit();
             }
-
-            this.addFruit();
         }
+
     }
 
     /**
@@ -457,28 +437,48 @@ public class GameBoard extends DaddyPanel {
      */
     private void checkCollision() {
         int[] head1 = snake1.getHeadPosition();
-        int[] head2 = snake2.getHeadPosition();
+        int[] head2 = new int[2];
+
+        if (!this.isSinglePlayer()){
+            head2 = snake2.getHeadPosition();
+        }
+
 
         // Snake one
         for (int[] position : snake1.getPositions()) {
             if (head1[0] == position[0] && head1[1] == position[1]) {
-
                 super.getGameData().setGameRunning(false);
                 System.out.println("GAME OVER");
             }
-        }
 
-        // Muerte al chocar
-        // Que la cabeza del uno esté incluido en las posiciones del otro
+            if (!this.isSinglePlayer()){
+                if (head2[0] == position[0] && head2[1] == position[1]) {
+                    super.getGameData().setGameRunning(false);
+                    System.out.println("GAME OVER - CHOQUE 2 CON 1");
+                }
+            }
+        }
 
         // Snake two
-        for (int[] position : snake2.getPositions()) {
-            if (head2[0] == position[0] && head2[1] == position[1]) {
+        if (!this.isSinglePlayer()){
+            for (int[] position : snake2.getPositions()) {
+                if (head2[0] == position[0] && head2[1] == position[1]) {
+                    super.getGameData().setGameRunning(false);
+                    System.out.println("GAME OVER");
+                }
 
-                super.getGameData().setGameRunning(false);
-                System.out.println("GAME OVER");
+                if (head1[0] == position[0] && head1[1] == position[1]) {
+                    super.getGameData().setGameRunning(false);
+                    System.out.println("GAME OVER - CHOQUE 1 CON 2");
+                }
             }
         }
+
+
+        // Death on collision with other snake
+        // Que la cabeza del uno esté incluido en las posiciones del otro
+
+
     }
 
     /**
@@ -547,6 +547,11 @@ public class GameBoard extends DaddyPanel {
         return super.getGameData().getGameType();
     }
 
+    public boolean isSinglePlayer() {
+        return getGameType().equals(GameSetup.SINGLE_PLAYER);
+    }
+
+
 
     /**
      * Inner class for thread handling
@@ -561,9 +566,10 @@ public class GameBoard extends DaddyPanel {
                         snake1.move(snake1.getDirection());
                         snake1.updatePositions(rows, cols);
 
-
-                        snake2.move(snake2.getDirection());
-                        snake2.updatePositions(rows, cols);
+                        if (!isSinglePlayer()){
+                            snake2.move(snake2.getDirection());
+                            snake2.updatePositions(rows, cols);
+                        }
 
                         refresh();
 
@@ -591,6 +597,12 @@ public class GameBoard extends DaddyPanel {
 
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 addFruit();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                EndGame endGame = new EndGame(getFrame(), getGUIConfig(), getGameData());
+
+                changeCard(endGame, SnOOPe.END_GAME);
             }
 
             switch (e.getKeyCode()) {
