@@ -478,7 +478,10 @@ public class GameBoard extends DaddyPanel {
         // Death on collision with other snake
         // Que la cabeza del uno esté incluido en las posiciones del otro
 
-
+        // End game
+        if (!super.getGameData().isGameRunning()){
+            this.endGame();
+        }
     }
 
     /**
@@ -525,6 +528,15 @@ public class GameBoard extends DaddyPanel {
         this.mainMenu = new MainMenu(super.getFrame(), super.getGUIConfig(), super.getGameData());
 
         changeCard(this.mainMenu, SnOOPe.GAME_PAUSE_MENU);
+    }
+
+    /**
+     * Method for ending the game
+     */
+    private void endGame(){
+        EndGame endGame = new EndGame(getFrame(), getGUIConfig(), getGameData());
+
+        changeCard(endGame, SnOOPe.END_GAME);
     }
 
     public Player getPlayerOne() {
@@ -574,10 +586,6 @@ public class GameBoard extends DaddyPanel {
                         refresh();
 
                         last = java.lang.System.currentTimeMillis();
-                    } else {
-                        EndGame endGame = new EndGame(getFrame(), getGUIConfig(), getGameData());
-
-                        changeCard(endGame, SnOOPe.END_GAME);
                     }
                 }
             }
@@ -600,9 +608,7 @@ public class GameBoard extends DaddyPanel {
             }
 
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
-                EndGame endGame = new EndGame(getFrame(), getGUIConfig(), getGameData());
-
-                changeCard(endGame, SnOOPe.END_GAME);
+                endGame();
             }
 
             switch (e.getKeyCode()) {
