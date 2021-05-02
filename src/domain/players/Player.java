@@ -7,6 +7,7 @@ public abstract class Player {
     private Color headColor;
     private Color bodyColor;
     private int points = 0;
+    private int surprises = 0;
     private int number;
 
     public String getName() {
@@ -47,5 +48,13 @@ public abstract class Player {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public int getSurprises() {
+        return surprises;
+    }
+
+    public void setSurprises(int surprises) {
+        this.surprises = surprises;
     }
 }

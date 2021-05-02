@@ -11,6 +11,9 @@ public class GameData {
     private Player playerTwo;
     private Player playerMachine;
 
+    private int frequencyValue = 20;
+
+
 
     public String getGameType() {
         return gameType;
@@ -50,5 +53,13 @@ public class GameData {
 
     public void setPlayerMachine(Player playerMachine) {
         this.playerMachine = playerMachine;
+    }
+
+    public int getFrequencyValue() {
+        return frequencyValue;
+    }
+
+    public void setFrequencyValue(int frequencyValue) {
+        this.frequencyValue = frequencyValue;
     }
 }

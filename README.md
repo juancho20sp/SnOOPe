@@ -1,20 +1,11 @@
 # SnOOPe
 ## TODO list
-- Color everything (probably an interface)
 - Save the game (probably an interface)
 - Open a saved game
 - Create the view of the type of machine
 - Create the data for the machine
 - Play with the indexes for showing / hiding fruits
-- End game on collision with other 
-  snake, bad block
-  
-- Length snake % 5 = 0, velocity decrease
-  
-- Do not draw fruits where the snake
-  is placed
-  
-- Different colors for the snakes
+- End game on collision with bad block
 
 - Number of surprises used by the snake
 - Surprise ready for use

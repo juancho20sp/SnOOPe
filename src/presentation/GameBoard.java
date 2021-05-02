@@ -70,6 +70,8 @@ public class GameBoard extends DaddyPanel {
     public GameBoard(JFrame frame, GUIConfiguration guiConfig, GameData data) {
         super(frame, guiConfig, data);
 
+        super.getGameData().setGameRunning(true);
+
         // Start game
         super.getGameData().setGameRunning(true);
 
@@ -78,6 +80,9 @@ public class GameBoard extends DaddyPanel {
 
         // Layout
         this.prepareLayout();
+
+        // Set Players
+        this.setupPlayers();
 
         // Refresh
         this.refresh();
@@ -103,8 +108,10 @@ public class GameBoard extends DaddyPanel {
 
 
         if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
+            System.out.println(this.rows);
+
             this.setPlayerTwo(super.getGameData().getPlayerTwo());
-            this.snake2 = new SnakeP2(3, new int[]{2, 0},
+            this.snake2 = new SnakeP2(3, new int[]{2, rows - 1},
                     this.playerTwo.getHeadColor(),
                     this.playerTwo.getBodyColor()
                     , super.getGameData());
@@ -112,7 +119,7 @@ public class GameBoard extends DaddyPanel {
 
         if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
             this.setPlayerTwo(super.getGameData().getPlayerMachine());
-            this.snake2 = new SnakeP2(3, new int[]{cols - 2, rows},
+            this.snake2 = new SnakeP2(3, new int[]{cols - 2, 5},
                     this.getPlayerOne().getHeadColor(),
                     this.playerOne.getBodyColor()
                     , super.getGameData());
@@ -229,9 +236,6 @@ public class GameBoard extends DaddyPanel {
         // Rows and cols
         this.cols = this.boardPanel.getWidth() / CELL_SIZE;
         this.rows = this.boardPanel.getHeight() / CELL_SIZE;
-
-        // Layout
-        this.boardPanel.setLayout(new GridLayout(this.rows, this.cols));
     }
 
     /**
@@ -331,7 +335,7 @@ public class GameBoard extends DaddyPanel {
      * Method for redrawing the board
      */
     private void refresh() {
-        //remove(boardPanel);
+        // Remove elements
         removeAll();
         revalidate();
         repaint();
@@ -342,8 +346,10 @@ public class GameBoard extends DaddyPanel {
         // Check collisions
         this.checkCollision();
 
+        // Create panels
         this.createUpperPanel();
         this.createGameBoardPanel();
+
         revalidate();
         repaint();
     }
@@ -375,7 +381,15 @@ public class GameBoard extends DaddyPanel {
 
         int color = random.nextInt(2);
 
-        this.fruit1 = new Apple(x, y, colors[color]);
+        int[] fruit1Coordinate = new int[]{x,y};
+
+        if (this.snake1.getPositions().contains(fruit1Coordinate) || this.snake1.getHeadPosition().equals(fruit1Coordinate)){
+            this.addFruit();
+        } else {
+            this.fruit1 = new Apple(x, y, colors[color]);
+        }
+
+
     }
 
     /**
@@ -569,23 +583,39 @@ public class GameBoard extends DaddyPanel {
      * Inner class for thread handling
      */
     public class MainThread extends Thread {
-        long last = 0;
+        long lastGame = 0;
+        long lastSnake1 = 0;
+        long lastSnake2 = 0;
+
+        int gameFrequency = 10;
+
 
         public void run() {
             while (true) {
-                if ((java.lang.System.currentTimeMillis() - last) > snake1.getFrequency()) {
+                if ((java.lang.System.currentTimeMillis() - lastGame) > gameFrequency) {
                     if (getGameData().isGameRunning()) {
-                        snake1.move(snake1.getDirection());
-                        snake1.updatePositions(rows, cols);
 
+                        // Velocity for the snake 1
+                        if ((java.lang.System.currentTimeMillis() - lastSnake1) > snake1.getFrequency()){
+                            snake1.move(snake1.getDirection());
+                            snake1.updatePositions(rows, cols);
+
+                            lastSnake1 = java.lang.System.currentTimeMillis();
+                        }
+
+                        // Velocity for the snake 2
                         if (!isSinglePlayer()){
-                            snake2.move(snake2.getDirection());
-                            snake2.updatePositions(rows, cols);
+                            if ((java.lang.System.currentTimeMillis() - lastSnake2) > snake2.getFrequency()){
+                                snake2.move(snake2.getDirection());
+                                snake2.updatePositions(rows, cols);
+
+                                lastSnake2 = java.lang.System.currentTimeMillis();
+                            }
                         }
 
                         refresh();
 
-                        last = java.lang.System.currentTimeMillis();
+                        lastGame = java.lang.System.currentTimeMillis();
                     }
                 }
             }
@@ -603,15 +633,54 @@ public class GameBoard extends DaddyPanel {
                 //System.out.println("Game over");
             }
 
+            // Add fuit when spacebar is clicked
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 addFruit();
             }
 
+            // End game
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
                 endGame();
             }
 
+            // Increase snake 1 size
+            if (e.getKeyCode() == KeyEvent.VK_1){
+                snake1.increaseSize(1);
+            }
+
+            // Decrease snake 1 size
+            if (e.getKeyCode() == KeyEvent.VK_2){
+                snake1.decreaseSize(1);
+            }
+
+            // Increase snake 1 velocity
+            if (e.getKeyCode() == KeyEvent.VK_Z){
+                int initialFreq = snake1.getFrequency();
+                snake1.setFrequency(initialFreq - 20);
+            }
+
+            // Decrease snake 1 velocity
+            if (e.getKeyCode() == KeyEvent.VK_X){
+                int initialFreq = snake1.getFrequency();
+                snake1.setFrequency(initialFreq + 20);
+            }
+
+            if (!isSinglePlayer()){
+                // Increase snake 1 velocity
+                if (e.getKeyCode() == KeyEvent.VK_C){
+                    int initialFreq = snake2.getFrequency();
+                    snake2.setFrequency(initialFreq - 20);
+                }
+
+                // Decrease snake 1 velocity
+                if (e.getKeyCode() == KeyEvent.VK_V){
+                    int initialFreq = snake2.getFrequency();
+                    snake2.setFrequency(initialFreq + 20);
+                }
+            }
+
             switch (e.getKeyCode()) {
+                // Snake 1
                 case KeyEvent.VK_UP:
                     if (snake1.getDirection() != KeyEvent.VK_DOWN) {
                         snake1.setDirection(KeyEvent.VK_UP);
@@ -633,6 +702,8 @@ public class GameBoard extends DaddyPanel {
                     }
                     break;
 
+
+                // Snake 2
                 case KeyEvent.VK_W:
                     if (snake2.getDirection() != KeyEvent.VK_S) {
                         snake2.setDirection(KeyEvent.VK_W);
@@ -653,6 +724,8 @@ public class GameBoard extends DaddyPanel {
                         snake2.setDirection(KeyEvent.VK_D);
                     }
                     break;
+                default:
+                    System.out.println("Tecla no asignada");
             }
         }
     }

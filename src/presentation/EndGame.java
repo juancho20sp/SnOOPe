@@ -123,7 +123,6 @@ public class EndGame extends DaddyPanel{
      * Method for ending the game
      */
     private void endGame(){
-        System.out.println("clicked");
         SnOOPe.selectCard(SnOOPe.MAIN_MENU);
     }
 

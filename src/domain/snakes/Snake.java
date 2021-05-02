@@ -49,9 +49,48 @@ public abstract class Snake {
      * @param size The number of units to increase
      */
     public void increaseSize(int size){
+        // Increase size
         for (int i = 0; i < size; i++){
-            int[] lastPosition = this.positions.get(this.positions.size() - 1);
+            int[] lastPosition = new int[2];
+
+            if (this.positions.size() == 0){
+                lastPosition = this.getHeadPosition();
+                lastPosition = new int[]{lastPosition[0] - 1, lastPosition[1] - 1};
+            } else {
+                lastPosition = this.positions.get(this.positions.size() - 1);
+            }
             this.positions.add(lastPosition);
+        }
+
+        // Verify speed
+        if ( this.positions.size() % 5 == 0){
+            this.setFrequency(this.getFrequency() + this.gameData.getFrequencyValue());
+
+            System.out.println("New frec: " + this.getFrequency());
+        }
+    }
+
+    /**
+     * Method for decreasing the size of the snake
+     * @param size The number of units to decrease
+     */
+    public void decreaseSize(int size){
+        if (this.positions.size() == 0){
+            System.out.println("GAME OVER POR TAMAÑO");
+            this.gameData.setGameRunning(false);
+
+            return;
+        }
+
+        // Decrease size
+        for (int i = 0; i < size; i++){
+            this.positions.remove(0);
+        }
+
+        // Verify speed
+        if ( this.positions.size() % 5 == 0){
+            this.setFrequency(this.getFrequency() - this.gameData.getFrequencyValue());
+            System.out.println("New frec: " + this.getFrequency());
         }
     }
 

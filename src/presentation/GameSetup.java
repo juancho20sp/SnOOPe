@@ -243,8 +243,6 @@ public class GameSetup extends DaddyPanel{
             this.gameBoard = new GameBoard(super.getFrame(), super.getGUIConfig(), super.getGameData());
 
             changeCard(this.gameBoard, SnOOPe.GAME_BOARD);
-        } else {
-            JOptionPane.showMessageDialog(null, SnOOPeExceptions.ALL_FIELDS_ARE_MANDATORY);
         }
 
     }
@@ -278,6 +276,23 @@ public class GameSetup extends DaddyPanel{
                 valid = false;
             }
         }
+
+        // All fields are mandatory
+        if (!valid){
+            JOptionPane.showMessageDialog(null, SnOOPeExceptions.ALL_FIELDS_ARE_MANDATORY);
+        }
+
+        // Colors
+        if (!super.getGameData().getGameType().equals(SINGLE_PLAYER)){
+            if (player2.getHeadColor() == player1.getHeadColor() ||
+                    player2.getHeadColor() == player1.getBodyColor() ||
+                    player2.getBodyColor() == player1.getHeadColor() ||
+                    player2.getBodyColor() == player1.getBodyColor()){
+                JOptionPane.showMessageDialog(null, SnOOPeExceptions.SNAKES_MUST_BE_DIFFERENT);
+                valid = false;
+            }
+        }
+
 
         return valid;
     }
