@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.GUIConfiguration;
+import domain.Game;
 import domain.GameData;
 
 import javax.swing.*;
@@ -8,17 +9,15 @@ import java.awt.*;
 
 public class DaddyPanel extends JPanel{
     private JFrame frame;
-    private GameData data;
-    private GUIConfiguration guiConfig;
+    private Game game;
 
     /**
      * Constructor of the DaddyPanel class
      * @param frame
      */
-    public DaddyPanel(JFrame frame, GUIConfiguration guiConfig, GameData data){
+    public DaddyPanel(JFrame frame, Game game){
         this.frame = frame;
-        this.data = data;
-        this.guiConfig = guiConfig;
+        this.game = game;
 
         // Configure panel
         this.setupPanel();
@@ -72,14 +71,21 @@ public class DaddyPanel extends JPanel{
      * Method for getting the GUI configuration
      */
     public GUIConfiguration getGUIConfig(){
-        return this.guiConfig;
+        return this.game.getGuiConfiguration();
     }
 
     /**
      * Method for getting the game data
      */
     public GameData getGameData(){
-        return this.data;
+        return this.game.getGameData();
+    }
+
+    /**
+     * Method for getting the game
+     */
+    public Game getGame(){
+        return this.game;
     }
 
     /**

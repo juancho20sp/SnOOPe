@@ -1,6 +1,7 @@
 package domain;
 
 import domain.players.Player;
+import domain.players.PlayerMachine;
 
 import java.awt.*;
 
@@ -9,7 +10,7 @@ public class GameData {
     private String gameType;
     private Player playerOne;
     private Player playerTwo;
-    private Player playerMachine;
+    private PlayerMachine playerMachine;
 
     private int frequencyValue = 20;
 
@@ -47,11 +48,11 @@ public class GameData {
         this.playerTwo = playerTwo;
     }
 
-    public Player getPlayerMachine() {
+    public PlayerMachine getPlayerMachine() {
         return playerMachine;
     }
 
-    public void setPlayerMachine(Player playerMachine) {
+    public void setPlayerMachine(PlayerMachine playerMachine) {
         this.playerMachine = playerMachine;
     }
 

@@ -1,8 +1,9 @@
 package presentation;
 
-import domain.GUIConfiguration;
-import domain.GameData;
+import domain.Game;
 import domain.players.Player;
+import domain.players.PlayerMachine;
+import domain.players.SuperPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +19,8 @@ public class EndGame extends DaddyPanel{
     /**
      * Constructor for the GameSetup class
      */
-    public EndGame(JFrame frame, GUIConfiguration guiConfig, GameData data){
-        super(frame, guiConfig, data);
+    public EndGame(JFrame frame, Game game){
+        super(frame, game);
 
         super.setFocusable(false);
 
@@ -131,35 +132,35 @@ public class EndGame extends DaddyPanel{
      * Method for getting the players sorted by points
      * @return The list of players
      */
-    private Player[] getPositions(){
+    private SuperPlayer[] getPositions(){
         String gameType = super.getGameData().getGameType();
 
-        Player[] players = {this.getPlayerOne(), this.getPlayerTwo(), this.getMachine()};
+        SuperPlayer[] players = {this.getPlayerOne(), this.getPlayerTwo(), this.getMachine()};
 
         // Single player
         if (gameType.equals(GameSetup.SINGLE_PLAYER)){
-            return new Player[]{players[0], null};
+            return new SuperPlayer[]{players[0], null};
         }
 
         // Multiplayer
         if (gameType.equals(GameSetup.MULTIPLAYER)){
             if (players[0].getPoints() > players[1].getPoints()){
-                return new Player[]{players[0], players[1]};
+                return new SuperPlayer[]{players[0], players[1]};
             }
 
-            return new Player[]{players[1], players[0]};
+            return new SuperPlayer[]{players[1], players[0]};
         }
 
         // Machine
         if (gameType.equals(GameSetup.PLAYER_MACHINE)){
             if (players[0].getPoints() > players[2].getPoints()){
-                return new Player[]{players[0], players[2]};
+                return new SuperPlayer[]{players[0], players[2]};
             }
 
-            return new Player[]{players[2], players[0]};
+            return new SuperPlayer[]{players[2], players[0]};
         }
 
-        return new Player[]{null, null};
+        return new SuperPlayer[]{null, null};
     }
 
     private Player getPlayerOne(){
@@ -170,7 +171,7 @@ public class EndGame extends DaddyPanel{
         return super.getGameData().getPlayerTwo();
     }
 
-    private Player getMachine(){
+    private PlayerMachine getMachine(){
         return super.getGameData().getPlayerMachine();
     }
 }

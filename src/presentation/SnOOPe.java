@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.GUIConfiguration;
+import domain.Game;
 import domain.GameData;
 
 import javax.swing.*;
@@ -31,6 +32,9 @@ public class SnOOPe extends JFrame{
     private GameData data;
     private GUIConfiguration guiConfig;
 
+    // Game
+    private Game game;
+
 
 
     /**
@@ -54,11 +58,24 @@ public class SnOOPe extends JFrame{
         this.data = new GameData();
         this.guiConfig = new GUIConfiguration();
 
+        // Game
+        this.setupGame();
+
         // Create elements
         this.prepareElements();
 
         // Key listener
         this.setFocusable(true);
+    }
+
+    /**
+     * Method for setting up the game
+     */
+    private void setupGame(){
+        this.game = new Game();
+
+        this.game.setGameData(this.data);
+        this.game.setGuiConfiguration(this.guiConfig);
     }
 
     /**
@@ -228,7 +245,7 @@ public class SnOOPe extends JFrame{
      * Method for creating a new game
      */
     private void newGame() {
-        SelectMode selectMode = new SelectMode(this, this.guiConfig, this.data);
+        SelectMode selectMode = new SelectMode(this, this.game);
 
         cards.add(selectMode, SELECT_GAME_MODE);
         selectCard(SELECT_GAME_MODE);

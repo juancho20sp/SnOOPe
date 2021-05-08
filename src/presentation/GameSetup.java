@@ -1,7 +1,6 @@
 package presentation;
 
-import domain.GUIConfiguration;
-import domain.GameData;
+import domain.Game;
 import domain.exceptions.SnOOPeExceptions;
 import domain.players.Player;
 import domain.players.PlayerMachine;
@@ -30,7 +29,7 @@ public class GameSetup extends DaddyPanel{
     // Players
     Player playerOne;
     Player playerTwo;
-    Player playerMachine;
+    PlayerMachine playerMachine;
 
     // Color setup
     ColorSetup colorSetup;
@@ -42,8 +41,8 @@ public class GameSetup extends DaddyPanel{
     /**
      * Constructor for the GameSetup class
      */
-    public GameSetup(JFrame frame, GUIConfiguration guiConfig, GameData data){
-        super(frame, guiConfig, data);
+    public GameSetup(JFrame frame, Game game){
+        super(frame, game);
 
         // Players
         this.createPlayers(super.getGameData().getGameType());
@@ -56,11 +55,11 @@ public class GameSetup extends DaddyPanel{
      * @param gameMode A game mode (static variable of this class)
      */
     private void createPlayers(String gameMode){
-        this.playerOne = new PlayerOne();
+        this.playerOne = new Player();
         super.getGameData().setPlayerOne(this.playerOne);
 
         if (gameMode.equals(MULTIPLAYER)){
-            this.playerTwo = new PlayerTwo();
+            this.playerTwo = new Player();
             super.getGameData().setPlayerTwo(this.playerTwo);
         } else {
             this.playerMachine = new PlayerMachine();
@@ -229,7 +228,7 @@ public class GameSetup extends DaddyPanel{
      * @param player The player that will be modified
      */
     private void colorSetupClicked(Player player){
-        this.colorSetup = new ColorSetup(super.getFrame(), super.getGUIConfig(), super.getGameData(), player);
+        this.colorSetup = new ColorSetup(super.getFrame(), super.getGame(), player);
 
         changeCard(this.colorSetup, SnOOPe.SELECT_GAME_COLOR_SETUP);
 
@@ -240,7 +239,7 @@ public class GameSetup extends DaddyPanel{
      */
     private void startGame(){
         if (this.validateFields() || true){
-            this.gameBoard = new GameBoard(super.getFrame(), super.getGUIConfig(), super.getGameData());
+            this.gameBoard = new GameBoard(super.getFrame(), super.getGame());
 
             changeCard(this.gameBoard, SnOOPe.GAME_BOARD);
         }
@@ -256,7 +255,7 @@ public class GameSetup extends DaddyPanel{
 
         Player player1 = super.getGameData().getPlayerOne();
         Player player2 = super.getGameData().getPlayerTwo();
-        Player machine = super.getGameData().getPlayerMachine();
+        PlayerMachine machine = super.getGameData().getPlayerMachine();
 
         // First player
         if (player1.getName() == null || player1.getHeadColor() == null || player1.getBodyColor() == null){

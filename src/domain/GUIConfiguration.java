@@ -1,5 +1,15 @@
 package domain;
 
+import domain.edibles.Edible;
+import domain.players.Player;
+import domain.snakes.Snake;
+import domain.snakes.SnakeP1;
+import domain.snakes.SnakeP2;
+import presentation.GameBoard;
+import presentation.GameSetup;
+
+import java.util.Random;
+
 public class GUIConfiguration {
     private int cellSize = 25;
     private int frameWidth = 600;
@@ -28,4 +38,5 @@ public class GUIConfiguration {
     public void setFrameHeight(int frameHeight) {
         this.frameHeight = frameHeight;
     }
+
 }

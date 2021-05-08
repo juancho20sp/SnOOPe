@@ -1,7 +1,6 @@
 package presentation;
 
-import domain.GUIConfiguration;
-import domain.GameData;
+import domain.Game;
 import domain.edibles.Apple;
 import domain.edibles.Edible;
 import domain.players.Player;
@@ -67,13 +66,14 @@ public class GameBoard extends DaddyPanel {
     /**
      * Constructor for the GameBoard class
      */
-    public GameBoard(JFrame frame, GUIConfiguration guiConfig, GameData data) {
-        super(frame, guiConfig, data);
-
-        super.getGameData().setGameRunning(true);
+    public GameBoard(JFrame frame, Game game) {
+        super(frame, game);
 
         // Start game
         super.getGameData().setGameRunning(true);
+
+        // Set board
+        game.setBoard(this);
 
         // Set Players
         this.setupPlayers();
@@ -92,8 +92,9 @@ public class GameBoard extends DaddyPanel {
         super.getFrame().addKeyListener(new myKeys());
 
         // Thread
-        mainThread = new MainThread();
-        thread = new Thread(mainThread);
+        //mainThread = new MainThread();
+        //thread = new Thread(mainThread);
+        thread = new Thread(game);
         thread.start();
     }
 
@@ -117,13 +118,13 @@ public class GameBoard extends DaddyPanel {
                     , super.getGameData());
         }
 
-        if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
+        /*if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
             this.setPlayerTwo(super.getGameData().getPlayerMachine());
             this.snake2 = new SnakeP2(3, new int[]{cols - 2, 5},
                     this.getPlayerOne().getHeadColor(),
                     this.playerOne.getBodyColor()
                     , super.getGameData());
-        }
+        }*/
     }
 
     /**
@@ -334,7 +335,7 @@ public class GameBoard extends DaddyPanel {
     /**
      * Method for redrawing the board
      */
-    private void refresh() {
+    public void refresh() {
         // Remove elements
         removeAll();
         revalidate();
@@ -539,7 +540,7 @@ public class GameBoard extends DaddyPanel {
      * Method for going to the menu
      */
     private void mainMenuClicked() {
-        this.mainMenu = new MainMenu(super.getFrame(), super.getGUIConfig(), super.getGameData());
+        this.mainMenu = new MainMenu(super.getFrame(), getGame());
 
         changeCard(this.mainMenu, SnOOPe.GAME_PAUSE_MENU);
     }
@@ -548,7 +549,7 @@ public class GameBoard extends DaddyPanel {
      * Method for ending the game
      */
     private void endGame(){
-        EndGame endGame = new EndGame(getFrame(), getGUIConfig(), getGameData());
+        EndGame endGame = new EndGame(getFrame(), getGame());
 
         changeCard(endGame, SnOOPe.END_GAME);
     }
@@ -577,7 +578,13 @@ public class GameBoard extends DaddyPanel {
         return getGameType().equals(GameSetup.SINGLE_PLAYER);
     }
 
+    public int getCols() {
+        return cols;
+    }
 
+    public int getRows() {
+        return rows;
+    }
 
     /**
      * Inner class for thread handling

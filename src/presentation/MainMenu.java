@@ -1,7 +1,6 @@
 package presentation;
 
-import domain.GUIConfiguration;
-import domain.GameData;
+import domain.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +16,8 @@ public class MainMenu extends DaddyPanel{
     /**
      * Constructor for the MainMenu class
      */
-    public MainMenu(JFrame frame, GUIConfiguration guiConfig, GameData data){
-        super(frame, guiConfig, data);
+    public MainMenu(JFrame frame, Game game){
+        super(frame, game);
 
         // Configuration
         //this.guiConfig = guiConfig;

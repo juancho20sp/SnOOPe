@@ -1,7 +1,6 @@
 package presentation;
 
-import domain.GUIConfiguration;
-import domain.GameData;
+import domain.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,12 +20,8 @@ public class SelectMode extends DaddyPanel {
     /**
      * Constructor for the SelectMode class
      */
-    public SelectMode(JFrame frame, GUIConfiguration guiConfig, GameData data){
-        super(frame, guiConfig, data);
-
-        // Configuration
-        //this.guiConfig = guiConfig;
-        //this.data = data;
+    public SelectMode(JFrame frame, Game game){
+        super(frame, game);
 
         this.prepareLayout();
     }
@@ -135,7 +130,7 @@ public class SelectMode extends DaddyPanel {
         // Set game type
         super.getGameData().setGameType(GameSetup.SINGLE_PLAYER);
 
-        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData());
+        this.gameSetup = new GameSetup(super.getFrame(), super.getGame());
 
         changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }
@@ -147,7 +142,7 @@ public class SelectMode extends DaddyPanel {
         // Set game type
         super.getGameData().setGameType(GameSetup.MULTIPLAYER);
 
-        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData());
+        this.gameSetup = new GameSetup(super.getFrame(),super.getGame());
 
         changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }
@@ -159,7 +154,7 @@ public class SelectMode extends DaddyPanel {
         // Set game type
         super.getGameData().setGameType(GameSetup.PLAYER_MACHINE);
 
-        this.gameSetup = new GameSetup(super.getFrame(), super.getGUIConfig(), super.getGameData());
+        this.gameSetup = new GameSetup(super.getFrame(), super.getGame());
 
         changeCard(this.gameSetup, SnOOPe.SELECT_GAME_SETUP);
     }

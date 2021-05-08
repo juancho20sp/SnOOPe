@@ -1,8 +1,6 @@
 package presentation;
 
-import domain.GUIConfiguration;
-import domain.GameData;
-import domain.exceptions.SnOOPeExceptions;
+import domain.Game;
 import domain.players.Player;
 
 import javax.swing.*;
@@ -16,22 +14,14 @@ public class ColorSetup extends DaddyPanel{
     private JButton bodyButton;
     private JButton goBack;
 
-    // Config
-    private GUIConfiguration guiConfig;
-    private GameData data;
-
     // Player
     private Player player;
 
     /**
      * Constructor for the ColorSetup class
      */
-    public ColorSetup(JFrame frame, GUIConfiguration guiConfig, GameData data, Player player){
-        super(frame, guiConfig, data);
-
-        // Configuration
-        this.guiConfig = guiConfig;
-        this.data = data;
+    public ColorSetup(JFrame frame, Game game, Player player){
+        super(frame, game);
 
         // Player
         this.player = player;
@@ -152,6 +142,7 @@ public class ColorSetup extends DaddyPanel{
      */
     private Color chooseColor(String msg){
         JColorChooser chooser = new JColorChooser();
+
         return chooser.showDialog(null, msg, Color.black);
     }
 }
