@@ -3,9 +3,7 @@ package presentation;
 import domain.Game;
 import domain.exceptions.SnOOPeExceptions;
 import domain.players.Player;
-import domain.players.PlayerMachine;
-import domain.players.PlayerOne;
-import domain.players.PlayerTwo;
+import domain.players.Machine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +27,7 @@ public class GameSetup extends DaddyPanel{
     // Players
     Player playerOne;
     Player playerTwo;
-    PlayerMachine playerMachine;
+    Machine machine;
 
     // Color setup
     ColorSetup colorSetup;
@@ -62,8 +60,8 @@ public class GameSetup extends DaddyPanel{
             this.playerTwo = new Player();
             super.getGameData().setPlayerTwo(this.playerTwo);
         } else {
-            this.playerMachine = new PlayerMachine();
-            super.getGameData().setPlayerMachine(this.playerMachine);
+            this.machine = new Machine();
+            super.getGameData().setPlayerMachine(this.machine);
         }
     }
 
@@ -255,7 +253,7 @@ public class GameSetup extends DaddyPanel{
 
         Player player1 = super.getGameData().getPlayerOne();
         Player player2 = super.getGameData().getPlayerTwo();
-        PlayerMachine machine = super.getGameData().getPlayerMachine();
+        Machine machine = super.getGameData().getPlayerMachine();
 
         // First player
         if (player1.getName() == null || player1.getHeadColor() == null || player1.getBodyColor() == null){

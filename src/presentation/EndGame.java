@@ -2,7 +2,7 @@ package presentation;
 
 import domain.Game;
 import domain.players.Player;
-import domain.players.PlayerMachine;
+import domain.players.Machine;
 import domain.players.SuperPlayer;
 
 import javax.swing.*;
@@ -171,7 +171,7 @@ public class EndGame extends DaddyPanel{
         return super.getGameData().getPlayerTwo();
     }
 
-    private PlayerMachine getMachine(){
+    private Machine getMachine(){
         return super.getGameData().getPlayerMachine();
     }
 }

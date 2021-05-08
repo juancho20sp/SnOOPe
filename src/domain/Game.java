@@ -2,10 +2,8 @@ package domain;
 
 import domain.edibles.Edible;
 import domain.players.Player;
-import domain.players.PlayerMachine;
-import domain.snakes.Snake;
-import domain.snakes.SnakeP1;
-import domain.snakes.SnakeP2;
+import domain.players.Machine;
+import domain.snakes.SuperSnake;
 import presentation.GameBoard;
 import presentation.GameSetup;
 
@@ -30,11 +28,11 @@ public class Game extends Thread {
     // Players
     Player playerOne;
     Player playerTwo;
-    PlayerMachine playerMachine;
+    Machine machine;
 
     // Snakes
-    Snake snake1;
-    Snake snake2;
+    SuperSnake superSnake1;
+    SuperSnake superSnake2;
 
     // Fruits
     Edible fruit1;
@@ -46,14 +44,15 @@ public class Game extends Thread {
     /**
      * Method for setting up the players
      */
-    private void setupPlayers() {
-        /*this.setPlayerOne(super.getGameData().getPlayerOne());
-        this.snake1 = new SnakeP1(3, new int[]{2, 0}, this.playerOne.getHeadColor(),
+   public void setupPlayers() {
+       this.gameData.getPlayerOne().createSnake(new int[]{2,0}, new int[]{0,0}, this);
+
+        /*this.snake1 = new SnakeP1(3, new int[]{2, 0}, this.playerOne.getHeadColor(),
                 this.playerOne.getBodyColor()
-                , super.getGameData());
+                , super.getGameData());*/
 
 
-        if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
+        /*if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
             System.out.println(this.rows);
 
             this.setPlayerTwo(super.getGameData().getPlayerTwo());
@@ -82,18 +81,18 @@ public class Game extends Thread {
                 if (this.gameData.isGameRunning()) {
 
                     // Velocity for the snake 1
-                    if ((System.currentTimeMillis() - lastSnake1) > snake1.getFrequency()) {
-                        snake1.move(snake1.getDirection());
-                        snake1.updatePositions(this.getBoard().getRows(), this.getBoard().getCols());
+                    if ((System.currentTimeMillis() - lastSnake1) > getSnake1().getFrequency()) {
+                        getSnake1().move(getSnake1().getDirection());
+                        getSnake1().updatePositions(this.getBoard().getRows(), this.getBoard().getCols());
 
                         lastSnake1 = System.currentTimeMillis();
                     }
 
                     // Velocity for the snake 2
                     if (!isSinglePlayer()) {
-                        if ((System.currentTimeMillis() - lastSnake2) > snake2.getFrequency()) {
-                            snake2.move(snake2.getDirection());
-                            snake2.updatePositions(this.getBoard().getRows(), this.getBoard().getCols());
+                        if ((System.currentTimeMillis() - lastSnake2) > getSnake2().getFrequency()) {
+                            getSnake2().move(getSnake2().getDirection());
+                            getSnake2().updatePositions(this.getBoard().getRows(), this.getBoard().getCols());
 
                             lastSnake2 = System.currentTimeMillis();
                         }
@@ -147,5 +146,13 @@ public class Game extends Thread {
 
     public void setBoard(GameBoard board) {
         this.board = board;
+    }
+
+    public SuperSnake getSnake1(){
+        return this.gameData.getPlayerOne().getSnake();
+    }
+
+    public SuperSnake getSnake2(){
+        return this.gameData.getPlayerTwo().getSnake();
     }
 }

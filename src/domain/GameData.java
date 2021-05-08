@@ -1,16 +1,14 @@
 package domain;
 
 import domain.players.Player;
-import domain.players.PlayerMachine;
-
-import java.awt.*;
+import domain.players.Machine;
 
 public class GameData {
     private boolean isGameRunning = false;
     private String gameType;
     private Player playerOne;
     private Player playerTwo;
-    private PlayerMachine playerMachine;
+    private Machine machine;
 
     private int frequencyValue = 20;
 
@@ -48,12 +46,12 @@ public class GameData {
         this.playerTwo = playerTwo;
     }
 
-    public PlayerMachine getPlayerMachine() {
-        return playerMachine;
+    public Machine getPlayerMachine() {
+        return machine;
     }
 
-    public void setPlayerMachine(PlayerMachine playerMachine) {
-        this.playerMachine = playerMachine;
+    public void setPlayerMachine(Machine machine) {
+        this.machine = machine;
     }
 
     public int getFrequencyValue() {

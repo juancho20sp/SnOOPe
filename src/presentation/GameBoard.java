@@ -5,8 +5,7 @@ import domain.edibles.Apple;
 import domain.edibles.Edible;
 import domain.players.Player;
 import domain.snakes.Snake;
-import domain.snakes.SnakeP1;
-import domain.snakes.SnakeP2;
+import domain.snakes.SuperSnake;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,8 +46,8 @@ public class GameBoard extends DaddyPanel {
     private int rows;
 
     // Snakes
-    Snake snake1;
-    Snake snake2;
+    SuperSnake snake1;
+    SuperSnake snake2;
 
     // Fruits
     Edible fruit1;
@@ -76,16 +75,21 @@ public class GameBoard extends DaddyPanel {
         game.setBoard(this);
 
         // Set Players
-        this.setupPlayers();
+        game.setupPlayers();
 
         // Layout
         this.prepareLayout();
 
         // Set Players
-        this.setupPlayers();
+       // this.setupPlayers();
 
         // Refresh
         this.refresh();
+
+
+        this.snake1 = this.getSnake1();
+
+
 
         // Keys
         this.setFocusable(true);
@@ -102,21 +106,21 @@ public class GameBoard extends DaddyPanel {
      * Method for setting up the players
      */
     private void setupPlayers() {
-        this.setPlayerOne(super.getGameData().getPlayerOne());
-        this.snake1 = new SnakeP1(3, new int[]{2, 0}, this.playerOne.getHeadColor(),
+        /*this.setPlayerOne(super.getGameData().getPlayerOne());
+        this.superSnake1 = new Snake(3, new int[]{2, 0}, this.playerOne.getHeadColor(),
                 this.playerOne.getBodyColor()
-                , super.getGameData());
+                , super.getGame());
 
 
         if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
             System.out.println(this.rows);
 
             this.setPlayerTwo(super.getGameData().getPlayerTwo());
-            this.snake2 = new SnakeP2(3, new int[]{2, rows - 1},
+            this.superSnake2 = new Snake(3, new int[]{2, rows - 1},
                     this.playerTwo.getHeadColor(),
                     this.playerTwo.getBodyColor()
-                    , super.getGameData());
-        }
+                    , super.getGame());
+        }*/
 
         /*if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
             this.setPlayerTwo(super.getGameData().getPlayerMachine());
@@ -359,7 +363,8 @@ public class GameBoard extends DaddyPanel {
      * Method for adding fruits to the game board
      */
     private void addFruit() {
-        Color[] colors = new Color[]{snake1.getHeadColor(), snake1.getBodyColor()};
+        //Color[] colors = new Color[]{snake1.getHeadColor(), snake1.getBodyColor()};
+        Color[] colors = new Color[]{this.getPlayerOne().getHeadColor(), this.getPlayerOne().getBodyColor()};
 
         int x = random.nextInt(cols - 1);
         int y = random.nextInt(rows - 1);
@@ -384,7 +389,9 @@ public class GameBoard extends DaddyPanel {
 
         int[] fruit1Coordinate = new int[]{x,y};
 
-        if (this.snake1.getPositions().contains(fruit1Coordinate) || this.snake1.getHeadPosition().equals(fruit1Coordinate)){
+        //if (this.snake1.getPositions().contains(fruit1Coordinate) || this.snake1.getHeadPosition().equals
+        // (fruit1Coordinate)){
+        if (this.getSnake1().getPositions().contains(fruit1Coordinate) || this.getSnake1().getHeadPosition().equals(fruit1Coordinate)){
             this.addFruit();
         } else {
             this.fruit1 = new Apple(x, y, colors[color]);
@@ -398,8 +405,10 @@ public class GameBoard extends DaddyPanel {
      */
     private void checkApples() {
         // Snake 1
-        int snake1X = snake1.getHeadPosition()[0];
-        int snake1Y = snake1.getHeadPosition()[1];
+        //int snake1X = snake1.getHeadPosition()[0];
+        int snake1X = this.getSnake1().getHeadPosition()[0];
+        //int snake1Y = snake1.getHeadPosition()[1];
+        int snake1Y = this.getSnake1().getHeadPosition()[1];
 
         // Snake 2
         int snake2X = 0;
@@ -451,7 +460,7 @@ public class GameBoard extends DaddyPanel {
      * Method for verifying collision
      */
     private void checkCollision() {
-        int[] head1 = snake1.getHeadPosition();
+        int[] head1 = this.getSnake1().getHeadPosition();
         int[] head2 = new int[2];
 
         if (!this.isSinglePlayer()){
@@ -460,7 +469,7 @@ public class GameBoard extends DaddyPanel {
 
 
         // Snake one
-        for (int[] position : snake1.getPositions()) {
+        for (int[] position : this.getSnake1().getPositions()) {
             if (head1[0] == position[0] && head1[1] == position[1]) {
                 super.getGameData().setGameRunning(false);
                 System.out.println("GAME OVER");
@@ -476,7 +485,7 @@ public class GameBoard extends DaddyPanel {
 
         // Snake two
         if (!this.isSinglePlayer()){
-            for (int[] position : snake2.getPositions()) {
+            for (int[] position : this.getSnake2().getPositions()) {
                 if (head2[0] == position[0] && head2[1] == position[1]) {
                     super.getGameData().setGameRunning(false);
                     System.out.println("GAME OVER");
@@ -555,7 +564,7 @@ public class GameBoard extends DaddyPanel {
     }
 
     public Player getPlayerOne() {
-        return playerOne;
+        return super.getGame().getGameData().getPlayerOne();
     }
 
     public void setPlayerOne(Player playerOne) {
@@ -563,7 +572,7 @@ public class GameBoard extends DaddyPanel {
     }
 
     public Player getPlayerTwo() {
-        return playerTwo;
+        return super.getGame().getGameData().getPlayerTwo();
     }
 
     public void setPlayerTwo(Player playerTwo) {
@@ -584,6 +593,14 @@ public class GameBoard extends DaddyPanel {
 
     public int getRows() {
         return rows;
+    }
+
+    public SuperSnake getSnake1() {
+        return super.getGame().getGameData().getPlayerOne().getSnake();
+    }
+
+    public SuperSnake getSnake2() {
+        return super.getGame().getGameData().getPlayerTwo().getSnake();
     }
 
     /**

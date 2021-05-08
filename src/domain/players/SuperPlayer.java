@@ -1,5 +1,7 @@
 package domain.players;
 
+import domain.Game;
+import domain.snakes.SuperSnake;
 import domain.snakes.Snake;
 
 import java.awt.*;
@@ -11,11 +13,18 @@ public abstract class SuperPlayer {
     // Snake
     private Color headColor;
     private Color bodyColor;
-    private Snake snake;
+    private SuperSnake superSnake;
 
     private int points = 0;
     private int surprises = 0;
     private int number;
+
+    /**
+     * Method for creating a new snake
+     */
+    public void createSnake(int[] headPos, int[] tailPos, Game game){
+        this.setSnake(new Snake(3, headPos, tailPos, this.headColor, this.bodyColor, game));
+    }
 
     public String getName() {
         return name;
@@ -65,11 +74,11 @@ public abstract class SuperPlayer {
         this.surprises = surprises;
     }
 
-    public Snake getSnake() {
-        return snake;
+    public SuperSnake getSnake() {
+        return superSnake;
     }
 
-    public void setSnake(Snake snake) {
-        this.snake = snake;
+    public void setSnake(SuperSnake superSnake) {
+        this.superSnake = superSnake;
     }
 }

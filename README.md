@@ -7,13 +7,13 @@
 - Play with the indexes for showing / hiding fruits
 - End game on collision with bad block
 
-- Number of surprises used by the snake
+- Number of surprises used by the superSnake
 - Surprise ready for use
 
 - If the snakes have one of the colors of the fruit, length + 2
 
 - Rainbow fruit: length + 3
-- Candy: Decrease my size by one unit, if it has a color of the other snake, it will decrease 2 units
+- Candy: Decrease my size by one unit, if it has a color of the other superSnake, it will decrease 2 units
 
 - Speed arrows
 - Division

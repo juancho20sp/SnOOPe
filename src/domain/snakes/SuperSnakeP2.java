@@ -1,11 +1,11 @@
 package domain.snakes;
 
-import domain.GameData;
+import domain.Game;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class SnakeP1 extends Snake{
+public class SuperSnakeP2 extends SuperSnake {
     /**
      * Constructor for the SnakeP1 class
      * @param size The size of the snake
@@ -14,16 +14,16 @@ public class SnakeP1 extends Snake{
      * @param bodyColor The body color of the snake
      * @param gameData An instance of the game data class
      */
-    public SnakeP1(int size, int[] headPosition, Color headColor, Color bodyColor, GameData gameData) {
-        super(size, headPosition, headColor, bodyColor, gameData);
+    public SuperSnakeP2(int size, int[] headPosition, Color headColor, Color bodyColor, Game game) {
+        super(size, headPosition, headColor, bodyColor, game);
 
-        // Snake positions
+        // Insertamos la serpiente
         super.setHeadPosition(headPosition);
-        super.addPosition(new int[]{headPosition[0] - 1, headPosition[1]});
-        super.addPosition(new int[]{headPosition[0] - 2, headPosition[1]});
+        super.addPosition(new int[]{headPosition[0] + 1, headPosition[1]});
+        super.addPosition(new int[]{headPosition[0] + 2, headPosition[1]});
 
-        // Snake direction
-        super.setDirection(KeyEvent.VK_RIGHT);
+        // Definimos la dirección
+        super.setDirection(KeyEvent.VK_A);
     }
 
     /**
@@ -33,28 +33,28 @@ public class SnakeP1 extends Snake{
     @Override
     public void move(int key){
         switch (key){
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
                 // System.out.println("UP");
-                if (super.getDirection() != KeyEvent.VK_DOWN){
-                    this.setDirection(KeyEvent.VK_UP);
+                if (super.getDirection() != KeyEvent.VK_S){
+                    super.setDirection(KeyEvent.VK_W);
                 }
                 break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
                 // System.out.println("DOWN");
-                if (super.getDirection() != KeyEvent.VK_UP){
-                    this.setDirection(KeyEvent.VK_DOWN);
+                if (super.getDirection() != KeyEvent.VK_W){
+                    super.setDirection(KeyEvent.VK_S);
                 }
                 break;
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
                 //System.out.println("LEFT");
-                if (super.getDirection() != KeyEvent.VK_RIGHT){
-                    this.setDirection(KeyEvent.VK_LEFT);
+                if (super.getDirection() != KeyEvent.VK_D){
+                    super.setDirection(KeyEvent.VK_A);
                 }
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
                 //System.out.println("RIGHT");
-                if (super.getDirection() != KeyEvent.VK_LEFT){
-                    this.setDirection(KeyEvent.VK_RIGHT);
+                if (super.getDirection() != KeyEvent.VK_A){
+                    super.setDirection(KeyEvent.VK_D);
                 }
                 break;
         }
@@ -68,65 +68,65 @@ public class SnakeP1 extends Snake{
      */
     @Override
     public void updatePositions(int rows, int cols){
-        int x = this.getHeadPosition()[0];
-        int y = this.getHeadPosition()[1];
+        int x = super.getHeadPosition()[0];
+        int y = super.getHeadPosition()[1];
 
         switch (this.getDirection()){
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
                 y = y-1;
-                this.setHeadPosition(new int[]{x, y});
+                super.setHeadPosition(new int[]{x, y});
 
                 if (y >= rows - 1){
-                    this.setHeadPosition(new int[]{x, 0});
+                    super.setHeadPosition(new int[]{x, 0});
                     //gameData.setGameRunning(false);
                 }
 
                 if (y <= 0){
-                    this.setHeadPosition(new int[]{x, rows - 1});
+                    super.setHeadPosition(new int[]{x, rows - 1});
                     //gameData.setGameRunning(false);
                 }
                 break;
 
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
                 y = y + 1;
-                this.setHeadPosition(new int[]{x, y});
+                super.setHeadPosition(new int[]{x, y});
 
                 if (y >= rows - 1){
-                    this.setHeadPosition(new int[]{x, 0});
+                    super.setHeadPosition(new int[]{x, 0});
                     //gameData.setGameRunning(false);
                 }
 
                 if (y <= 0){
-                    this.setHeadPosition(new int[]{x, rows - 1});
+                    super.setHeadPosition(new int[]{x, rows - 1});
                     //gameData.setGameRunning(false);
                 }
                 break;
 
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
                 x = x - 1;
-                this.setHeadPosition(new int[]{x, y});
+                super.setHeadPosition(new int[]{x, y});
 
                 if (x >= cols - 1){
-                    this.setHeadPosition(new int[]{0, y});
+                    super.setHeadPosition(new int[]{0, y});
                     //gameData.setGameRunning(false);
                 }
 
                 if (x <= 0){
-                    this.setHeadPosition(new int[]{cols - 1, y});
+                    super.setHeadPosition(new int[]{cols - 1, y});
                     //gameData.setGameRunning(false);
                 }
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
                 x = x + 1;
-                this.setHeadPosition(new int[]{x, y});
+                super.setHeadPosition(new int[]{x, y});
 
                 if (x >= cols - 1){
-                    this.setHeadPosition(new int[]{0, y});
+                    super.setHeadPosition(new int[]{0, y});
                     //gameData.setGameRunning(false);
                 }
 
                 if (x <= 0){
-                    this.setHeadPosition(new int[]{cols - 1, y});
+                    super.setHeadPosition(new int[]{cols - 1, y});
                     //gameData.setGameRunning(false);
                 }
                 break;
