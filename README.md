@@ -7,6 +7,8 @@
 - Play with the indexes for showing / hiding fruits
 - End game on collision with bad block
 
+- Solve bug when apple is eaten
+
 - Number of surprises used by the superSnake
 - Surprise ready for use
 
