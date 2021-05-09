@@ -378,8 +378,6 @@ public class GameBoard extends DaddyPanel {
 
         int[] fruit1Coordinate = new int[]{x,y};
 
-        //if (this.snake1.getPositions().contains(fruit1Coordinate) || this.snake1.getHeadPosition().equals
-        // (fruit1Coordinate)){
         if (this.getSnake1().getPositions().contains(fruit1Coordinate) || this.getSnake1().getHeadPosition().equals(fruit1Coordinate)){
             this.addFruit();
         } else {
@@ -413,30 +411,14 @@ public class GameBoard extends DaddyPanel {
 
         // Fruta 1 - Snake 1
         if ((snake1X == appleX) && (snake1Y == appleY)) {
-            if (fruit1 instanceof Apple) {
-                // Add points
-                int newPoints = getPlayerOne().getPoints() + 1;
-                getPlayerOne().setPoints(newPoints);
-
-                // Increase size
-                this.getSnake1().increaseSize(fruit1.getPoints());
-            }
-
+            fruit1.eatEdible(fruit1, getPlayerOne());
             this.addFruit();
         }
 
         // Fruta 1 - Snake 2
         if (!this.isSinglePlayer()){
             if ((snake2X == appleX) && (snake2Y == appleY)) {
-                if (fruit1 instanceof Apple) {
-                    // Add points
-                    int newPoints = this.getPlayerTwo().getPoints() + 1;
-                    this.getPlayerTwo().setPoints(newPoints);
-
-                    // Increase size
-                    this.getSnake2().increaseSize(fruit1.getPoints());
-                }
-
+                fruit1.eatEdible(fruit1, getPlayerTwo());
                 this.addFruit();
             }
         }

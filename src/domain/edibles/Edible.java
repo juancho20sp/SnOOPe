@@ -1,5 +1,8 @@
 package domain.edibles;
 
+import domain.players.SuperPlayer;
+import domain.snakes.SuperSnake;
+
 import java.awt.*;
 
 public class Edible {
@@ -13,6 +16,18 @@ public class Edible {
         this.y = y;
         this.color = color;
         this.points = points;
+    }
+
+    /**
+     * Method for eating an apple
+     */
+    public void eatEdible(Edible edible, SuperPlayer player){
+        // Add points
+        int newPoints = player.getPoints() + edible.getPoints();
+        player.setPoints(newPoints);
+
+        // Increase size
+        player.getSnake().increaseSize(edible.getPoints());
     }
 
     public int getX() {
