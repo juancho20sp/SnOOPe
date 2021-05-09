@@ -31,15 +31,25 @@ public class Game extends Thread {
     Machine machine;
 
     // Snakes
-    SuperSnake superSnake1;
-    SuperSnake superSnake2;
+    SuperSnake snake1;
+    SuperSnake snake2;
 
     // Fruits
     Edible fruit1;
 
+    // Thread
+    Thread thread;
+
     // Random
     Random random = new Random();
 
+    /**
+     * Method for starting the game
+     */
+    public void startGame(){
+        thread = new Thread(this);
+        thread.start();
+    }
 
     /**
      * Method for setting up the players

@@ -89,17 +89,12 @@ public class GameBoard extends DaddyPanel {
 
         this.snake1 = this.getSnake1();
 
-
-
         // Keys
         this.setFocusable(true);
         super.getFrame().addKeyListener(new myKeys());
 
         // Thread
-        //mainThread = new MainThread();
-        //thread = new Thread(mainThread);
-        thread = new Thread(game);
-        thread.start();
+        game.startGame();
     }
 
     /**
@@ -274,14 +269,14 @@ public class GameBoard extends DaddyPanel {
 
         // Snake 1
         // Body
-        g.setColor(snake1.getBodyColor());
+        g.setColor(this.getSnake1().getBodyColor());
         for (int[] pos : snake1.getPositions()) {
             g.fillRect(fixXPosition(pos[0]), fixYPosition(pos[1]), CELL_SIZE, CELL_SIZE);
         }
 
         // Head
-        g.setColor(snake1.getHeadColor());
-        g.fillRect(fixXPosition(snake1.getHeadPosition()[0]), fixYPosition(snake1.getHeadPosition()[1]), CELL_SIZE, CELL_SIZE);
+        g.setColor(this.getSnake1().getHeadColor());
+        g.fillRect(fixXPosition(this.getSnake1().getHeadPosition()[0]), fixYPosition(this.getSnake1().getHeadPosition()[1]), CELL_SIZE, CELL_SIZE);
 
         // Snake 2
         if (!this.isSinglePlayer()){
@@ -428,11 +423,11 @@ public class GameBoard extends DaddyPanel {
         if ((snake1X == appleX) && (snake1Y == appleY)) {
             if (fruit1 instanceof Apple) {
                 // Add points
-                int newPoints = this.playerOne.getPoints() + 1;
-                this.playerOne.setPoints(newPoints);
+                int newPoints = getPlayerOne().getPoints() + 1;
+                getPlayerOne().setPoints(newPoints);
 
                 // Increase size
-                this.snake1.increaseSize(fruit1.getPoints());
+                this.getSnake1().increaseSize(fruit1.getPoints());
             }
 
             this.addFruit();
