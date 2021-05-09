@@ -25,6 +25,10 @@ public class Game extends Thread {
     // Game Board
     GameBoard board;
 
+    // Dimensions
+    private int rows = 18;
+    private int cols = 37;
+
     // Players
     Player playerOne;
     Player playerTwo;
@@ -62,24 +66,25 @@ public class Game extends Thread {
                 , super.getGameData());*/
 
 
-        /*if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
+        if (getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
             System.out.println(this.rows);
 
-            this.setPlayerTwo(super.getGameData().getPlayerTwo());
-            this.snake2 = new SnakeP2(3, new int[]{2, rows - 1},
-                    this.playerTwo.getHeadColor(),
-                    this.playerTwo.getBodyColor()
-                    , super.getGameData());
+            //this.setPlayerTwo(getGameData().getPlayerTwo());
+            this.gameData.getPlayerTwo().createSnake(new int[]{getCols() - 1, getRows() - 1}, new int[]{getCols()-1,
+                            getRows()-1}
+            , this);
+
         }
 
-        if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
+        /*if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
             this.setPlayerTwo(super.getGameData().getPlayerMachine());
             this.snake2 = new SnakeP2(3, new int[]{cols - 2, 5},
                     this.getPlayerOne().getHeadColor(),
                     this.playerOne.getBodyColor()
                     , super.getGameData());
         }*/
-    }
+
+   }
 
 
     /**
@@ -164,5 +169,21 @@ public class Game extends Thread {
 
     public SuperSnake getSnake2(){
         return this.gameData.getPlayerTwo().getSnake();
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public void setCols(int cols) {
+        this.cols = cols;
     }
 }

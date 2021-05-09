@@ -1,9 +1,10 @@
 package domain.snakes;
 
 import domain.Game;
-
+import domain.directions;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+
 
 public class SuperSnakeP2 extends SuperSnake {
     /**
@@ -12,7 +13,6 @@ public class SuperSnakeP2 extends SuperSnake {
      * @param headPosition The position of the head of the snake
      * @param headColor The head color of the snake
      * @param bodyColor The body color of the snake
-     * @param gameData An instance of the game data class
      */
     public SuperSnakeP2(int size, int[] headPosition, Color headColor, Color bodyColor, Game game) {
         super(size, headPosition, headColor, bodyColor, game);
@@ -23,14 +23,14 @@ public class SuperSnakeP2 extends SuperSnake {
         super.addPosition(new int[]{headPosition[0] + 2, headPosition[1]});
 
         // Definimos la dirección
-        super.setDirection(KeyEvent.VK_A);
+        super.setDirection(directions.LEFT);
     }
 
     /**
      * Method for moving the snake
      * @param key The keycode of the key pressed
      */
-    @Override
+    /*@Override
     public void move(int key){
         switch (key){
             case KeyEvent.VK_W:
@@ -58,7 +58,7 @@ public class SuperSnakeP2 extends SuperSnake {
                 }
                 break;
         }
-    }
+    }*/
 
     /**
      * Method for changing positions
@@ -66,7 +66,7 @@ public class SuperSnakeP2 extends SuperSnake {
      * @param rows The number of rows of the board
      * @return
      */
-    @Override
+    /*@Override
     public void updatePositions(int rows, int cols){
         int x = super.getHeadPosition()[0];
         int y = super.getHeadPosition()[1];
@@ -132,5 +132,5 @@ public class SuperSnakeP2 extends SuperSnake {
                 break;
 
         }
-    }
+    }*/
 }

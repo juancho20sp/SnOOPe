@@ -2,6 +2,7 @@ package domain.snakes;
 
 import domain.Game;
 import domain.GameData;
+import domain.directions;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,7 +14,7 @@ public abstract class SuperSnake {
     private ArrayList<int[]> positions;
     private Color headColor;
     private Color bodyColor;
-    private int direction = KeyEvent.VK_RIGHT;
+    private directions direction = directions.RIGHT;
     private int frequency = 80;
 
     // Game
@@ -34,7 +35,34 @@ public abstract class SuperSnake {
      * Method for moving the snake
      * @param key The keycode of the key pressed
      */
-    public abstract void move(int key);
+    public void move(directions key){
+        switch (key){
+            case UP:
+                this.setDirection(directions.UP);
+                // System.out.println("UP");
+                /*if (super.getDirection() != KeyEvent.VK_DOWN){
+                }*/
+                break;
+            case DOWN:
+                this.setDirection(directions.DOWN);
+                // System.out.println("DOWN");
+                /*if (super.getDirection() != KeyEvent.VK_UP){
+                }*/
+                break;
+            case LEFT:
+                this.setDirection(directions.LEFT);
+                //System.out.println("LEFT");
+                /*if (super.getDirection() != KeyEvent.VK_RIGHT){
+                }*/
+                break;
+            case RIGHT:
+                this.setDirection(directions.RIGHT);
+                //System.out.println("RIGHT");
+                /*if (super.getDirection() != KeyEvent.VK_LEFT){
+                }*/
+                break;
+        }
+    }
 
     /**
      * Method for changing positions
@@ -42,7 +70,72 @@ public abstract class SuperSnake {
      * @param rows The number of rows of the board
      * @return
      */
-    public abstract void updatePositions(int rows, int cols);
+    public void updatePositions(int rows, int cols){
+        int x = this.getHeadPosition()[0];
+        int y = this.getHeadPosition()[1];
+
+        switch (this.getDirection()){
+            case UP:
+                y = y-1;
+                this.setHeadPosition(new int[]{x, y});
+
+                if (y >= rows - 1){
+                    this.setHeadPosition(new int[]{x, 0});
+                    //gameData.setGameRunning(false);
+                }
+
+                if (y <= 0){
+                    this.setHeadPosition(new int[]{x, rows - 1});
+                    //gameData.setGameRunning(false);
+                }
+                break;
+
+            case DOWN:
+                y = y + 1;
+                this.setHeadPosition(new int[]{x, y});
+
+                if (y >= rows - 1){
+                    this.setHeadPosition(new int[]{x, 0});
+                    //gameData.setGameRunning(false);
+                }
+
+                if (y <= 0){
+                    this.setHeadPosition(new int[]{x, rows - 1});
+                    //gameData.setGameRunning(false);
+                }
+                break;
+
+            case LEFT:
+                x = x - 1;
+                this.setHeadPosition(new int[]{x, y});
+
+                if (x >= cols - 1){
+                    this.setHeadPosition(new int[]{0, y});
+                    //gameData.setGameRunning(false);
+                }
+
+                if (x <= 0){
+                    this.setHeadPosition(new int[]{cols - 1, y});
+                    //gameData.setGameRunning(false);
+                }
+                break;
+            case RIGHT:
+                x = x + 1;
+                this.setHeadPosition(new int[]{x, y});
+
+                if (x >= cols - 1){
+                    this.setHeadPosition(new int[]{0, y});
+                    //gameData.setGameRunning(false);
+                }
+
+                if (x <= 0){
+                    this.setHeadPosition(new int[]{cols - 1, y});
+                    //gameData.setGameRunning(false);
+                }
+                break;
+
+        }
+    }
 
 
     /**
@@ -153,11 +246,11 @@ public abstract class SuperSnake {
         this.frequency = frequency;
     }
 
-    public int getDirection() {
+    public directions getDirection() {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(directions direction) {
         this.direction = direction;
     }
 

@@ -12,8 +12,6 @@ public class GameData {
 
     private int frequencyValue = 20;
 
-
-
     public String getGameType() {
         return gameType;
     }

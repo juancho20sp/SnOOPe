@@ -6,6 +6,7 @@ import domain.edibles.Edible;
 import domain.players.Player;
 import domain.snakes.Snake;
 import domain.snakes.SuperSnake;
+import domain.directions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,10 +56,6 @@ public class GameBoard extends DaddyPanel {
     // Game over
     private boolean gameOver = super.getGameData().isGameRunning();
 
-    // Thread
-    MainThread mainThread;
-    Thread thread;
-
     // Random
     Random random = new Random();
 
@@ -80,14 +77,8 @@ public class GameBoard extends DaddyPanel {
         // Layout
         this.prepareLayout();
 
-        // Set Players
-       // this.setupPlayers();
-
         // Refresh
         this.refresh();
-
-
-        this.snake1 = this.getSnake1();
 
         // Keys
         this.setFocusable(true);
@@ -236,6 +227,9 @@ public class GameBoard extends DaddyPanel {
         // Rows and cols
         this.cols = this.boardPanel.getWidth() / CELL_SIZE;
         this.rows = this.boardPanel.getHeight() / CELL_SIZE;
+
+        super.getGame().setCols(this.cols);
+        super.getGame().setRows(this.rows);
     }
 
     /**
@@ -270,7 +264,7 @@ public class GameBoard extends DaddyPanel {
         // Snake 1
         // Body
         g.setColor(this.getSnake1().getBodyColor());
-        for (int[] pos : snake1.getPositions()) {
+        for (int[] pos : this.getSnake1().getPositions()) {
             g.fillRect(fixXPosition(pos[0]), fixYPosition(pos[1]), CELL_SIZE, CELL_SIZE);
         }
 
@@ -281,14 +275,14 @@ public class GameBoard extends DaddyPanel {
         // Snake 2
         if (!this.isSinglePlayer()){
             // Body
-            g.setColor(snake2.getBodyColor());
-            for (int[] pos : snake2.getPositions()) {
+            g.setColor(this.getSnake2().getBodyColor());
+            for (int[] pos : this.getSnake2().getPositions()) {
                 g.fillRect(fixXPosition(pos[0]), fixYPosition(pos[1]), CELL_SIZE, CELL_SIZE);
             }
 
             // Head
-            g.setColor(snake2.getHeadColor());
-            g.fillRect(fixXPosition(snake2.getHeadPosition()[0]), fixYPosition(snake2.getHeadPosition()[1]), CELL_SIZE,
+            g.setColor(this.getSnake2().getHeadColor());
+            g.fillRect(fixXPosition(this.getSnake2().getHeadPosition()[0]), fixYPosition(this.getSnake2().getHeadPosition()[1]), CELL_SIZE,
                     CELL_SIZE);
         }
 
@@ -400,9 +394,7 @@ public class GameBoard extends DaddyPanel {
      */
     private void checkApples() {
         // Snake 1
-        //int snake1X = snake1.getHeadPosition()[0];
         int snake1X = this.getSnake1().getHeadPosition()[0];
-        //int snake1Y = snake1.getHeadPosition()[1];
         int snake1Y = this.getSnake1().getHeadPosition()[1];
 
         // Snake 2
@@ -410,8 +402,8 @@ public class GameBoard extends DaddyPanel {
         int snake2Y = 0;
 
         if (!this.isSinglePlayer()) {
-            snake2X = snake2.getHeadPosition()[0];
-            snake2Y = snake2.getHeadPosition()[1];
+            snake2X = this.getSnake2().getHeadPosition()[0];
+            snake2Y = this.getSnake2().getHeadPosition()[1];
         }
 
 
@@ -438,11 +430,11 @@ public class GameBoard extends DaddyPanel {
             if ((snake2X == appleX) && (snake2Y == appleY)) {
                 if (fruit1 instanceof Apple) {
                     // Add points
-                    int newPoints = this.playerTwo.getPoints() + 1;
-                    this.playerTwo.setPoints(newPoints);
+                    int newPoints = this.getPlayerTwo().getPoints() + 1;
+                    this.getPlayerTwo().setPoints(newPoints);
 
                     // Increase size
-                    this.snake2.increaseSize(fruit1.getPoints());
+                    this.getSnake2().increaseSize(fruit1.getPoints());
                 }
 
                 this.addFruit();
@@ -459,7 +451,7 @@ public class GameBoard extends DaddyPanel {
         int[] head2 = new int[2];
 
         if (!this.isSinglePlayer()){
-            head2 = snake2.getHeadPosition();
+            head2 = this.getSnake2().getHeadPosition();
         }
 
 
@@ -502,43 +494,6 @@ public class GameBoard extends DaddyPanel {
             this.endGame();
         }
     }
-
-    /**
-     * Paint component method
-     *
-     * @param g An instance of the 'Graphics' class
-     */
-    /*public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-        //draw(g);
-    }*/
-    private void draw(Graphics g) {
-        int cellSize = super.getGUIConfig().getCellSize();
-        int frameWidth = super.getFrame().getWidth();
-        int frameHeight = super.getGUIConfig().getFrameHeight() - 30;
-        int upperPanelHeight = this.upperPanel.getHeight();
-        System.out.println("Upper panel: " + this.upperPanel.getHeight());
-
-
-        System.out.println(this.WIDTH / cellSize);
-        System.out.println(this.HEIGHT / cellSize);
-
-        System.out.println(super.getFrame().getWidth());
-        System.out.println(super.getFrame().getHeight());
-
-        // Grid lines
-        for (int i = 0; i < frameWidth / cellSize; i++) {
-            // Vertical lines
-            g.drawLine(i * cellSize, upperPanelHeight, i * cellSize, frameHeight);
-        }
-
-        for (int i = 0; i < (this.HEIGHT + 80) / cellSize; i++) {
-            // Horizontal lines
-            //g.drawLine(0, i*cellSize + upperPanelHeight, this.WIDTH, i*cellSize + upperPanelHeight);
-        }
-    }
-
 
     /**
      * Method for going to the menu
@@ -601,7 +556,7 @@ public class GameBoard extends DaddyPanel {
     /**
      * Inner class for thread handling
      */
-    public class MainThread extends Thread {
+    /*public class MainThread extends Thread {
         long lastGame = 0;
         long lastSnake1 = 0;
         long lastSnake2 = 0;
@@ -615,18 +570,18 @@ public class GameBoard extends DaddyPanel {
                     if (getGameData().isGameRunning()) {
 
                         // Velocity for the snake 1
-                        if ((java.lang.System.currentTimeMillis() - lastSnake1) > snake1.getFrequency()){
-                            snake1.move(snake1.getDirection());
-                            snake1.updatePositions(rows, cols);
+                        if ((java.lang.System.currentTimeMillis() - lastSnake1) > getSnake1().getFrequency()){
+                            getSnake1().move(getSnake1().getDirection());
+                            getSnake1().updatePositions(rows, cols);
 
                             lastSnake1 = java.lang.System.currentTimeMillis();
                         }
 
                         // Velocity for the snake 2
                         if (!isSinglePlayer()){
-                            if ((java.lang.System.currentTimeMillis() - lastSnake2) > snake2.getFrequency()){
-                                snake2.move(snake2.getDirection());
-                                snake2.updatePositions(rows, cols);
+                            if ((java.lang.System.currentTimeMillis() - lastSnake2) > getSnake2().getFrequency()){
+                                getSnake2().move(getSnake2().getDirection());
+                                getSnake2().updatePositions(rows, cols);
 
                                 lastSnake2 = java.lang.System.currentTimeMillis();
                             }
@@ -640,7 +595,7 @@ public class GameBoard extends DaddyPanel {
             }
         }
     }
-
+    */
     /**
      * Inner class for handling key events
      */
@@ -664,83 +619,83 @@ public class GameBoard extends DaddyPanel {
 
             // Increase snake 1 size
             if (e.getKeyCode() == KeyEvent.VK_1){
-                snake1.increaseSize(1);
+                getSnake1().increaseSize(1);
             }
 
             // Decrease snake 1 size
             if (e.getKeyCode() == KeyEvent.VK_2){
-                snake1.decreaseSize(1);
+                getSnake1().decreaseSize(1);
             }
 
             // Increase snake 1 velocity
             if (e.getKeyCode() == KeyEvent.VK_Z){
-                int initialFreq = snake1.getFrequency();
-                snake1.setFrequency(initialFreq - 20);
+                int initialFreq = getSnake1().getFrequency();
+                getSnake1().setFrequency(initialFreq - 20);
             }
 
             // Decrease snake 1 velocity
             if (e.getKeyCode() == KeyEvent.VK_X){
-                int initialFreq = snake1.getFrequency();
-                snake1.setFrequency(initialFreq + 20);
+                int initialFreq = getSnake1().getFrequency();
+                getSnake1().setFrequency(initialFreq + 20);
             }
 
             if (!isSinglePlayer()){
                 // Increase snake 1 velocity
                 if (e.getKeyCode() == KeyEvent.VK_C){
-                    int initialFreq = snake2.getFrequency();
-                    snake2.setFrequency(initialFreq - 20);
+                    int initialFreq = getSnake2().getFrequency();
+                    getSnake2().setFrequency(initialFreq - 20);
                 }
 
                 // Decrease snake 1 velocity
                 if (e.getKeyCode() == KeyEvent.VK_V){
-                    int initialFreq = snake2.getFrequency();
-                    snake2.setFrequency(initialFreq + 20);
+                    int initialFreq = getSnake2().getFrequency();
+                    getSnake2().setFrequency(initialFreq + 20);
                 }
             }
 
             switch (e.getKeyCode()) {
                 // Snake 1
                 case KeyEvent.VK_UP:
-                    if (snake1.getDirection() != KeyEvent.VK_DOWN) {
-                        snake1.setDirection(KeyEvent.VK_UP);
+                    if (getSnake1().getDirection() != directions.DOWN) {
+                        getSnake1().setDirection(directions.UP);
                     }
                     break;
                 case KeyEvent.VK_DOWN:
-                    if (snake1.getDirection() != KeyEvent.VK_UP) {
-                        snake1.setDirection(KeyEvent.VK_DOWN);
+                    if (getSnake1().getDirection() != directions.UP) {
+                        getSnake1().setDirection(directions.DOWN);
                     }
                     break;
                 case KeyEvent.VK_LEFT:
-                    if (snake1.getDirection() != KeyEvent.VK_RIGHT) {
-                        snake1.setDirection(KeyEvent.VK_LEFT);
+                    if (getSnake1().getDirection() != directions.RIGHT) {
+                        getSnake1().setDirection(directions.LEFT);
                     }
                     break;
                 case KeyEvent.VK_RIGHT:
-                    if (snake1.getDirection() != KeyEvent.VK_LEFT) {
-                        snake1.setDirection(KeyEvent.VK_RIGHT);
+                    if (getSnake1().getDirection() != directions.LEFT) {
+                        getSnake1().setDirection(directions.RIGHT);
                     }
                     break;
 
 
                 // Snake 2
                 case KeyEvent.VK_W:
-                    if (snake2.getDirection() != KeyEvent.VK_S) {
-                        snake2.setDirection(KeyEvent.VK_W);
+                    if (getSnake2().getDirection() != directions.DOWN) {
+                        getSnake2().setDirection(directions.UP);
                     }
                     break;
                 case KeyEvent.VK_S:
-                    if (snake2.getDirection() != KeyEvent.VK_W) {
-                        snake2.setDirection(KeyEvent.VK_S);
+                    if (getSnake2().getDirection() != directions.UP) {
+                        getSnake2().setDirection(directions.DOWN);
                     }
                     break;
                 case KeyEvent.VK_A:
-                    if (snake2.getDirection() != KeyEvent.VK_D) {
-                        snake2.setDirection(KeyEvent.VK_A);
+                    if (getSnake2().getDirection() != directions.RIGHT) {
+                        getSnake2().setDirection(directions.LEFT);
                     }
                     break;
                 case KeyEvent.VK_D:
-                    if (snake2.getDirection() != KeyEvent.VK_A) {
-                        snake2.setDirection(KeyEvent.VK_D);
+                    if (getSnake2().getDirection() != directions.LEFT) {
+                        getSnake2().setDirection(directions.RIGHT);
                     }
                     break;
                 default:

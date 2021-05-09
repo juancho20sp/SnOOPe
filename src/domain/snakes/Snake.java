@@ -1,7 +1,7 @@
 package domain.snakes;
 
 import domain.Game;
-
+import domain.directions;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -12,7 +12,6 @@ public class Snake extends SuperSnake {
      * @param headPosition The position of the head of the snake
      * @param headColor The head color of the snake
      * @param bodyColor The body color of the snake
-     * @param gameData An instance of the game data class
      */
     public Snake(int size, int[] headPosition, int[] tailPosition, Color headColor, Color bodyColor, Game game) {
         super(size, headPosition, headColor, bodyColor, game);
@@ -32,42 +31,13 @@ public class Snake extends SuperSnake {
 
 
         // Snake direction
-        super.setDirection(KeyEvent.VK_RIGHT);
+        super.setDirection(directions.RIGHT);
     }
 
     /**
      * Method for moving the snake
      * @param key The keycode of the key pressed
      */
-    @Override
-    public void move(int key){
-        switch (key){
-            case KeyEvent.VK_UP:
-                // System.out.println("UP");
-                if (super.getDirection() != KeyEvent.VK_DOWN){
-                    this.setDirection(KeyEvent.VK_UP);
-                }
-                break;
-            case KeyEvent.VK_DOWN:
-                // System.out.println("DOWN");
-                if (super.getDirection() != KeyEvent.VK_UP){
-                    this.setDirection(KeyEvent.VK_DOWN);
-                }
-                break;
-            case KeyEvent.VK_LEFT:
-                //System.out.println("LEFT");
-                if (super.getDirection() != KeyEvent.VK_RIGHT){
-                    this.setDirection(KeyEvent.VK_LEFT);
-                }
-                break;
-            case KeyEvent.VK_RIGHT:
-                //System.out.println("RIGHT");
-                if (super.getDirection() != KeyEvent.VK_LEFT){
-                    this.setDirection(KeyEvent.VK_RIGHT);
-                }
-                break;
-        }
-    }
 
     /**
      * Method for changing positions
@@ -75,13 +45,13 @@ public class Snake extends SuperSnake {
      * @param rows The number of rows of the board
      * @return
      */
-    @Override
+    /*@Override
     public void updatePositions(int rows, int cols){
         int x = this.getHeadPosition()[0];
         int y = this.getHeadPosition()[1];
 
         switch (this.getDirection()){
-            case KeyEvent.VK_UP:
+            case UP:
                 y = y-1;
                 this.setHeadPosition(new int[]{x, y});
 
@@ -96,7 +66,7 @@ public class Snake extends SuperSnake {
                 }
                 break;
 
-            case KeyEvent.VK_DOWN:
+            case DOWN:
                 y = y + 1;
                 this.setHeadPosition(new int[]{x, y});
 
@@ -111,7 +81,7 @@ public class Snake extends SuperSnake {
                 }
                 break;
 
-            case KeyEvent.VK_LEFT:
+            case LEFT:
                 x = x - 1;
                 this.setHeadPosition(new int[]{x, y});
 
@@ -125,7 +95,7 @@ public class Snake extends SuperSnake {
                     //gameData.setGameRunning(false);
                 }
                 break;
-            case KeyEvent.VK_RIGHT:
+            case RIGHT:
                 x = x + 1;
                 this.setHeadPosition(new int[]{x, y});
 
@@ -141,5 +111,5 @@ public class Snake extends SuperSnake {
                 break;
 
         }
-    }
+    }*/
 }
