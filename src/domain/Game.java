@@ -3,6 +3,7 @@ package domain;
 import domain.edibles.Edible;
 import domain.players.Player;
 import domain.players.Machine;
+import domain.players.PlayerOne;
 import domain.snakes.SuperSnake;
 import presentation.GameBoard;
 import presentation.GameSetup;
@@ -47,6 +48,7 @@ public class Game extends Thread {
     // Random
     Random random = new Random();
 
+
     /**
      * Method for starting the game
      */
@@ -89,12 +91,24 @@ public class Game extends Thread {
      * Method for running the thread
      */
     public void run() {
+        long lastGame = 0;
+        long lastSnake1 = 0;
+        long lastSnake2 = 0;
+
+        int gameFrequency = 10;
+
         while (true) {
             if ((System.currentTimeMillis() - lastGame) > gameFrequency) {
                 if (this.gameData.isGameRunning()) {
+                    if(this.getBoard() == null){
+                        System.out.println("running");
+                        getSnake1().move(getSnake1().getDirection());
+                        getSnake1().updatePositions(18, 37);
+                    }
+
 
                     // Velocity for the snake 1
-                    if ((System.currentTimeMillis() - lastSnake1) > getSnake1().getFrequency()) {
+                    if ((System.currentTimeMillis() - lastSnake1) > getSnake1().getFrequency() && this.getBoard() != null) {
                         getSnake1().move(getSnake1().getDirection());
                         getSnake1().updatePositions(this.getBoard().getRows(), this.getBoard().getCols());
 
@@ -104,16 +118,28 @@ public class Game extends Thread {
                     // Velocity for the snake 2
                     if (!isSinglePlayer()) {
                         if ((System.currentTimeMillis() - lastSnake2) > getSnake2().getFrequency()) {
-                            getSnake2().move(getSnake2().getDirection());
+
+                            if (gameData.getGameType().equals(GameSetup.MULTIPLAYER)){
+                                getSnake2().move(getSnake2().getDirection());
+                            } else {
+                                getSnake2().move();
+                            }
+
+
                             getSnake2().updatePositions(this.getBoard().getRows(), this.getBoard().getCols());
 
                             lastSnake2 = System.currentTimeMillis();
                         }
                     }
 
-                    this.getBoard().refresh();
+                    if (this.getBoard() != null){
+                        this.getBoard().refresh();
+                    }
 
                     lastGame = System.currentTimeMillis();
+                } else {
+                    System.out.println("game over");
+                    break;
                 }
             }
         }
@@ -189,5 +215,19 @@ public class Game extends Thread {
 
     public void setCols(int cols) {
         this.cols = cols;
+    }
+
+    public static void main(String[] args) {
+        Game game = new Game();
+
+
+        game.gameData = new GameData();
+        game.gameData.setGameRunning(true);
+        game.gameData.setGameType(GameSetup.SINGLE_PLAYER);
+        game.gameData.setPlayerOne(new PlayerOne());
+
+        game.setupPlayers();
+        game.startGame();
+
     }
 }

@@ -18,7 +18,7 @@ public abstract class SuperSnake {
     private int frequency = 80;
 
     // Game
-    private Game game;
+    protected Game game;
 
     public SuperSnake(int size, int[] headPosition, Color headColor, Color bodyColor, Game game) {
         this.size = size;
@@ -30,6 +30,11 @@ public abstract class SuperSnake {
 
         this.game = game;
     }
+
+    /**
+     * Abstract method for moving the snake
+     */
+    public void move(){}
 
     /**
      * Method for moving the snake
@@ -81,12 +86,12 @@ public abstract class SuperSnake {
 
                 if (y >= rows - 1){
                     this.setHeadPosition(new int[]{x, 0});
-                    //gameData.setGameRunning(false);
+                    //game.getGameData().setGameRunning(false);
                 }
 
                 if (y <= 0){
                     this.setHeadPosition(new int[]{x, rows - 1});
-                    //gameData.setGameRunning(false);
+                    //game.getGameData().setGameRunning(false);
                 }
                 break;
 
@@ -96,12 +101,12 @@ public abstract class SuperSnake {
 
                 if (y >= rows - 1){
                     this.setHeadPosition(new int[]{x, 0});
-                    //gameData.setGameRunning(false);
+                    //game.getGameData().setGameRunning(false);
                 }
 
                 if (y <= 0){
                     this.setHeadPosition(new int[]{x, rows - 1});
-                    //gameData.setGameRunning(false);
+                    //game.getGameData().setGameRunning(false);
                 }
                 break;
 
@@ -111,12 +116,12 @@ public abstract class SuperSnake {
 
                 if (x >= cols - 1){
                     this.setHeadPosition(new int[]{0, y});
-                    //gameData.setGameRunning(false);
+                    //game.getGameData().setGameRunning(false);
                 }
 
                 if (x <= 0){
                     this.setHeadPosition(new int[]{cols - 1, y});
-                    //gameData.setGameRunning(false);
+                    //game.getGameData().setGameRunning(false);
                 }
                 break;
             case RIGHT:
@@ -125,12 +130,12 @@ public abstract class SuperSnake {
 
                 if (x >= cols - 1){
                     this.setHeadPosition(new int[]{0, y});
-                    //gameData.setGameRunning(false);
+                    //game.getGameData().setGameRunning(false);
                 }
 
                 if (x <= 0){
                     this.setHeadPosition(new int[]{cols - 1, y});
-                    //gameData.setGameRunning(false);
+                    //game.getGameData().setGameRunning(false);
                 }
                 break;
 
@@ -253,6 +258,5 @@ public abstract class SuperSnake {
     public void setDirection(directions direction) {
         this.direction = direction;
     }
-
 
 }

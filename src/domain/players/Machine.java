@@ -1,6 +1,9 @@
 package domain.players;
 
 
+import domain.Game;
+import domain.snakes.SnakeMachine;
+
 public class Machine extends SuperPlayer{
     // Machine types
     public static final String DISTRACTED = "distracted";
@@ -10,6 +13,12 @@ public class Machine extends SuperPlayer{
     // Machine type
     private String machineType;
 
+    /**
+     * Method for creating a new snake
+     */
+    public void createSnake(int[] headPos, int[] tailPos, Game game){
+        this.setSnake(new SnakeMachine(3, headPos, tailPos, super.getHeadColor(), super.getBodyColor(), game));
+    }
 
     public String getMachineType() {
         return machineType;
