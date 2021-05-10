@@ -61,28 +61,26 @@ public class Game extends Thread {
    public void setupPlayers() {
        this.gameData.getPlayerOne().createSnake(new int[]{2,0}, new int[]{0,0}, this);
 
-        /*this.snake1 = new SnakeP1(3, new int[]{2, 0}, this.playerOne.getHeadColor(),
-                this.playerOne.getBodyColor()
-                , super.getGameData());*/
-
 
         if (getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
-            System.out.println(this.rows);
 
-            //this.setPlayerTwo(getGameData().getPlayerTwo());
             this.gameData.getPlayerTwo().createSnake(new int[]{getCols() - 1, getRows() - 1}, new int[]{getCols()-1,
                             getRows()-1}
             , this);
 
         }
 
-        /*if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
-            this.setPlayerTwo(super.getGameData().getPlayerMachine());
+        if (getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
+            this.gameData.getPlayerMachine().createSnake(new int[]{getCols() - 1, getRows() - 1}, new int[]{getCols()-1,
+                            getRows()-1}
+                    , this);
+
+            /*this.setPlayerTwo(super.getGameData().getPlayerMachine());
             this.snake2 = new SnakeP2(3, new int[]{cols - 2, 5},
                     this.getPlayerOne().getHeadColor(),
                     this.playerOne.getBodyColor()
-                    , super.getGameData());
-        }*/
+                    , super.getGameData());*/
+        }
 
    }
 
@@ -168,7 +166,13 @@ public class Game extends Thread {
     }
 
     public SuperSnake getSnake2(){
-        return this.gameData.getPlayerTwo().getSnake();
+        if(getGameData().getGameType().equals(GameSetup.MULTIPLAYER)){
+            return this.gameData.getPlayerTwo().getSnake();
+        } else if (getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)){
+            return this.gameData.getPlayerMachine().getSnake();
+        }
+
+        return null;
     }
 
     public int getRows() {

@@ -3,7 +3,9 @@ package presentation;
 import domain.Game;
 import domain.edibles.Apple;
 import domain.edibles.Edible;
+import domain.players.Machine;
 import domain.players.Player;
+import domain.players.SuperPlayer;
 import domain.snakes.Snake;
 import domain.snakes.SuperSnake;
 import domain.directions;
@@ -86,6 +88,10 @@ public class GameBoard extends DaddyPanel {
 
         // Thread
         game.startGame();
+
+        if (getGameType().equals(GameSetup.PLAYER_MACHINE)){
+            System.out.println(getGameData().getPlayerMachine().getMachineType());
+        }
     }
 
     /**
@@ -177,8 +183,11 @@ public class GameBoard extends DaddyPanel {
         this.playerOnePointsLabel = new JLabel(this.getPlayerOne().getName() + " : " + this.getPlayerOne().getPoints(),
                 SwingConstants.CENTER);
 
-        if (!this.isSinglePlayer()) {
+        if (getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
             this.playerTwoPointsLabel = new JLabel(this.getPlayerTwo().getName() + " : " + this.getPlayerTwo().getPoints(),
+                    SwingConstants.CENTER);
+        } else if (getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
+            this.playerTwoPointsLabel = new JLabel(this.getPlayerMachine().getName() + " : " + this.getPlayerMachine().getPoints(),
                     SwingConstants.CENTER);
         }
 
@@ -418,7 +427,10 @@ public class GameBoard extends DaddyPanel {
         // Fruta 1 - Snake 2
         if (!this.isSinglePlayer()){
             if ((snake2X == appleX) && (snake2Y == appleY)) {
+
                 fruit1.eatEdible(fruit1, getPlayerTwo());
+
+
                 this.addFruit();
             }
         }
@@ -503,8 +515,16 @@ public class GameBoard extends DaddyPanel {
         this.playerOne = playerOne;
     }
 
-    public Player getPlayerTwo() {
-        return super.getGame().getGameData().getPlayerTwo();
+    public SuperPlayer getPlayerTwo() {
+        if (getGameData().getGameType().equals(GameSetup.MULTIPLAYER)){
+            return super.getGame().getGameData().getPlayerTwo();
+        } else {
+            return super.getGame().getGameData().getPlayerMachine();
+        }
+    }
+
+    public Machine getPlayerMachine() {
+        return super.getGame().getGameData().getPlayerMachine();
     }
 
     public void setPlayerTwo(Player playerTwo) {
@@ -532,7 +552,13 @@ public class GameBoard extends DaddyPanel {
     }
 
     public SuperSnake getSnake2() {
-        return super.getGame().getGameData().getPlayerTwo().getSnake();
+        if(getGameData().getGameType().equals(GameSetup.MULTIPLAYER)){
+            return super.getGame().getGameData().getPlayerTwo().getSnake();
+        } else if (getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)){
+            return super.getGame().getGameData().getPlayerMachine().getSnake();
+        }
+
+        return null;
     }
 
     /**

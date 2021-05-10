@@ -3,7 +3,7 @@ package domain.snakes;
 import domain.Game;
 import domain.directions;
 import java.awt.*;
-import java.awt.event.KeyEvent;
+
 
 public class Snake extends SuperSnake {
     /**

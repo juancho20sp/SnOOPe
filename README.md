@@ -4,10 +4,8 @@
 - Open a saved game
 - Create the view of the type of machine
 - Create the data for the machine
-- Play with the indexes for showing / hiding fruits
-- End game on collision with bad block
 
-- Solve bug when apple is eaten
+- End game on collision with bad block
 
 - Number of surprises used by the superSnake
 - Surprise ready for use

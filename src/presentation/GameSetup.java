@@ -16,6 +16,7 @@ public class GameSetup extends DaddyPanel{
     private JButton colorPlayerOne;
     private JButton namePlayerTwo;
     private JButton colorPlayerTwo;
+    private JButton machineType;
     private JButton startGame;
     private JButton goBack;
 
@@ -34,6 +35,9 @@ public class GameSetup extends DaddyPanel{
 
     // Game board
     GameBoard gameBoard;
+
+    // Machine type
+    SelectMachineType selectMachineType;
 
 
     /**
@@ -93,7 +97,7 @@ public class GameSetup extends DaddyPanel{
      */
     private void createPanel(){
         // Panel
-        setLayout(new GridLayout(8, 1));
+        setLayout(new GridLayout(9, 1));
         //this.selectModePanel.setBackground(this.guiConfig.getBackgroundColor());
     }
 
@@ -122,6 +126,7 @@ public class GameSetup extends DaddyPanel{
             case PLAYER_MACHINE:
                 this.namePlayerTwo = new JButton("Ingresar nombre de la máquina");
                 this.colorPlayerTwo = new JButton("Seleccionar colores de la máquina");
+                this.machineType = new JButton("Seleccionar el tipo de máquina");
                 break;
         }
 
@@ -147,6 +152,10 @@ public class GameSetup extends DaddyPanel{
             add(this.colorPlayerOne);
             add(this.namePlayerTwo);
             add(this.colorPlayerTwo);
+        }
+
+        if (super.getGameData().getGameType().equals(PLAYER_MACHINE)){
+            add(this.machineType);
         }
 
         add(this.startGame);
@@ -185,6 +194,16 @@ public class GameSetup extends DaddyPanel{
                     colorSetupClicked(playerTwo);
                 }
             });
+
+            // Machine
+            if (super.getGameData().getGameType().equals(PLAYER_MACHINE)){
+                this.machineType.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        machineTypeClicked();
+                    }
+                });
+            }
         }
 
 
@@ -233,6 +252,15 @@ public class GameSetup extends DaddyPanel{
     }
 
     /**
+     * Method for selecting the machine type
+     */
+    private void machineTypeClicked(){
+        this.selectMachineType = new SelectMachineType(super.getFrame(), super.getGame());
+
+        changeCard(this.selectMachineType, SnOOPe.SELECT_MACHINE_TYPE);
+    }
+
+    /**
      * Method for starting up the game
      */
     private void startGame(){
@@ -272,6 +300,10 @@ public class GameSetup extends DaddyPanel{
             if (machine.getHeadColor() == null || machine.getBodyColor() == null){
                 valid = false;
             }
+
+            if (machine.getMachineType() == null){
+                valid = false;
+            }
         }
 
         // All fields are mandatory
@@ -280,11 +312,21 @@ public class GameSetup extends DaddyPanel{
         }
 
         // Colors
-        if (!super.getGameData().getGameType().equals(SINGLE_PLAYER)){
-            if (player2.getHeadColor() == player1.getHeadColor() ||
-                    player2.getHeadColor() == player1.getBodyColor() ||
-                    player2.getBodyColor() == player1.getHeadColor() ||
-                    player2.getBodyColor() == player1.getBodyColor()){
+        if (getGameData().getGameType().equals(MULTIPLAYER)){
+            if (getGameData().getPlayerTwo().getHeadColor() == getGameData().getPlayerOne().getHeadColor() ||
+                    getGameData().getPlayerTwo().getHeadColor() == getGameData().getPlayerOne().getBodyColor() ||
+                    getGameData().getPlayerTwo().getBodyColor() == getGameData().getPlayerOne().getHeadColor() ||
+                    getGameData().getPlayerTwo().getBodyColor() == getGameData().getPlayerOne().getBodyColor()){
+                JOptionPane.showMessageDialog(null, SnOOPeExceptions.SNAKES_MUST_BE_DIFFERENT);
+                valid = false;
+            }
+        }
+
+        if (getGameData().getGameType().equals(PLAYER_MACHINE)){
+            if (getGameData().getPlayerMachine().getHeadColor() == getGameData().getPlayerOne().getHeadColor() ||
+                    getGameData().getPlayerMachine().getHeadColor() == getGameData().getPlayerOne().getBodyColor() ||
+                    getGameData().getPlayerMachine().getBodyColor() == getGameData().getPlayerOne().getHeadColor() ||
+                    getGameData().getPlayerMachine().getBodyColor() == getGameData().getPlayerOne().getBodyColor()){
                 JOptionPane.showMessageDialog(null, SnOOPeExceptions.SNAKES_MUST_BE_DIFFERENT);
                 valid = false;
             }
