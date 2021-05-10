@@ -390,7 +390,11 @@ public class GameBoard extends DaddyPanel {
         if (this.getSnake1().getPositions().contains(fruit1Coordinate) || this.getSnake1().getHeadPosition().equals(fruit1Coordinate)){
             this.addFruit();
         } else {
+            // Create the fruit
             this.fruit1 = new Apple(x, y, colors[color]);
+
+            // Set its coordinate
+            getGame().updateCoordinates(x, y, 1);
         }
 
 
@@ -420,7 +424,9 @@ public class GameBoard extends DaddyPanel {
 
         // Fruta 1 - Snake 1
         if ((snake1X == appleX) && (snake1Y == appleY)) {
-            fruit1.eatEdible(fruit1, getPlayerOne());
+            // Eat the apple
+            fruit1.eatEdible(fruit1, getPlayerOne(), getGame());
+
             this.addFruit();
         }
 
@@ -428,7 +434,7 @@ public class GameBoard extends DaddyPanel {
         if (!this.isSinglePlayer()){
             if ((snake2X == appleX) && (snake2Y == appleY)) {
 
-                fruit1.eatEdible(fruit1, getPlayerTwo());
+                fruit1.eatEdible(fruit1, getPlayerTwo(), getGame());
 
 
                 this.addFruit();

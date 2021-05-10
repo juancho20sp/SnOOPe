@@ -51,7 +51,83 @@ public class SnakeMachine extends SuperSnake{
             case CAUTIOUS:
                 break;
             case GLUTTON:
+                moveAsGlutton();
                 break;
+        }
+    }
+
+    /**
+     * Method for changing positions
+     * @param cols The number of cols of the board
+     * @param rows The number of rows of the board
+     * @return
+     */
+    @Override
+    public void updatePositions(int rows, int cols){
+        int x = this.getHeadPosition()[0];
+        int y = this.getHeadPosition()[1];
+
+
+        switch (this.getDirection()){
+            case UP:
+                y = y-1;
+                this.setHeadPosition(new int[]{x, y});
+
+                if (y >= rows - 1){
+                    this.setHeadPosition(new int[]{x, 0});
+                    //game.getGameData().setGameRunning(false);
+                }
+
+                if (y <= 0){
+                    this.setHeadPosition(new int[]{x, rows - 1});
+                    //game.getGameData().setGameRunning(false);
+                }
+                break;
+
+            case DOWN:
+                y = y + 1;
+                this.setHeadPosition(new int[]{x, y});
+
+                if (y >= rows - 1){
+                    this.setHeadPosition(new int[]{x, 0});
+                    //game.getGameData().setGameRunning(false);
+                }
+
+                if (y <= 0){
+                    this.setHeadPosition(new int[]{x, rows - 1});
+                    //game.getGameData().setGameRunning(false);
+                }
+                break;
+
+            case LEFT:
+                x = x - 1;
+                this.setHeadPosition(new int[]{x, y});
+
+                if (x >= cols - 1){
+                    this.setHeadPosition(new int[]{0, y});
+                    //game.getGameData().setGameRunning(false);
+                }
+
+                if (x <= 0){
+                    this.setHeadPosition(new int[]{cols - 1, y});
+                    //game.getGameData().setGameRunning(false);
+                }
+                break;
+            case RIGHT:
+                x = x + 1;
+                this.setHeadPosition(new int[]{x, y});
+
+                if (x >= cols - 1){
+                    this.setHeadPosition(new int[]{0, y});
+                    //game.getGameData().setGameRunning(false);
+                }
+
+                if (x <= 0){
+                    this.setHeadPosition(new int[]{cols - 1, y});
+                    //game.getGameData().setGameRunning(false);
+                }
+                break;
+
         }
     }
 
@@ -84,4 +160,49 @@ public class SnakeMachine extends SuperSnake{
                 break;
         }
     }
+
+    /**
+     * Method for moving as glutton
+     */
+    private void moveAsGlutton(){
+        int x = 0;
+        int y = 0;
+
+        for (int i = 0; i < game.getRows(); i++) {
+            for (int j = 0; j < game.getCols(); j++) {
+                if (game.getCoordinates()[i][j] == 1){
+                    x = i;
+                    y = j;
+                    break;
+                }
+            }
+        }
+
+        if (game.getSnake2().getHeadPosition()[0] < x){
+            setDirection(directions.RIGHT);
+            if (getDirection() != directions.LEFT){
+
+            }
+        }
+
+        if (game.getSnake2().getHeadPosition()[0] > x){
+                setDirection(directions.LEFT);
+            if (getDirection() != directions.RIGHT){
+            }
+        }
+
+        if (game.getSnake2().getHeadPosition()[1] < y){
+                setDirection(directions.DOWN);
+            if (getDirection() != directions.UP){
+            }
+        }
+
+        if (game.getSnake2().getHeadPosition()[1] > y){
+                setDirection(directions.UP);
+            if (getDirection() != directions.DOWN){
+            }
+        }
+    }
+
+
 }

@@ -27,8 +27,8 @@ public class Game extends Thread {
     GameBoard board;
 
     // Dimensions
-    private int rows = 18;
-    private int cols = 37;
+    private int rows = 100;
+    private int cols = 100;
 
     // Players
     Player playerOne;
@@ -48,6 +48,9 @@ public class Game extends Thread {
     // Random
     Random random = new Random();
 
+    // Coordinates
+    int[][] coordinates = new int[getRows()][getCols()];
+
 
     /**
      * Method for starting the game
@@ -55,6 +58,29 @@ public class Game extends Thread {
     public void startGame(){
         thread = new Thread(this);
         thread.start();
+
+        this.createCoordinates();
+    }
+
+    /**
+     * Method for creating the coordinates
+     */
+    private void createCoordinates(){
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
+                coordinates[i][j] = 0;
+            }
+        }
+    }
+
+    /**
+     * Method for updating the coordinates
+     * @param x The 'x' position
+     * @param y The 'y' position
+     * @param value The value
+     */
+    public void updateCoordinates(int x, int y, int value){
+        this.coordinates[x][y] = value;
     }
 
     /**
@@ -215,6 +241,10 @@ public class Game extends Thread {
 
     public void setCols(int cols) {
         this.cols = cols;
+    }
+
+    public int[][] getCoordinates() {
+        return coordinates;
     }
 
     public static void main(String[] args) {
