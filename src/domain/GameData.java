@@ -5,6 +5,7 @@ import domain.players.Machine;
 
 public class GameData {
     private boolean isGameRunning = false;
+    private boolean isGamePaused = false;
     private String gameType;
     private Player playerOne;
     private Player playerTwo;
@@ -58,5 +59,13 @@ public class GameData {
 
     public void setFrequencyValue(int frequencyValue) {
         this.frequencyValue = frequencyValue;
+    }
+
+    public boolean isGamePaused() {
+        return isGamePaused;
+    }
+
+    public void setGamePaused(boolean gamePaused) {
+        isGamePaused = gamePaused;
     }
 }

@@ -118,6 +118,7 @@ public class MainMenu extends DaddyPanel{
      * Method for going back to the game
      */
     private void backToGameClicked(){
+        super.getGame().resumeGame();
         SnOOPe.selectCard(SnOOPe.GAME_BOARD);
     }
 

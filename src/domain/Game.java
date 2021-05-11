@@ -15,7 +15,7 @@ public class Game extends Thread {
     long lastSnake1 = 0;
     long lastSnake2 = 0;
 
-    int gameFrequency = 10;
+    int gameFrequency = 30;
 
     // Game data
     private GameData gameData;
@@ -61,6 +61,21 @@ public class Game extends Thread {
 
         this.createCoordinates();
     }
+
+    /**
+     * Method for pausing the game
+     */
+    public void pauseGame(){
+        this.gameData.setGamePaused(true);
+    }
+
+    /**
+     * Method for resuming the game
+     */
+    public void resumeGame(){
+        this.gameData.setGamePaused(false);
+    }
+
 
     /**
      * Method for creating the coordinates
@@ -124,6 +139,14 @@ public class Game extends Thread {
         int gameFrequency = 10;
 
         while (true) {
+            while (this.gameData.isGamePaused()){
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
             if ((System.currentTimeMillis() - lastGame) > gameFrequency) {
                 if (this.gameData.isGameRunning()) {
                     if(this.getBoard() == null){

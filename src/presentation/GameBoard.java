@@ -501,6 +501,8 @@ public class GameBoard extends DaddyPanel {
     private void mainMenuClicked() {
         this.mainMenu = new MainMenu(super.getFrame(), getGame());
 
+        super.getGame().pauseGame();
+
         changeCard(this.mainMenu, SnOOPe.GAME_PAUSE_MENU);
     }
 
