@@ -512,6 +512,8 @@ public class GameBoard extends DaddyPanel {
     private void endGame(){
         EndGame endGame = new EndGame(getFrame(), getGame());
 
+        super.getGame().getGameData().setGamePaused(false);
+
         changeCard(endGame, SnOOPe.END_GAME);
     }
 

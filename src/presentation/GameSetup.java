@@ -267,6 +267,8 @@ public class GameSetup extends DaddyPanel{
         if (this.validateFields() || true){
             this.gameBoard = new GameBoard(super.getFrame(), super.getGame());
 
+            getGame().getGameData().setGamePaused(false);
+
             changeCard(this.gameBoard, SnOOPe.GAME_BOARD);
         }
 

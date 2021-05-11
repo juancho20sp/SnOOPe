@@ -135,6 +135,8 @@ public class MainMenu extends DaddyPanel{
     private void endGameClicked(){
         boolean res = askForConfirmation("¿Desea terminar el juego actual?");
 
+        getGame().stop();
+
         if (res){
             SnOOPe.selectCard(SnOOPe.MAIN_MENU);
         }
