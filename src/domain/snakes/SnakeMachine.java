@@ -4,11 +4,12 @@ import domain.Game;
 import domain.directions;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Random;
 
 import static domain.players.Machine.*;
 
-public class SnakeMachine extends SuperSnake{
+public class SnakeMachine extends SuperSnake implements Serializable {
     private Random random = new Random();
 
     /**

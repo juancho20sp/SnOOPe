@@ -1,6 +1,8 @@
 package domain;
 
-public class GUIConfiguration {
+import java.io.Serializable;
+
+public class GUIConfiguration implements Serializable {
     private int cellSize = 25;
     private int frameWidth = 600;
     private int frameHeight = 630;

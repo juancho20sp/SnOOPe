@@ -9,8 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
-public class GameSetup extends DaddyPanel{
+public class GameSetup extends DaddyPanel implements Serializable {
     private JLabel title;
     private JButton namePlayerOne;
     private JButton colorPlayerOne;
@@ -264,7 +265,7 @@ public class GameSetup extends DaddyPanel{
      * Method for starting up the game
      */
     private void startGame(){
-        if (this.validateFields() || true){
+        if (this.validateFields()){
             this.gameBoard = new GameBoard(super.getFrame(), super.getGame());
 
             getGame().getGameData().setGamePaused(false);

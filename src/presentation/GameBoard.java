@@ -2,7 +2,9 @@ package presentation;
 
 import domain.Game;
 import domain.edibles.Apple;
+import domain.edibles.Arrow;
 import domain.edibles.Edible;
+import domain.edibles.PowerUp;
 import domain.players.Machine;
 import domain.players.Player;
 import domain.players.SuperPlayer;
@@ -16,9 +18,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class GameBoard extends DaddyPanel {
+public class GameBoard extends DaddyPanel implements Serializable {
     private JPanel upperPanel;
     private JPanel boardPanel;
     private JButton mainMenuButton;
@@ -55,11 +60,18 @@ public class GameBoard extends DaddyPanel {
     // Fruits
     Edible fruit1;
 
+    // PoweUps
+    PowerUp powerUp;
+    boolean isPowerUpHidden = false;
+
     // Game over
     private boolean gameOver = super.getGameData().isGameRunning();
 
     // Random
     Random random = new Random();
+
+    // Timer
+    transient Timer timer;
 
     /**
      * Constructor for the GameBoard class
@@ -95,35 +107,6 @@ public class GameBoard extends DaddyPanel {
     }
 
     /**
-     * Method for setting up the players
-     */
-    private void setupPlayers() {
-        /*this.setPlayerOne(super.getGameData().getPlayerOne());
-        this.superSnake1 = new Snake(3, new int[]{2, 0}, this.playerOne.getHeadColor(),
-                this.playerOne.getBodyColor()
-                , super.getGame());
-
-
-        if (super.getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
-            System.out.println(this.rows);
-
-            this.setPlayerTwo(super.getGameData().getPlayerTwo());
-            this.superSnake2 = new Snake(3, new int[]{2, rows - 1},
-                    this.playerTwo.getHeadColor(),
-                    this.playerTwo.getBodyColor()
-                    , super.getGame());
-        }*/
-
-        /*if (super.getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)) {
-            this.setPlayerTwo(super.getGameData().getPlayerMachine());
-            this.snake2 = new SnakeP2(3, new int[]{cols - 2, 5},
-                    this.getPlayerOne().getHeadColor(),
-                    this.playerOne.getBodyColor()
-                    , super.getGameData());
-        }*/
-    }
-
-    /**
      * Method for preparing the layout
      */
     private void prepareLayout() {
@@ -136,6 +119,9 @@ public class GameBoard extends DaddyPanel {
 
         // Add fruits
         this.addFruit();
+
+        // Add power up
+        this.addPowerUp();
     }
 
     /**
@@ -300,6 +286,18 @@ public class GameBoard extends DaddyPanel {
         // Fruits
         g.setColor(fruit1.getColor());
         g.fillRect(fixXPosition(fruit1.getX()), fixYPosition(fruit1.getY()), CELL_SIZE, CELL_SIZE);
+
+        // Pasar un powerup
+        //g.setColor(powerUp.getColor());
+        //g.fillRect(fixXPosition(powerUp.getX()), fixYPosition(powerUp.getY()), CELL_SIZE, CELL_SIZE);
+        if (!isPowerUpHidden){
+            g.drawImage(new ImageIcon(powerUp.getImage()).getImage(), fixXPosition(powerUp.getX()), fixYPosition(powerUp.getY()), this);
+        }
+
+
+        // Fruta
+        //g.drawImage(new ImageIcon(fruit1.getImage()).getImage(), fixXPosition(2), fixYPosition(2), this);
+
         /*g.setColor(Color.red);
         g.fillRect(fixXPosition(0), fixYPosition(0), CELL_SIZE, CELL_SIZE);
 
@@ -346,6 +344,9 @@ public class GameBoard extends DaddyPanel {
         // Check apple
         this.checkApples();
 
+        // Check power ups
+        this.checkPowerUps();
+
         // Check collisions
         this.checkCollision();
 
@@ -360,7 +361,7 @@ public class GameBoard extends DaddyPanel {
     /**
      * Method for adding fruits to the game board
      */
-    private void addFruit() {
+    public void addFruit() {
         //Color[] colors = new Color[]{snake1.getHeadColor(), snake1.getBodyColor()};
         Color[] colors = new Color[]{this.getPlayerOne().getHeadColor(), this.getPlayerOne().getBodyColor()};
 
@@ -395,6 +396,54 @@ public class GameBoard extends DaddyPanel {
 
             // Set its coordinate
             getGame().updateCoordinates(x, y, 1);
+        }
+
+
+    }
+
+    /**
+     * Method for adding powerups to the game board
+     */
+    private void addPowerUp() {
+        //Color[] colors = new Color[]{snake1.getHeadColor(), snake1.getBodyColor()};
+          // Arrow -> 0
+        // Trap -> 1
+
+        int x = random.nextInt(cols - 1);
+        int y = random.nextInt(rows - 1);
+
+        if (x == 0) {
+            x++;
+        }
+
+        if (x == cols) {
+            x--;
+        }
+
+        if (y == 0) {
+            y++;
+        }
+
+        if (y == rows) {
+            y--;
+        }
+
+        //random.nextInt(1);
+        int power = 1;
+
+        int[] powerUpCoordinate = new int[]{x,y};
+
+        if (this.getSnake1().getPositions().contains(powerUpCoordinate) || this.getSnake1().getHeadPosition().equals(powerUpCoordinate)){
+            this.addPowerUp();
+        } else {
+            // Create the power up
+            switch (power){
+                case 1:
+                    this.powerUp = new Arrow(x, y, Color.red, 5);
+            }
+
+            // Set its coordinate
+            getGame().updateCoordinates(x, y, 2);
         }
 
 
@@ -439,6 +488,65 @@ public class GameBoard extends DaddyPanel {
 
                 this.addFruit();
             }
+        }
+
+    }
+
+    /**
+     * Method for checking if the snake ate the apple
+     */
+    private void checkPowerUps() {
+        // Snake 1
+        int snake1X = this.getSnake1().getHeadPosition()[0];
+        int snake1Y = this.getSnake1().getHeadPosition()[1];
+
+        // Snake 2
+        int snake2X = 0;
+        int snake2Y = 0;
+
+        if (!this.isSinglePlayer()) {
+            snake2X = this.getSnake2().getHeadPosition()[0];
+            snake2Y = this.getSnake2().getHeadPosition()[1];
+        }
+
+
+        int powerX = powerUp.getX();
+        int powerY = powerUp.getY();
+
+
+        // Fruta 1 - Snake 1
+        if ((snake1X == powerX) && (snake1Y == powerY)) {
+            // Eat the power up
+            powerUp.eatPowerUp(powerUp, getPlayerOne(), getGame());
+
+            setPowerUpHidden(true);
+
+            //this.addPowerUp();
+        }
+
+        // Fruta 1 - Snake 2
+        if (!this.isSinglePlayer()){
+            if ((snake2X == powerX) && (snake2Y == powerY)) {
+
+                powerUp.eatEdible(powerUp, getPlayerTwo(), getGame());
+
+                setPowerUpHidden(true);
+
+                //this.addPowerUp();
+            }
+        }
+
+        if (isPowerUpHidden) {
+            timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    setPowerUpHidden(false);
+                    addPowerUp();
+                }
+            };
+
+            timer.schedule(timerTask, 2000);
         }
 
     }
@@ -571,53 +679,18 @@ public class GameBoard extends DaddyPanel {
         return null;
     }
 
-    /**
-     * Inner class for thread handling
-     */
-    /*public class MainThread extends Thread {
-        long lastGame = 0;
-        long lastSnake1 = 0;
-        long lastSnake2 = 0;
-
-        int gameFrequency = 10;
-
-
-        public void run() {
-            while (true) {
-                if ((java.lang.System.currentTimeMillis() - lastGame) > gameFrequency) {
-                    if (getGameData().isGameRunning()) {
-
-                        // Velocity for the snake 1
-                        if ((java.lang.System.currentTimeMillis() - lastSnake1) > getSnake1().getFrequency()){
-                            getSnake1().move(getSnake1().getDirection());
-                            getSnake1().updatePositions(rows, cols);
-
-                            lastSnake1 = java.lang.System.currentTimeMillis();
-                        }
-
-                        // Velocity for the snake 2
-                        if (!isSinglePlayer()){
-                            if ((java.lang.System.currentTimeMillis() - lastSnake2) > getSnake2().getFrequency()){
-                                getSnake2().move(getSnake2().getDirection());
-                                getSnake2().updatePositions(rows, cols);
-
-                                lastSnake2 = java.lang.System.currentTimeMillis();
-                            }
-                        }
-
-                        refresh();
-
-                        lastGame = java.lang.System.currentTimeMillis();
-                    }
-                }
-            }
-        }
+    public boolean isPowerUpHidden() {
+        return isPowerUpHidden;
     }
-    */
+
+    public void setPowerUpHidden(boolean powerUpHidden) {
+        isPowerUpHidden = powerUpHidden;
+    }
+
     /**
      * Inner class for handling key events
      */
-    public class myKeys extends KeyAdapter {
+    public class myKeys extends KeyAdapter implements Serializable{
         @Override
         public void keyPressed(KeyEvent e) {
 
@@ -625,10 +698,17 @@ public class GameBoard extends DaddyPanel {
                 //System.out.println("Game over");
             }
 
-            // Add fuit when spacebar is clicked
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                addFruit();
+            // Trigger power up on spacebar
+            if (e.getKeyCode() == KeyEvent.VK_SPACE){
+                getPlayerOne().usePowerUp();
+
+
             }
+
+            // Add fuit when spacebar is clicked
+            /*if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                addFruit();
+            }*/
 
             // End game
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE){

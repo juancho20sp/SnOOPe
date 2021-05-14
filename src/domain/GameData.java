@@ -3,7 +3,9 @@ package domain;
 import domain.players.Player;
 import domain.players.Machine;
 
-public class GameData {
+import java.io.Serializable;
+
+public class GameData implements Serializable {
     private boolean isGameRunning = false;
     private boolean isGamePaused = false;
     private String gameType;

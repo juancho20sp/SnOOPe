@@ -8,8 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.Serializable;
 
-public class SnOOPe extends JFrame{
+public class SnOOPe extends JFrame implements Serializable {
     JPanel menuPanel;
     JLabel menuLabel;
     JButton newGameButton;
@@ -214,8 +215,7 @@ public class SnOOPe extends JFrame{
         openGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "open game clicked");
-                //openGame();
+                openGame();
             }
         });
 
@@ -256,8 +256,6 @@ public class SnOOPe extends JFrame{
      * Method for open a previously saved game
      */
     private void openGame(){
-        JOptionPane.showMessageDialog(null, "Abrir juego");
-
         // JFileChooser
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Seleccione un juego");

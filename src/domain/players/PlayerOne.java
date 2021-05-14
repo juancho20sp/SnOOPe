@@ -1,6 +1,8 @@
 package domain.players;
 
-public class PlayerOne extends Player{
+import java.io.Serializable;
+
+public class PlayerOne extends Player implements Serializable {
     public PlayerOne() {
         super();
 

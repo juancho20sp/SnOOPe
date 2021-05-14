@@ -6,8 +6,9 @@ import domain.GameData;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
-public class DaddyPanel extends JPanel{
+public class DaddyPanel extends JPanel implements Serializable {
     private JFrame frame;
     private Game game;
 

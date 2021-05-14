@@ -6,8 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
-public class SelectMode extends DaddyPanel {
+public class SelectMode extends DaddyPanel implements Serializable {
     private JLabel title;
     private JButton singlePlayerButton;
     private JButton playerAndPlayer;

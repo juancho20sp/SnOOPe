@@ -9,8 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
-public class EndGame extends DaddyPanel{
+public class EndGame extends DaddyPanel implements Serializable {
     private JLabel title;
     private JLabel firstPlace;
     private JLabel secondPlace;

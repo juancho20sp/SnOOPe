@@ -3,9 +3,10 @@ package domain.snakes;
 import domain.Game;
 import domain.directions;
 import java.awt.*;
+import java.io.Serializable;
 
 
-public class Snake extends SuperSnake {
+public class Snake extends SuperSnake implements Serializable {
     /**
      * Constructor for the SnakeP1 class
      * @param size The size of the snake

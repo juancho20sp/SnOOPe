@@ -1,5 +1,6 @@
 package domain;
 
+import domain.edibles.Apple;
 import domain.edibles.Edible;
 import domain.players.Player;
 import domain.players.Machine;
@@ -7,16 +8,13 @@ import domain.players.PlayerOne;
 import domain.snakes.SuperSnake;
 import presentation.GameBoard;
 import presentation.GameSetup;
+import presentation.SnOOPe;
 
+import java.awt.*;
+import java.io.*;
 import java.util.Random;
 
-public class Game implements Runnable{
-    long lastGame = 0;
-    long lastSnake1 = 0;
-    long lastSnake2 = 0;
-
-    int gameFrequency = 50;
-
+public class Game implements Runnable, Serializable {
     // Game data
     private GameData gameData;
 
@@ -30,20 +28,9 @@ public class Game implements Runnable{
     private int rows = 100;
     private int cols = 100;
 
-    // Players
-    Player playerOne;
-    Player playerTwo;
-    Machine machine;
-
-    // Snakes
-    SuperSnake snake1;
-    SuperSnake snake2;
-
-    // Fruits
-    Edible fruit1;
 
     // Thread
-    Thread thread;
+    transient Thread thread;
 
     // Random
     Random random = new Random();
@@ -81,6 +68,9 @@ public class Game implements Runnable{
         this.gameData.setGamePaused(false);
     }
 
+    /**
+     * Method for stopping the game
+     */
     public void stop(){
         this.exit = true;
     }
@@ -137,6 +127,28 @@ public class Game implements Runnable{
 
    }
 
+    /**
+     * Method for saving the game
+     */
+    public void save(File archivo) throws IOException {
+        try {
+            // Creamos el stream
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(archivo.getAbsolutePath()));
+
+            // Guardamos el objeto
+            try {
+                out.writeObject(this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Cerramos el stream
+            out.close();
+
+        } catch (IOException ex) {
+            throw new IOException();
+        }
+    }
 
     /**
      * Method for running the thread
@@ -150,13 +162,6 @@ public class Game implements Runnable{
 
         while (!exit) {
             if ((System.currentTimeMillis() - lastGame) > gameFrequency) {
-               // while (this.gameData.isGamePaused()) {
-               //     try {
-               //         Thread.sleep(1);
-               //     } catch (InterruptedException e) {
-               //         e.printStackTrace();
-               //     }
-                //}
                 if (!this.gameData.isGamePaused()) {
                     if (this.gameData.isGameRunning()) {
                         if (this.getBoard() == null) {
@@ -203,6 +208,68 @@ public class Game implements Runnable{
                 }
             }
         }
+    }
+
+    /**
+     * Method for adding fruits
+     */
+    public void addFruit() {
+        int x = random.nextInt(cols - 1);
+        int y = random.nextInt(rows - 1);
+
+        if (x == 0) {
+            x++;
+        }
+
+        if (x == cols) {
+            x--;
+        }
+
+        if (y == 0) {
+            y++;
+        }
+
+        if (y == rows) {
+            y--;
+        }
+
+        int color = random.nextInt(2);
+
+        int[] fruit1Coordinate = new int[]{x,y};
+
+
+        // Create the fruit
+        this.updateCoordinates(x, y,1);
+
+    }
+
+    /**
+     * Method for adding power ups
+     */
+    public void addPowerUp() {
+        int x = random.nextInt(cols - 1);
+        int y = random.nextInt(rows - 1);
+
+        if (x == 0) {
+            x++;
+        }
+
+        if (x == cols) {
+            x--;
+        }
+
+        if (y == 0) {
+            y++;
+        }
+
+        if (y == rows) {
+            y--;
+        }
+
+        int[] fruit1Coordinate = new int[]{x,y};
+
+        // Create the fruit
+        this.updateCoordinates(x, y,2);
     }
 
     /**
@@ -281,7 +348,7 @@ public class Game implements Runnable{
         return coordinates;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Game game = new Game();
 
 
@@ -293,5 +360,5 @@ public class Game implements Runnable{
         game.setupPlayers();
         game.startGame();
 
-    }
+    }*/
 }

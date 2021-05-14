@@ -2,14 +2,16 @@ package domain.edibles;
 
 import domain.Game;
 import domain.players.SuperPlayer;
-import domain.snakes.SuperSnake;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Edible {
+public class Edible implements Serializable {
     private int x;
     private int y;
     private Color color;
+    private String type;
+    protected String image;
     private int points;
 
     public Edible(int x, int y, Color color, int points) {
@@ -64,5 +66,21 @@ public class Edible {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String tipo) {
+        this.type = tipo;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

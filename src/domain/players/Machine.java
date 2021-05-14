@@ -4,7 +4,9 @@ package domain.players;
 import domain.Game;
 import domain.snakes.SnakeMachine;
 
-public class Machine extends SuperPlayer{
+import java.io.Serializable;
+
+public class Machine extends SuperPlayer implements Serializable {
     // Machine types
     public static final String DISTRACTED = "distracted";
     public static final String CAUTIOUS = "cautious";

@@ -1,13 +1,15 @@
 package presentation;
 
 import domain.Game;
+import domain.exceptions.SnOOPeExceptions;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
-public class MainMenu extends DaddyPanel{
+public class MainMenu extends DaddyPanel implements Serializable {
     private JLabel title;
     private JButton backToGameButton;
     private JButton saveGameButton;
@@ -102,7 +104,12 @@ public class MainMenu extends DaddyPanel{
         this.saveGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveGameClicked();
+                try{
+                    saveGameClicked();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
             }
         });
 
@@ -125,8 +132,29 @@ public class MainMenu extends DaddyPanel{
     /**
      * Method for saving the game
      */
-    private void saveGameClicked(){
-        JOptionPane.showMessageDialog(null, "save game clicked");
+    private void saveGameClicked() throws IOException {
+        // JFileChooser
+        JFileChooser chooser = new JFileChooser();
+        int selected = chooser.showSaveDialog(this);
+
+        switch(selected){
+            case JFileChooser.APPROVE_OPTION:
+                File file = chooser.getSelectedFile();
+
+                try {
+                    getGame().save(file);
+                } catch (IOException ex){
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
+
+                break;
+            case JFileChooser.ERROR_OPTION:
+                JOptionPane.showMessageDialog(null, "Something bad happened");
+                break;
+            case JFileChooser.CANCEL_OPTION:
+                JOptionPane.showMessageDialog(null, "Cancel everything!");
+                break;
+        }
     }
 
     /**
