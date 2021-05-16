@@ -2,13 +2,12 @@ package presentation;
 
 import domain.Game;
 import domain.edibles.Apple;
-import domain.edibles.Arrow;
+import domain.edibles.SpeedArrow;
 import domain.edibles.Edible;
 import domain.edibles.PowerUp;
 import domain.players.Machine;
 import domain.players.Player;
 import domain.players.SuperPlayer;
-import domain.snakes.Snake;
 import domain.snakes.SuperSnake;
 import domain.directions;
 
@@ -439,7 +438,7 @@ public class GameBoard extends DaddyPanel implements Serializable {
             // Create the power up
             switch (power){
                 case 1:
-                    this.powerUp = new Arrow(x, y, Color.red, 5);
+                    this.powerUp = new SpeedArrow(x, y, Color.red, 5);
             }
 
             // Set its coordinate

@@ -28,7 +28,9 @@ public class SnOOPe extends JFrame implements Serializable {
     public final static String GAME_BOARD = "game board";
     public final static String GAME_PAUSE_MENU = "game board pause menu";
     public final static String SELECT_MACHINE_TYPE = "select machine type";
+    public final static String CONFIGURATION_PANEL = "configuration panel";
     public final static String END_GAME = "end game";
+
 
     // Configuration
     private GameData data;
@@ -285,6 +287,12 @@ public class SnOOPe extends JFrame implements Serializable {
      * Method for modifying the board
      */
     private void configureGame(){
+        ConfigurationPanel config = new ConfigurationPanel(this, this.game);
+
+        cards.add(config, CONFIGURATION_PANEL);
+        selectCard(CONFIGURATION_PANEL);
+
+
         /*ModifyBoard modify = new ModifyBoard(this, this.config);
 
         this.prepareMenuActions();

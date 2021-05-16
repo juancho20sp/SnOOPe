@@ -280,6 +280,11 @@ public class GameSetup extends DaddyPanel implements Serializable {
      * @return true if the fields are filled, false otherwise
      */
     private boolean validateFields(){
+        // If validations are not activated, start the game
+        if (!super.getGame().getGameData().isValidationsActivated()){
+            return true;
+        }
+
         boolean valid = true;
 
         Player player1 = super.getGameData().getPlayerOne();

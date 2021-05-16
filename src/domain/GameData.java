@@ -15,6 +15,9 @@ public class GameData implements Serializable {
 
     private int frequencyValue = 20;
 
+    private boolean validationsActivated = true;
+    private boolean isBoardInfinite = false;
+
     public String getGameType() {
         return gameType;
     }
@@ -69,5 +72,21 @@ public class GameData implements Serializable {
 
     public void setGamePaused(boolean gamePaused) {
         isGamePaused = gamePaused;
+    }
+
+    public boolean isValidationsActivated() {
+        return validationsActivated;
+    }
+
+    public void setValidationsActivated(boolean validationsActivated) {
+        this.validationsActivated = validationsActivated;
+    }
+
+    public boolean isBoardInfinite() {
+        return isBoardInfinite;
+    }
+
+    public void setBoardInfinite(boolean boardInfinite) {
+        isBoardInfinite = boardInfinite;
     }
 }

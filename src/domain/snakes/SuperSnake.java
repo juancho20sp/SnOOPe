@@ -80,19 +80,27 @@ public abstract class SuperSnake implements Serializable {
         int x = this.getHeadPosition()[0];
         int y = this.getHeadPosition()[1];
 
+        boolean infiniteBoard = game.getGameData().isBoardInfinite();
+
         switch (this.getDirection()){
             case UP:
                 y = y-1;
                 this.setHeadPosition(new int[]{x, y});
 
                 if (y >= rows - 1){
-                    //this.setHeadPosition(new int[]{x, 0});
-                    game.getGameData().setGameRunning(false);
+                    if (infiniteBoard){
+                        this.setHeadPosition(new int[]{x, 0});
+                    } else {
+                        game.getGameData().setGameRunning(false);
+                    }
                 }
 
                 if (y <= 0){
-                    //this.setHeadPosition(new int[]{x, rows - 1});
-                    game.getGameData().setGameRunning(false);
+                    if (infiniteBoard){
+                        this.setHeadPosition(new int[]{x, rows - 1});
+                    } else {
+                        game.getGameData().setGameRunning(false);
+                    }
                 }
                 break;
 
@@ -101,13 +109,19 @@ public abstract class SuperSnake implements Serializable {
                 this.setHeadPosition(new int[]{x, y});
 
                 if (y >= rows - 1){
-                    //this.setHeadPosition(new int[]{x, 0});
-                    game.getGameData().setGameRunning(false);
+                    if (infiniteBoard){
+                        this.setHeadPosition(new int[]{x, 0});
+                    } else {
+                        game.getGameData().setGameRunning(false);
+                    }
                 }
 
                 if (y <= 0){
-                    //this.setHeadPosition(new int[]{x, rows - 1});
-                    game.getGameData().setGameRunning(false);
+                    if (infiniteBoard){
+                        this.setHeadPosition(new int[]{x, rows - 1});
+                    } else {
+                        game.getGameData().setGameRunning(false);
+                    }
                 }
                 break;
 
@@ -116,13 +130,19 @@ public abstract class SuperSnake implements Serializable {
                 this.setHeadPosition(new int[]{x, y});
 
                 if (x >= cols - 1){
-                    //this.setHeadPosition(new int[]{0, y});
-                    game.getGameData().setGameRunning(false);
+                    if (infiniteBoard){
+                        this.setHeadPosition(new int[]{0, y});
+                    } else {
+                        game.getGameData().setGameRunning(false);
+                    }
                 }
 
                 if (x <= 0){
-                    //this.setHeadPosition(new int[]{cols - 1, y});
-                    game.getGameData().setGameRunning(false);
+                    if (infiniteBoard){
+                        this.setHeadPosition(new int[]{cols - 1, y});
+                    } else {
+                        game.getGameData().setGameRunning(false);
+                    }
                 }
                 break;
             case RIGHT:
@@ -130,13 +150,19 @@ public abstract class SuperSnake implements Serializable {
                 this.setHeadPosition(new int[]{x, y});
 
                 if (x >= cols - 1){
-                    //this.setHeadPosition(new int[]{0, y});
-                    game.getGameData().setGameRunning(false);
+                    if (infiniteBoard){
+                        this.setHeadPosition(new int[]{0, y});
+                    } else {
+                        game.getGameData().setGameRunning(false);
+                    }
                 }
 
                 if (x <= 0){
-                    //this.setHeadPosition(new int[]{cols - 1, y});
-                    game.getGameData().setGameRunning(false);
+                    if (infiniteBoard){
+                        this.setHeadPosition(new int[]{cols - 1, y});
+                    } else {
+                        game.getGameData().setGameRunning(false);
+                    }
                 }
                 break;
 

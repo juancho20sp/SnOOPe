@@ -6,13 +6,11 @@ import static org.junit.Assert.*;
 import domain.Game;
 import domain.GameData;
 import domain.edibles.Apple;
-import domain.edibles.Arrow;
+import domain.edibles.SpeedArrow;
 import domain.edibles.Edible;
 import domain.players.PlayerOne;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import presentation.GameBoard;
 import presentation.GameSetup;
 
 public class SnOOPeTests {
@@ -89,7 +87,7 @@ public class SnOOPeTests {
     public void shouldSpeedUpPlayer(){
         int initialFreq = game.getSnake1().getFrequency();
 
-        game.getGameData().getPlayerOne().setPowerUp(new Arrow(2,2, null, 5));
+        game.getGameData().getPlayerOne().setPowerUp(new SpeedArrow(2,2, null, 5));
 
         game.getGameData().getPlayerOne().usePowerUp();
 
@@ -124,7 +122,7 @@ public class SnOOPeTests {
 
         System.out.println(initialPoints);
 
-        game.getGameData().getPlayerOne().setPowerUp(new Arrow(2,2, null, 5));
+        game.getGameData().getPlayerOne().setPowerUp(new SpeedArrow(2,2, null, 5));
 
         game.getGameData().getPlayerOne().usePowerUp();
 

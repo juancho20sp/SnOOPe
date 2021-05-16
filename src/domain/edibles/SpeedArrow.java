@@ -9,11 +9,11 @@ import java.io.Serializable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Arrow extends PowerUp implements Serializable {
+public class SpeedArrow extends PowerUp implements Serializable {
     transient Timer timer;
 
 
-    public Arrow(int x, int y, Color color, int points) {
+    public SpeedArrow(int x, int y, Color color, int points) {
         super(x, y, color, points);
 
         super.setImage("./images/arrow.png");
