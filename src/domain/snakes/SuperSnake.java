@@ -194,6 +194,8 @@ public abstract class SuperSnake implements Serializable {
 
             System.out.println("New frec: " + this.getFrequency());
         }
+
+        System.out.println("New size: " + this.positions.size());
     }
 
     /**

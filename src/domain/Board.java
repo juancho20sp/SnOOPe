@@ -70,6 +70,8 @@ public class Board {
         fruits.put(1, rainbow);
         fruits.put(2, candy);
         fruits.put(3, venom);
+
+        //fruits.put(0, venom);
     }
 
     /**
@@ -108,6 +110,7 @@ public class Board {
 
         // Pick the fruit
         Edible selectedFruit = fruits.get(option);
+        //Edible selectedFruit = fruits.get(0);
 
         // Edit the fruit
         selectedFruit.setX(x);

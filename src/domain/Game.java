@@ -225,9 +225,7 @@ public class Game implements Runnable, Serializable {
                         if((System.currentTimeMillis() - getTimerFruit1()) > gameData.getFruitsTimer()){
 
                             addFruit1();
-
                             setTimerFruit1(System.currentTimeMillis());
-
                         }
 
                         if (this.getGameBoard() != null) {

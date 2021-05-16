@@ -15,7 +15,7 @@ public class GameData implements Serializable {
 
     private int frequencyValue = 20;
 
-    private int fruitsTimer = 2000;
+    private int fruitsTimer = 5000;
 
     //private boolean validationsActivated = true;
     private boolean validationsActivated = false;

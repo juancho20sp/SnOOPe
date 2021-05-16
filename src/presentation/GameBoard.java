@@ -487,6 +487,7 @@ public class GameBoard extends DaddyPanel implements Serializable {
             // Eat the apple
             getFruit1().eatEdible(getFruit1(), getPlayerOne(), getGame());
 
+            // Add fruit and reset timer
             super.getGame().addFruit1();
             super.getGame().setTimerFruit1(0);
         }
@@ -494,11 +495,12 @@ public class GameBoard extends DaddyPanel implements Serializable {
         // Fruta 1 - Snake 2
         if (!this.isSinglePlayer()){
             if ((snake2X == appleX) && (snake2Y == appleY)) {
-
+                // Eat the apple
                 getFruit1().eatEdible(getFruit1(), getPlayerTwo(), getGame());
 
-
+                // Add fruit and reset timer
                 super.getGame().addFruit1();
+                super.getGame().setTimerFruit1(0);
             }
         }
 

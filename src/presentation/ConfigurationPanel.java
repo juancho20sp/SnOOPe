@@ -14,6 +14,7 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
         private JButton infiniteBoardButton;
         private JButton validationsButton;
         private JButton cellSizeButton;
+        private JButton fruitTimerButton;
         private JButton goBack;
 
         /**
@@ -83,6 +84,10 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
 
             this.cellSizeButton = new JButton("Tamaño de las celdas: " + cellSize + " px");
 
+            this.fruitTimerButton =
+                    new JButton("Duración de las frutas: " + (getGame().getGameData().getFruitsTimer() / 1000) + " " +
+                            "segundos");
+
             this.goBack = new JButton("Volver");
         }
 
@@ -97,6 +102,7 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
             add(this.infiniteBoardButton);
             add(this.validationsButton);
             add(this.cellSizeButton);
+            add(this.fruitTimerButton);
             add(this.goBack);
         }
 
@@ -122,6 +128,13 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     changeCellSize();
+                }
+            });
+
+            this.fruitTimerButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    changeFruitTimer();
                 }
             });
 
@@ -165,6 +178,26 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
             newValue = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo tamaño de las celdas: ").trim());
 
             getGame().getGuiConfiguration().setCellSize(newValue);
+        } catch(Exception ex) {}
+
+        this.refresh();
+    }
+
+    /**
+     * Method for changing the fruit timer
+     */
+    private void changeFruitTimer(){
+        int newValue = 0;
+
+        try {
+            newValue =
+                    Integer.parseInt(JOptionPane.showInputDialog("Ingrese la nueva duración de las frutas (seg): ").trim());
+
+            newValue = newValue * 1000;
+
+            System.out.println("new value: " + newValue);
+
+            getGame().getGameData().setFruitsTimer(newValue);
         } catch(Exception ex) {}
 
         this.refresh();
