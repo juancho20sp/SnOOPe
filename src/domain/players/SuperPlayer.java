@@ -14,8 +14,8 @@ public abstract class SuperPlayer implements Serializable {
     private String name;
 
     // Snake
-    private Color headColor;
-    private Color bodyColor;
+    private Color headColor = Color.PINK;
+    private Color bodyColor = Color.RED;
     private SuperSnake superSnake;
 
     // Power ups

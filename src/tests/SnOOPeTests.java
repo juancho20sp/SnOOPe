@@ -51,7 +51,7 @@ public class SnOOPeTests {
      */
     @Test
     public void shouldAddApple(){
-        game.addFruit();
+        game.addFruit1();
 
         int sum = 0;
         for (int i = 0; i < game.getCoordinates().length; i++) {

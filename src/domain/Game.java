@@ -1,16 +1,10 @@
 package domain;
 
-import domain.edibles.Apple;
 import domain.edibles.Edible;
-import domain.players.Player;
-import domain.players.Machine;
-import domain.players.PlayerOne;
 import domain.snakes.SuperSnake;
 import presentation.GameBoard;
 import presentation.GameSetup;
-import presentation.SnOOPe;
 
-import java.awt.*;
 import java.io.*;
 import java.util.Random;
 
@@ -22,15 +16,29 @@ public class Game implements Runnable, Serializable {
     private GUIConfiguration guiConfiguration;
 
     // Game Board
-    GameBoard board;
+    GameBoard gameBoard;
+
+    // Board
+    Board board;
+
+    // Fruits
+    Edible fruit1;
+    Edible fruit2;
 
     // Dimensions
     private int rows = 100;
     private int cols = 100;
 
 
+
     // Thread
     transient Thread thread;
+
+    // Timers
+    transient Timers timers;
+
+    // Fruit timers
+    long timerFruit1 = 0;
 
     // Random
     Random random = new Random();
@@ -45,13 +53,22 @@ public class Game implements Runnable, Serializable {
      * Method for starting the game
      */
     public void startGame(){
+        System.out.println("game started");
+
         thread = new Thread(this);
+        timers = new Timers(this);
 
         this.exit = false;
 
+        // Start thread
         thread.start();
 
-        this.createCoordinates();
+        // Create board
+        this.createBoard();
+
+        // Add fruit 1
+        this.addFruit1();
+
     }
 
     /**
@@ -73,6 +90,13 @@ public class Game implements Runnable, Serializable {
      */
     public void stop(){
         this.exit = true;
+    }
+
+    /**
+     * Method for creating the board
+     */
+    public void createBoard(){
+        this.board = new Board(this);
     }
 
     /**
@@ -157,6 +181,7 @@ public class Game implements Runnable, Serializable {
         long lastGame = 0;
         long lastSnake1 = 0;
         long lastSnake2 = 0;
+        long fruit1Timer = 0;
 
         int gameFrequency = 10;
 
@@ -164,7 +189,7 @@ public class Game implements Runnable, Serializable {
             if ((System.currentTimeMillis() - lastGame) > gameFrequency) {
                 if (!this.gameData.isGamePaused()) {
                     if (this.gameData.isGameRunning()) {
-                        if (this.getBoard() == null) {
+                        if (this.getGameBoard() == null) {
                             System.out.println("running");
                             getSnake1().move(getSnake1().getDirection());
                             getSnake1().updatePositions(18, 37);
@@ -172,9 +197,9 @@ public class Game implements Runnable, Serializable {
 
 
                         // Velocity for the snake 1
-                        if ((System.currentTimeMillis() - lastSnake1) > getSnake1().getFrequency() && this.getBoard() != null) {
+                        if ((System.currentTimeMillis() - lastSnake1) > getSnake1().getFrequency() && this.getGameBoard() != null) {
                             getSnake1().move(getSnake1().getDirection());
-                            getSnake1().updatePositions(this.getBoard().getRows(), this.getBoard().getCols());
+                            getSnake1().updatePositions(this.getGameBoard().getRows(), this.getGameBoard().getCols());
 
                             lastSnake1 = System.currentTimeMillis();
                         }
@@ -190,14 +215,23 @@ public class Game implements Runnable, Serializable {
                                 }
 
 
-                                getSnake2().updatePositions(this.getBoard().getRows(), this.getBoard().getCols());
+                                getSnake2().updatePositions(this.getGameBoard().getRows(), this.getGameBoard().getCols());
 
                                 lastSnake2 = System.currentTimeMillis();
                             }
                         }
 
-                        if (this.getBoard() != null) {
-                            this.getBoard().refresh();
+                        // Fruit timer
+                        if((System.currentTimeMillis() - getTimerFruit1()) > gameData.getFruitsTimer()){
+
+                            addFruit1();
+
+                            setTimerFruit1(System.currentTimeMillis());
+
+                        }
+
+                        if (this.getGameBoard() != null) {
+                            this.getGameBoard().refresh();
                         }
 
                         lastGame = System.currentTimeMillis();
@@ -213,34 +247,31 @@ public class Game implements Runnable, Serializable {
     /**
      * Method for adding fruits
      */
-    public void addFruit() {
-        int x = random.nextInt(cols - 1);
-        int y = random.nextInt(rows - 1);
+    public void addFruit(){
+        this.addFruit1();
 
-        if (x == 0) {
-            x++;
+        if (!isSinglePlayer()){
+            this.addFruit2();
         }
-
-        if (x == cols) {
-            x--;
-        }
-
-        if (y == 0) {
-            y++;
-        }
-
-        if (y == rows) {
-            y--;
-        }
-
-        int color = random.nextInt(2);
-
-        int[] fruit1Coordinate = new int[]{x,y};
+    }
 
 
-        // Create the fruit
-        this.updateCoordinates(x, y,1);
+    /**
+     * Method for adding the fruit1
+     */
+    public void addFruit1() {
+        Edible newFruit = this.board.addFruit();
 
+        this.setFruit1(newFruit);
+    }
+
+    /**
+     * Method for adding the fruit2
+     */
+    public void addFruit2() {
+        Edible newFruit = this.board.addFruit();
+
+        this.setFruit2(newFruit);
     }
 
     /**
@@ -306,12 +337,12 @@ public class Game implements Runnable, Serializable {
         this.guiConfiguration = guiConfiguration;
     }
 
-    public GameBoard getBoard() {
-        return board;
+    public GameBoard getGameBoard() {
+        return gameBoard;
     }
 
-    public void setBoard(GameBoard board) {
-        this.board = board;
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     public SuperSnake getSnake1(){
@@ -346,6 +377,38 @@ public class Game implements Runnable, Serializable {
 
     public int[][] getCoordinates() {
         return coordinates;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public Edible getFruit1() {
+        return fruit1;
+    }
+
+    public void setFruit1(Edible fruit1) {
+        this.fruit1 = fruit1;
+    }
+
+    public Edible getFruit2() {
+        return fruit2;
+    }
+
+    public void setFruit2(Edible fruit2) {
+        this.fruit2 = fruit2;
+    }
+
+    public long getTimerFruit1() {
+        return timerFruit1;
+    }
+
+    public void setTimerFruit1(long timerFruit1) {
+        this.timerFruit1 = timerFruit1;
     }
 
     /*public static void main(String[] args) {

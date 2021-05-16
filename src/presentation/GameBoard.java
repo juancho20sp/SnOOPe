@@ -1,7 +1,6 @@
 package presentation;
 
 import domain.Game;
-import domain.edibles.Apple;
 import domain.edibles.SpeedArrow;
 import domain.edibles.Edible;
 import domain.edibles.PowerUp;
@@ -82,7 +81,7 @@ public class GameBoard extends DaddyPanel implements Serializable {
         super.getGameData().setGameRunning(true);
 
         // Set board
-        game.setBoard(this);
+        game.setGameBoard(this);
 
         // Set Players
         game.setupPlayers();
@@ -116,8 +115,11 @@ public class GameBoard extends DaddyPanel implements Serializable {
         this.createUpperPanel();
         this.createGameBoardPanel();
 
+        // Create board
+        getGame().createBoard();
+
         // Add fruits
-        this.addFruit();
+        super.getGame().addFruit();
 
         // Add power up
         this.addPowerUp();
@@ -222,6 +224,10 @@ public class GameBoard extends DaddyPanel implements Serializable {
         this.cols = this.boardPanel.getWidth() / CELL_SIZE;
         this.rows = this.boardPanel.getHeight() / CELL_SIZE;
 
+        // Save rows and cols
+        getGame().getGameData().setGetGameBoardCols(this.cols);
+        getGame().getGameData().setGameBoardRows(this.rows);
+
         super.getGame().setCols(this.cols);
         super.getGame().setRows(this.rows);
     }
@@ -283,8 +289,13 @@ public class GameBoard extends DaddyPanel implements Serializable {
 
 
         // Fruits
-        g.setColor(fruit1.getColor());
-        g.fillRect(fixXPosition(fruit1.getX()), fixYPosition(fruit1.getY()), CELL_SIZE, CELL_SIZE);
+        if (getFruit1() != null){
+            g.setColor(getFruit1().getColor());
+            g.fillRect(fixXPosition(getFruit1().getX()), fixYPosition(getFruit1().getY()), CELL_SIZE, CELL_SIZE);
+            g.drawImage(new ImageIcon(getFruit1().getImage()).getImage(), fixXPosition(getFruit1().getX()),
+                    fixYPosition(getFruit1().getY()),this);
+        }
+
 
         // Pasar un powerup
         //g.setColor(powerUp.getColor());
@@ -362,7 +373,7 @@ public class GameBoard extends DaddyPanel implements Serializable {
      */
     public void addFruit() {
         //Color[] colors = new Color[]{snake1.getHeadColor(), snake1.getBodyColor()};
-        Color[] colors = new Color[]{this.getPlayerOne().getHeadColor(), this.getPlayerOne().getBodyColor()};
+        /*Color[] colors = new Color[]{this.getPlayerOne().getHeadColor(), this.getPlayerOne().getBodyColor()};
 
         int x = random.nextInt(cols - 1);
         int y = random.nextInt(rows - 1);
@@ -395,9 +406,10 @@ public class GameBoard extends DaddyPanel implements Serializable {
 
             // Set its coordinate
             getGame().updateCoordinates(x, y, 1);
-        }
+        }*/
 
-
+        //setFruit1(getGame().addFruit1());
+        //setFruit1(getGame().getBoard().addFruit());
     }
 
     /**
@@ -466,26 +478,27 @@ public class GameBoard extends DaddyPanel implements Serializable {
         }
 
 
-        int appleX = fruit1.getX();
-        int appleY = fruit1.getY();
+        int appleX = getFruit1().getX();
+        int appleY = getFruit1().getY();
 
 
         // Fruta 1 - Snake 1
         if ((snake1X == appleX) && (snake1Y == appleY)) {
             // Eat the apple
-            fruit1.eatEdible(fruit1, getPlayerOne(), getGame());
+            getFruit1().eatEdible(getFruit1(), getPlayerOne(), getGame());
 
-            this.addFruit();
+            super.getGame().addFruit1();
+            super.getGame().setTimerFruit1(0);
         }
 
         // Fruta 1 - Snake 2
         if (!this.isSinglePlayer()){
             if ((snake2X == appleX) && (snake2Y == appleY)) {
 
-                fruit1.eatEdible(fruit1, getPlayerTwo(), getGame());
+                getFruit1().eatEdible(getFruit1(), getPlayerTwo(), getGame());
 
 
-                this.addFruit();
+                super.getGame().addFruit1();
             }
         }
 
@@ -684,6 +697,14 @@ public class GameBoard extends DaddyPanel implements Serializable {
 
     public void setPowerUpHidden(boolean powerUpHidden) {
         isPowerUpHidden = powerUpHidden;
+    }
+
+    public Edible getFruit1() {
+        return super.getGame().getFruit1();
+    }
+
+    public void setFruit1(Edible fruit1) {
+        this.fruit1 = fruit1;
     }
 
     /**

@@ -15,8 +15,16 @@ public class GameData implements Serializable {
 
     private int frequencyValue = 20;
 
-    private boolean validationsActivated = true;
-    private boolean isBoardInfinite = false;
+    private int fruitsTimer = 2000;
+
+    //private boolean validationsActivated = true;
+    private boolean validationsActivated = false;
+    //private boolean isBoardInfinite = false;
+    private boolean isBoardInfinite = true;
+
+    // Game board
+    private int gameBoardRows;
+    private int getGameBoardCols;
 
     public String getGameType() {
         return gameType;
@@ -88,5 +96,29 @@ public class GameData implements Serializable {
 
     public void setBoardInfinite(boolean boardInfinite) {
         isBoardInfinite = boardInfinite;
+    }
+
+    public int getGameBoardRows() {
+        return gameBoardRows;
+    }
+
+    public void setGameBoardRows(int gameBoardRows) {
+        this.gameBoardRows = gameBoardRows;
+    }
+
+    public int getGetGameBoardCols() {
+        return getGameBoardCols;
+    }
+
+    public void setGetGameBoardCols(int getGameBoardCols) {
+        this.getGameBoardCols = getGameBoardCols;
+    }
+
+    public int getFruitsTimer() {
+        return fruitsTimer;
+    }
+
+    public void setFruitsTimer(int fruitsTimer) {
+        this.fruitsTimer = fruitsTimer;
     }
 }
