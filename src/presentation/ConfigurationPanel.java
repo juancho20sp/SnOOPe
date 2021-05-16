@@ -13,6 +13,7 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
         private JLabel title;
         private JButton infiniteBoardButton;
         private JButton validationsButton;
+        private JButton cellSizeButton;
         private JButton goBack;
 
         /**
@@ -73,11 +74,15 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
             String status = infiniteBoard ? "ACTIVADO" : "DESACTIVADO";
 
             boolean validations = getGame().getGameData().isValidationsActivated();
-
             String statusValidations = validations ? "ACTIVADAS" : "DESACTIVADAS";
+
+            int cellSize = getGame().getGuiConfiguration().getCellSize();
 
             this.infiniteBoardButton = new JButton("Activar / desactivar tablero infinito: " + status);
             this.validationsButton = new JButton("Activar / desactivar validaciones: " + statusValidations);
+
+            this.cellSizeButton = new JButton("Tamaño de las celdas: " + cellSize + " px");
+
             this.goBack = new JButton("Volver");
         }
 
@@ -91,6 +96,7 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
             // Buttons
             add(this.infiniteBoardButton);
             add(this.validationsButton);
+            add(this.cellSizeButton);
             add(this.goBack);
         }
 
@@ -109,6 +115,13 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     toggleValidations();
+                }
+            });
+
+            this.cellSizeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    changeCellSize();
                 }
             });
 
@@ -143,7 +156,22 @@ public class ConfigurationPanel extends DaddyPanel implements Serializable {
         }
 
     /**
-         * Method for refreshing the view
+     * Method for changing the cell size
+     */
+    private void changeCellSize(){
+        int newValue = 0;
+
+        try {
+            newValue = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo tamaño de las celdas: ").trim());
+
+            getGame().getGuiConfiguration().setCellSize(newValue);
+        } catch(Exception ex) {}
+
+        this.refresh();
+    }
+
+    /**
+     * Method for refreshing the view
      */
     private void refresh() {
         removeAll();
