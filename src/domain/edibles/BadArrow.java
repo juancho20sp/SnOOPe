@@ -55,7 +55,5 @@ public class BadArrow extends PowerUp implements Serializable {
 
             timer.schedule(timerTask, 5000);
         }
-
-        System.out.println("power up used");
     }
 }

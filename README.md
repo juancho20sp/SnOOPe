@@ -1,5 +1,7 @@
 # SnOOPe
 ## TODO list
+- Resetear el superpoder luego de usarlo
+
 - Save the game (probably an interface)
 - Open a saved game
 - Create the view of the type of machine

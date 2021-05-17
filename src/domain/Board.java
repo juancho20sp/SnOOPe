@@ -23,6 +23,9 @@ public class Board {
     // Edible board
     private Edible[][] board;
 
+    // Trap blocks
+    private ArrayList<Brick> bricks = new ArrayList<>();
+
     // Random
     Random random = new Random();
 
@@ -54,16 +57,16 @@ public class Board {
         this.rows = game.getGameData().getGameBoardRows();
         this.cols = game.getGameData().getGetGameBoardCols();
 
-        System.out.println("cols: " + this.rows);
-        System.out.println("rows: " + this.cols);
+        this.board = new Edible[cols][rows];
 
-        this.board = new Edible[rows][cols];
-
-        for (int i = 0; i < this.rows; i++) {
-            for (int j = 0; j < this.cols; j++) {
+        for (int i = 0; i < this.cols; i++) {
+            for (int j = 0; j < this.rows ; j++) {
                 this.board[i][j] = null;
             }
         }
+
+        this.setBoard(this.board);
+
     }
 
     /**
@@ -102,14 +105,14 @@ public class Board {
         Lupa lupa = new Lupa(0, 0, null, 5);
 
         // Add power ups
-        /*powerUps.put(0, speedArrow);
+        powerUps.put(0, speedArrow);
         powerUps.put(1, badArrow);
         powerUps.put(2, division);
         powerUps.put(3, brick);
         powerUps.put(4, fireStar);
-        powerUps.put(5, lupa);*/
+        powerUps.put(5, lupa);
 
-        powerUps.put(0, badArrow);
+        //powerUps.put(0, division);
     }
 
     /**
@@ -119,8 +122,8 @@ public class Board {
     public Edible addFruit(){
         ArrayList<Color> colors = this.getSnakeColors();
 
-        int x = random.nextInt(rows - 1);
-        int y = random.nextInt(cols - 1);
+        int y = random.nextInt(rows - 1);
+        int x = random.nextInt(cols - 1);
 
         if (x == 0) {
             x++;
@@ -143,20 +146,21 @@ public class Board {
 
         if (this.isOccupied(x, y)){
             this.addFruit();
+        } else {
+            // Pick the fruit
+            Edible selectedFruit = fruits.get(option);
+            //Edible selectedFruit = fruits.get(0);
+
+            this.board[x][y] = selectedFruit;
+
+            // Edit the fruit
+            selectedFruit.setX(x);
+            selectedFruit.setY(y);
+            selectedFruit.setColor(colors.get(color));
+
+            return selectedFruit;
         }
-
-        // Pick the fruit
-        Edible selectedFruit = fruits.get(option);
-        //Edible selectedFruit = fruits.get(0);
-
-        this.board[x][y] = selectedFruit;
-
-        // Edit the fruit
-        selectedFruit.setX(x);
-        selectedFruit.setY(y);
-        selectedFruit.setColor(colors.get(color));
-
-        return selectedFruit;
+        return null;
     }
 
     /**
@@ -186,8 +190,8 @@ public class Board {
 
         colors.add(Color.yellow);
 
-        int x = random.nextInt(rows - 1);
-        int y = random.nextInt(cols - 1);
+        int y = random.nextInt(rows - 1);
+        int x = random.nextInt(cols - 1);
 
         if (x == 0) {
             x++;
@@ -210,20 +214,65 @@ public class Board {
 
         if (this.isOccupied(x, y)){
             this.addPowerUp();
+        } else {
+            // Pick the fruit
+            //PowerUp selectedPowerUp = powerUps.get(option);
+            PowerUp selectedPowerUp = powerUps.get(3);
+
+            this.board[x][y] = selectedPowerUp;
+
+            // Edit the fruit
+            selectedPowerUp.setX(x);
+            selectedPowerUp.setY(y);
+            selectedPowerUp.setColor(colors.get(color));
+
+            return selectedPowerUp;
         }
 
-        // Pick the fruit
-        //PowerUp selectedPowerUp = powerUps.get(option);
-        PowerUp selectedPowerUp = powerUps.get(0);
+        return null;
+    }
 
-        this.board[x][y] = selectedPowerUp;
+    /**
+     * Method for adding power ups
+     */
+    public void addTrapBlock(){
+        int y = random.nextInt(rows - 1);
+        int x = random.nextInt(cols - 1);
 
-        // Edit the fruit
-        selectedPowerUp.setX(x);
-        selectedPowerUp.setY(y);
-        selectedPowerUp.setColor(colors.get(color));
+        if (x == 0) {
+            x++;
+        }
 
-        return selectedPowerUp;
+        if (x == cols) {
+            x--;
+        }
+
+        if (y == 0) {
+            y++;
+        }
+
+        if (y == rows) {
+            y--;
+        }
+
+        int[] brick = new int[]{x, y};
+
+        if (this.bricks.contains(brick)){
+            this.addTrapBlock();
+        } else {
+            Brick newBrick = new Brick(x, y, null, 0);
+            this.board[x][y] = newBrick;
+
+            // Edit the brick
+            newBrick.setX(x);
+            newBrick.setY(y);
+
+            // Add the brick
+            this.bricks.add(newBrick);
+
+        }
+
+
     }
 
     /**
@@ -243,7 +292,7 @@ public class Board {
             }
         }
 
-        if (this.board[x][y] != null){
+        if (this.getBoard()[x][y] != null){
             return true;
         }
 
@@ -256,8 +305,6 @@ public class Board {
      * @param y The y position to be cleaned
      */
     public void cleanPosition(int x, int y){
-        System.out.println("LIMPIANDO TABLERO");
-
         this.board[x][y] = null;
     }
 
@@ -275,5 +322,21 @@ public class Board {
 
     public void setCols(int cols) {
         this.cols = cols;
+    }
+
+    public Edible[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(Edible[][] board) {
+        this.board = board;
+    }
+
+    public ArrayList<Brick> getBricks() {
+        return bricks;
+    }
+
+    public void setBricks(ArrayList<Brick> bricks) {
+        this.bricks = bricks;
     }
 }

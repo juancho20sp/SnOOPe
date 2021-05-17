@@ -24,11 +24,6 @@ public class Brick extends PowerUp implements Serializable {
      */
     @Override
     public void usePowerUp(SuperPlayer player, SuperPlayer player2){
-        int oldFrequency = player.getSnake().getFrequency();
-
-        player.getSnake().setFrequency(40);
-
-
-        System.out.println("power up used");
+        game.getBoard().addTrapBlock();
     }
 }

@@ -1,6 +1,7 @@
 package presentation;
 
 import domain.Game;
+import domain.edibles.Brick;
 import domain.edibles.SpeedArrow;
 import domain.edibles.Edible;
 import domain.edibles.PowerUp;
@@ -298,12 +299,18 @@ public class GameBoard extends DaddyPanel implements Serializable {
         }
 
 
-        // Pasar un powerup
+        // Power up
         if (getPowerUp() != null) {
             g.setColor(getPowerUp().getColor());
             g.fillRect(fixXPosition(getPowerUp().getX()), fixYPosition(getPowerUp().getY()), CELL_SIZE, CELL_SIZE);
             g.drawImage(new ImageIcon(getPowerUp().getImage()).getImage(), fixXPosition(getPowerUp().getX()), fixYPosition(getPowerUp().getY()), this);
         }
+
+        // Bricks
+        for (Brick brick : super.getGame().getBoard().getBricks()) {
+            g.drawImage(new ImageIcon(brick.getImage()).getImage(), fixXPosition(brick.getX()), fixYPosition(brick.getY()), this);
+        }
+
 
 
 
@@ -370,98 +377,6 @@ public class GameBoard extends DaddyPanel implements Serializable {
         revalidate();
         repaint();
     }
-
-    /**
-     * Method for adding fruits to the game board
-     */
-    public void addFruit() {
-        //Color[] colors = new Color[]{snake1.getHeadColor(), snake1.getBodyColor()};
-        /*Color[] colors = new Color[]{this.getPlayerOne().getHeadColor(), this.getPlayerOne().getBodyColor()};
-
-        int x = random.nextInt(cols - 1);
-        int y = random.nextInt(rows - 1);
-
-        if (x == 0) {
-            x++;
-        }
-
-        if (x == cols) {
-            x--;
-        }
-
-        if (y == 0) {
-            y++;
-        }
-
-        if (y == rows) {
-            y--;
-        }
-
-        int color = random.nextInt(2);
-
-        int[] fruit1Coordinate = new int[]{x,y};
-
-        if (this.getSnake1().getPositions().contains(fruit1Coordinate) || this.getSnake1().getHeadPosition().equals(fruit1Coordinate)){
-            this.addFruit();
-        } else {
-            // Create the fruit
-            this.fruit1 = new Apple(x, y, colors[color]);
-
-            // Set its coordinate
-            getGame().updateCoordinates(x, y, 1);
-        }*/
-
-        //setFruit1(getGame().addFruit1());
-        //setFruit1(getGame().getBoard().addFruit());
-    }
-
-    /**
-     * Method for adding powerups to the game board
-     */
-    /*private void addPowerUp() {
-        //Color[] colors = new Color[]{snake1.getHeadColor(), snake1.getBodyColor()};
-          // Arrow -> 0
-        // Trap -> 1
-
-        int x = random.nextInt(cols - 1);
-        int y = random.nextInt(rows - 1);
-
-        if (x == 0) {
-            x++;
-        }
-
-        if (x == cols) {
-            x--;
-        }
-
-        if (y == 0) {
-            y++;
-        }
-
-        if (y == rows) {
-            y--;
-        }
-
-        //random.nextInt(1);
-        int power = 1;
-
-        int[] powerUpCoordinate = new int[]{x,y};
-
-        if (this.getSnake1().getPositions().contains(powerUpCoordinate) || this.getSnake1().getHeadPosition().equals(powerUpCoordinate)){
-            this.addPowerUp();
-        } else {
-            // Create the power up
-            switch (power){
-                case 1:
-                    this.powerUp = new SpeedArrow(x, y, Color.red, 5);
-            }
-
-            // Set its coordinate
-            getGame().updateCoordinates(x, y, 2);
-        }
-
-
-    }*/
 
     /**
      * Method for checking if the snake ate the apple
@@ -585,6 +500,14 @@ public class GameBoard extends DaddyPanel implements Serializable {
                     System.out.println("GAME OVER - CHOQUE 2 CON 1");
                 }
             }
+
+            // Trap block
+            for(Brick brick : getGame().getBoard().getBricks()){
+                if (head1[0] == brick.getX() && head1[1] == brick.getY()){
+                    super.getGameData().setGameRunning(false);
+                    System.out.println("GAME OVER");
+                }
+            }
         }
 
         // Snake two
@@ -598,6 +521,14 @@ public class GameBoard extends DaddyPanel implements Serializable {
                 if (head1[0] == position[0] && head1[1] == position[1]) {
                     super.getGameData().setGameRunning(false);
                     System.out.println("GAME OVER - CHOQUE 1 CON 2");
+                }
+
+                // Trap block
+                for(Brick brick : getGame().getBoard().getBricks()){
+                    if (head2[0] == brick.getX() && head2[1] == brick.getY()){
+                        super.getGameData().setGameRunning(false);
+                        System.out.println("GAME OVER");
+                    }
                 }
             }
         }

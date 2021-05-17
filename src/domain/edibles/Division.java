@@ -24,11 +24,21 @@ public class Division extends PowerUp implements Serializable {
     /**
      * Method for using a PowerUp
      */
+    @Override
     public void usePowerUp(SuperPlayer player, SuperPlayer player2){
-        int oldFrequency = player.getSnake().getFrequency();
+        if (super.game.isSinglePlayer()){
+            int size = player.getSnake().getPositions().size();
+            double mid = (float)size / 2;
+            int half = (int)Math.ceil(mid);
 
-        player.getSnake().setFrequency(40);
+            player.getSnake().decreaseSize(half);
 
-        System.out.println("power up used");
+        } else {
+            int size = player2.getSnake().getPositions().size();
+            double mid = (float)size / 2;
+            int half = (int)Math.ceil(mid);
+
+            player2.getSnake().decreaseSize(half);
+        }
     }
 }

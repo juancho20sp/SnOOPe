@@ -206,8 +206,6 @@ public abstract class SuperSnake implements Serializable {
         if (this.positions.size() == 0){
             System.out.println("GAME OVER POR TAMAÑO");
             this.game.getGameData().setGameRunning(false);
-
-            return;
         }
 
         // Decrease size
