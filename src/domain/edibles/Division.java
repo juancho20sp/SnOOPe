@@ -40,5 +40,7 @@ public class Division extends PowerUp implements Serializable {
 
             player2.getSnake().decreaseSize(half);
         }
+
+        player.setPowerUp(null);
     }
 }

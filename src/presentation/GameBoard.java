@@ -382,6 +382,10 @@ public class GameBoard extends DaddyPanel implements Serializable {
      * Method for checking if the snake ate the apple
      */
     private void checkApples() {
+        if (getFruit1() == null){
+            return;
+        }
+
         // Snake 1
         int snake1X = this.getSnake1().getHeadPosition()[0];
         int snake1Y = this.getSnake1().getHeadPosition()[1];
@@ -665,7 +669,7 @@ public class GameBoard extends DaddyPanel implements Serializable {
             // Trigger power up of player 1 on spacebar
             if (e.getKeyCode() == KeyEvent.VK_SPACE){
                 if (getPlayerOne().getPowerUp() != null){
-                    getPowerUp().usePowerUp(getPlayerOne(), getPlayerTwo());
+                    getPlayerOne().getPowerUp().usePowerUp(getPlayerOne(), getPlayerTwo());
                 }
             }
 

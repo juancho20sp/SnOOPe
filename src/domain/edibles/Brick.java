@@ -25,5 +25,7 @@ public class Brick extends PowerUp implements Serializable {
     @Override
     public void usePowerUp(SuperPlayer player, SuperPlayer player2){
         game.getBoard().addTrapBlock();
+
+        player.setPowerUp(null);
     }
 }

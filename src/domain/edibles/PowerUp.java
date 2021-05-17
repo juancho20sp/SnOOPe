@@ -22,15 +22,18 @@ public class PowerUp extends Edible implements Serializable {
 
         System.out.println("POWER UP EATEN");
 
-        // Add points
-        int newPoints = player.getPoints() + edible.getPoints();
-        player.setPoints(newPoints);
+        if (player.getPowerUp() == null){
+            // Add points
+            int newPoints = player.getPoints() + edible.getPoints();
+            player.setPoints(newPoints);
 
-        // Add to the stack
-        player.setPowerUp(edible);
+            // Add to the stack
+            player.setPowerUp(edible);
 
-        // Clear the position
-        game.getBoard().cleanPosition(edible.getX(), edible.getY());
+            // Clear the position
+            game.getBoard().cleanPosition(edible.getX(), edible.getY());
+        }
+
     }
 
     /**

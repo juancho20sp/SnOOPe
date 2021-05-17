@@ -109,8 +109,8 @@ public class Board {
         powerUps.put(1, badArrow);
         powerUps.put(2, division);
         powerUps.put(3, brick);
-        powerUps.put(4, fireStar);
-        powerUps.put(5, lupa);
+        //powerUps.put(4, fireStar);
+        //powerUps.put(5, lupa);
 
         //powerUps.put(0, division);
     }
@@ -216,8 +216,8 @@ public class Board {
             this.addPowerUp();
         } else {
             // Pick the fruit
-            //PowerUp selectedPowerUp = powerUps.get(option);
-            PowerUp selectedPowerUp = powerUps.get(3);
+            PowerUp selectedPowerUp = powerUps.get(option);
+            //PowerUp selectedPowerUp = powerUps.get(3);
 
             this.board[x][y] = selectedPowerUp;
 

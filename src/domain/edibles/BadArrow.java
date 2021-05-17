@@ -40,7 +40,6 @@ public class BadArrow extends PowerUp implements Serializable {
             };
 
             timer.schedule(timerTask, 5000);
-
         } else {
             int oldFrequency = player2.getSnake().getFrequency();
             player2.getSnake().setFrequency(150);
@@ -55,5 +54,7 @@ public class BadArrow extends PowerUp implements Serializable {
 
             timer.schedule(timerTask, 5000);
         }
+
+        player.setPowerUp(null);
     }
 }
