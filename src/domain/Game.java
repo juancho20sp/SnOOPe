@@ -8,6 +8,7 @@ import presentation.GameSetup;
 
 import java.awt.*;
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.Random;
 
 public class Game implements Runnable, Serializable {
@@ -39,6 +40,7 @@ public class Game implements Runnable, Serializable {
 
     // Fruit timers
     long timerFruit1 = 0;
+    long timerFruit2 = 0;
 
     // Random
     Random random = new Random();
@@ -129,9 +131,14 @@ public class Game implements Runnable, Serializable {
 
         if (getGameData().getGameType().equals(GameSetup.MULTIPLAYER)) {
 
-            this.gameData.getPlayerTwo().createSnake(new int[]{getCols() - 1, getRows() - 1}, new int[]{getCols()-1,
+        /*    this.gameData.getPlayerTwo().createSnake(new int[]{getCols() - 1, getRows() - 1}, new int[]{getCols()-1,
                             getRows()-1}
-            , this);
+            , this);*/
+
+            this.gameData.getPlayerTwo().createSnake(new int[]{board.getCols() - 3, board.getRows() - 1},
+                    new int[]{board.getCols(),
+                            board.getRows()-1}
+                    , this);
 
             this.gameData.getPlayerTwo().getSnake().setDirection(directions.LEFT);
 
@@ -222,12 +229,22 @@ public class Game implements Runnable, Serializable {
                             }
                         }
 
-                        // Fruit timer
+                        // Fruit 1 timer
                         if((System.currentTimeMillis() - getTimerFruit1()) > gameData.getFruitsTimer()){
 
                             addFruit1();
                             setTimerFruit1(System.currentTimeMillis());
                         }
+
+                        // Fruit 2 timer
+                        if (isSinglePlayer()){
+                            if((System.currentTimeMillis() - getTimerFruit2()) > gameData.getFruitsTimer()){
+
+                                addFruit2();
+                                setTimerFruit2(System.currentTimeMillis());
+                            }
+                        }
+
 
                         if (this.getGameBoard() != null) {
                             this.getGameBoard().refresh();
@@ -243,7 +260,7 @@ public class Game implements Runnable, Serializable {
                                 int b = random.nextInt(10);
 
                                 if (a == b) {
-                                    addPowerUp();
+                                    //addPowerUp();
                                 }
                             }
                             //addPowerUp();
@@ -345,9 +362,9 @@ public class Game implements Runnable, Serializable {
     }
 
     public SuperSnake getSnake2(){
-        if(getGameData().getGameType().equals(GameSetup.MULTIPLAYER)){
+        if(this.gameData.getGameType().equals(GameSetup.MULTIPLAYER)){
             return this.gameData.getPlayerTwo().getSnake();
-        } else if (getGameData().getGameType().equals(GameSetup.PLAYER_MACHINE)){
+        } else if (this.gameData.getGameType().equals(GameSetup.PLAYER_MACHINE)){
             return this.gameData.getPlayerMachine().getSnake();
         }
 
@@ -412,6 +429,14 @@ public class Game implements Runnable, Serializable {
 
     public void setPowerUp(PowerUp powerUp) {
         this.powerUp = powerUp;
+    }
+
+    public long getTimerFruit2() {
+        return timerFruit2;
+    }
+
+    public void setTimerFruit2(long timerFruit2) {
+        this.timerFruit2 = timerFruit2;
     }
 
     /*public static void main(String[] args) {

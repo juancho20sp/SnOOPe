@@ -46,7 +46,7 @@ public class Board {
         this.createPowerUpList();
 
 
-        this.addFruit();
+        //this.addFruit();
         //this.addPowerUp();
     }
 
@@ -148,8 +148,8 @@ public class Board {
             this.addFruit();
         } else {
             // Pick the fruit
-            Edible selectedFruit = fruits.get(option);
-            //Edible selectedFruit = fruits.get(0);
+            //Edible selectedFruit = fruits.get(option);
+            Edible selectedFruit = fruits.get(2);
 
             this.board[x][y] = selectedFruit;
 
@@ -175,8 +175,8 @@ public class Board {
 
 
         if (!game.isSinglePlayer()){
-            colors.add(game.getSnake2().getHeadColor());
-            colors.add(game.getSnake2().getBodyColor());
+            colors.add(game.getGameData().getPlayerTwo().getHeadColor());
+            colors.add(game.getGameData().getPlayerTwo().getBodyColor());
         }
 
         return colors;
@@ -282,7 +282,9 @@ public class Board {
     private boolean isOccupied(int x, int y){
         int[] coordinate = new int[]{x, y};
 
-        if (game.getSnake1().getPositions().contains(coordinate) || game.getSnake1().getHeadPosition().equals(coordinate)){
+       /* if (game.getSnake1().getPositions().contains(coordinate) || game.getSnake1().getHeadPosition().equals
+       (coordinate)){
+
             return true;
         }
 
@@ -294,7 +296,7 @@ public class Board {
 
         if (this.getBoard()[x][y] != null){
             return true;
-        }
+        }*/
 
         return false;
     }

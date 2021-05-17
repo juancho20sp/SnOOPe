@@ -85,11 +85,11 @@ public class GameBoard extends DaddyPanel implements Serializable {
         // Set board
         game.setGameBoard(this);
 
-        // Set Players
-        game.setupPlayers();
-
         // Layout
         this.prepareLayout();
+
+        // Set Players
+        //game.setupPlayers();
 
         // Refresh
         this.refresh();
@@ -119,6 +119,9 @@ public class GameBoard extends DaddyPanel implements Serializable {
 
         // Create board
         getGame().createBoard();
+
+        // Set Players
+        getGame().setupPlayers();
 
         // Add fruits
         super.getGame().addFruit();
@@ -298,6 +301,13 @@ public class GameBoard extends DaddyPanel implements Serializable {
                     fixYPosition(getFruit1().getY()),this);
         }
 
+        if (getFruit2() != null){
+            g.setColor(getFruit2().getColor());
+            g.fillRect(fixXPosition(getFruit2().getX()), fixYPosition(getFruit2().getY()), CELL_SIZE, CELL_SIZE);
+            g.drawImage(new ImageIcon(getFruit2().getImage()).getImage(), fixXPosition(getFruit2().getX()),
+                    fixYPosition(getFruit2().getY()),this);
+        }
+
 
         // Power up
         if (getPowerUp() != null) {
@@ -399,10 +409,18 @@ public class GameBoard extends DaddyPanel implements Serializable {
             snake2Y = this.getSnake2().getHeadPosition()[1];
         }
 
-
+        // Fruit 1
         int appleX = getFruit1().getX();
         int appleY = getFruit1().getY();
 
+        // Fruit 2
+        int apple2X = 0;
+        int apple2Y = 0;
+
+        if (!this.isSinglePlayer()) {
+            apple2X = getFruit2().getX();
+            apple2Y = getFruit2().getY();
+        }
 
         // Fruta 1 - Snake 1
         if ((snake1X == appleX) && (snake1Y == appleY)) {
@@ -423,6 +441,30 @@ public class GameBoard extends DaddyPanel implements Serializable {
                 // Add fruit and reset timer
                 super.getGame().addFruit1();
                 super.getGame().setTimerFruit1(0);
+            }
+        }
+
+        if (!isSinglePlayer()){
+            // Fruta 2 - Snake 1
+            if ((snake1X == apple2X) && (snake1Y == apple2Y)) {
+                // Eat the apple
+                getFruit2().eatEdible(getFruit2(), getPlayerOne(), getGame());
+
+                // Add fruit and reset timer
+                super.getGame().addFruit2();
+                super.getGame().setTimerFruit2(0);
+            }
+
+            // Fruta 2 - Snake 2
+            if (!this.isSinglePlayer()){
+                if ((snake2X == apple2X) && (snake2Y == apple2Y)) {
+                    // Eat the apple
+                    getFruit2().eatEdible(getFruit2(), getPlayerTwo(), getGame());
+
+                    // Add fruit and reset timer
+                    super.getGame().addFruit2();
+                    super.getGame().setTimerFruit2(0);
+                }
             }
         }
 

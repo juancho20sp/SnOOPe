@@ -32,16 +32,32 @@ public class Candy extends Edible implements Serializable {
 
         // Verify snake color and fruit color
         if (edible.getColor().equals(player.getHeadColor()) || edible.getColor().equals(player.getBodyColor())){
+            System.out.println("SAME COLOR EATEN");
             sameColor = true;
         }
 
         // Increase size
         if (sameColor){
-            System.out.println("SAME COLOR");
             player.getSnake().decreaseSize(1);
         } else {
-            player.getSnake().increaseSize(edible.getPoints());
+            player.getSnake().decreaseSize(2);
         }
+
+        /*if(game.isSinglePlayer()){
+            player.getSnake().decreaseSize(1);
+        } else {
+            if (sameColor){
+                player.getSnake().decreaseSize(1);
+            } else {
+                if (game.getGameData().getPlayerOne().getHeadColor().equals(player.getHeadColor())){
+                    game.getGameData().getPlayerTwo().getSnake().decreaseSize(1);
+                } else {
+                    game.getGameData().getPlayerOne().getSnake().decreaseSize(1);
+                }
+            }
+        }*/
+
+
 
         // SI LOS COLORES NO SON IGUALES, ENTONCES AFECTAMOS AL CONTRINCANTE
         // SI SON IGUALES, REDUCIMOS UNO

@@ -203,14 +203,25 @@ public abstract class SuperSnake implements Serializable {
      * @param size The number of units to decrease
      */
     public void decreaseSize(int size){
-        if (this.positions.size() == 0){
+        if (this.positions.size() == 0 && size > 0){
             System.out.println("GAME OVER POR TAMAÑO");
             this.game.getGameData().setGameRunning(false);
         }
 
+        if (this.positions.size() == 0){
+
+        }
+
         // Decrease size
         for (int i = 0; i < size; i++){
-            this.positions.remove(0);
+            try {
+                this.positions.remove(0);
+            } catch(IndexOutOfBoundsException ex) {
+
+            }
+
+
+
         }
 
         // Verify speed

@@ -64,6 +64,11 @@ public class GameSetup extends DaddyPanel implements Serializable {
         if (gameMode.equals(MULTIPLAYER)){
             this.playerTwo = new Player();
             super.getGameData().setPlayerTwo(this.playerTwo);
+
+            // BORRAR
+            super.getGameData().getPlayerTwo().setHeadColor(Color.blue);
+            super.getGameData().getPlayerTwo().setBodyColor(Color.blue);
+
         } else {
             this.machine = new Machine();
             super.getGameData().setPlayerMachine(this.machine);
