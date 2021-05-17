@@ -12,7 +12,13 @@ import java.util.TimerTask;
 public class SpeedArrow extends PowerUp implements Serializable {
     transient Timer timer;
 
-
+    /**
+     * Constructor of the Arrow class
+     * @param x The x position of the power up
+     * @param y The y position of the power up
+     * @param color The background color of the power up
+     * @param points The points given by catching the power up
+     */
     public SpeedArrow(int x, int y, Color color, int points) {
         super(x, y, color, points);
 

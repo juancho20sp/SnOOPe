@@ -57,10 +57,11 @@ public class GameBoard extends DaddyPanel implements Serializable {
 
     // Fruits
     Edible fruit1;
+    Edible fruit2;
 
     // PoweUps
     PowerUp powerUp;
-    boolean isPowerUpHidden = false;
+
 
     // Game over
     private boolean gameOver = super.getGameData().isGameRunning();
@@ -122,7 +123,7 @@ public class GameBoard extends DaddyPanel implements Serializable {
         super.getGame().addFruit();
 
         // Add power up
-        this.addPowerUp();
+        //super.getGame().addPowerUp();
     }
 
     /**
@@ -298,11 +299,13 @@ public class GameBoard extends DaddyPanel implements Serializable {
 
 
         // Pasar un powerup
-        //g.setColor(powerUp.getColor());
-        //g.fillRect(fixXPosition(powerUp.getX()), fixYPosition(powerUp.getY()), CELL_SIZE, CELL_SIZE);
-        if (!isPowerUpHidden){
-            g.drawImage(new ImageIcon(powerUp.getImage()).getImage(), fixXPosition(powerUp.getX()), fixYPosition(powerUp.getY()), this);
+        if (getPowerUp() != null) {
+            g.setColor(getPowerUp().getColor());
+            g.fillRect(fixXPosition(getPowerUp().getX()), fixYPosition(getPowerUp().getY()), CELL_SIZE, CELL_SIZE);
+            g.drawImage(new ImageIcon(getPowerUp().getImage()).getImage(), fixXPosition(getPowerUp().getX()), fixYPosition(getPowerUp().getY()), this);
         }
+
+
 
 
         // Fruta
@@ -415,7 +418,7 @@ public class GameBoard extends DaddyPanel implements Serializable {
     /**
      * Method for adding powerups to the game board
      */
-    private void addPowerUp() {
+    /*private void addPowerUp() {
         //Color[] colors = new Color[]{snake1.getHeadColor(), snake1.getBodyColor()};
           // Arrow -> 0
         // Trap -> 1
@@ -458,7 +461,7 @@ public class GameBoard extends DaddyPanel implements Serializable {
         }
 
 
-    }
+    }*/
 
     /**
      * Method for checking if the snake ate the apple
@@ -510,6 +513,10 @@ public class GameBoard extends DaddyPanel implements Serializable {
      * Method for checking if the snake ate the apple
      */
     private void checkPowerUps() {
+        if (this.getPowerUp() == null){
+            return;
+        }
+
         // Snake 1
         int snake1X = this.getSnake1().getHeadPosition()[0];
         int snake1Y = this.getSnake1().getHeadPosition()[1];
@@ -524,16 +531,20 @@ public class GameBoard extends DaddyPanel implements Serializable {
         }
 
 
-        int powerX = powerUp.getX();
-        int powerY = powerUp.getY();
+        int powerX = getPowerUp().getX();
+        int powerY = getPowerUp().getY();
 
 
         // Fruta 1 - Snake 1
         if ((snake1X == powerX) && (snake1Y == powerY)) {
             // Eat the power up
-            powerUp.eatPowerUp(powerUp, getPlayerOne(), getGame());
+            getPowerUp().eatPowerUp(getPowerUp(), getPlayerOne(), getGame());
 
-            setPowerUpHidden(true);
+            // Add power up
+            super.getGame().setPowerUp(null);
+            //super.getGame().addPowerUp();
+
+            //setPowerUpHidden(true);
 
             //this.addPowerUp();
         }
@@ -541,28 +552,12 @@ public class GameBoard extends DaddyPanel implements Serializable {
         // Fruta 1 - Snake 2
         if (!this.isSinglePlayer()){
             if ((snake2X == powerX) && (snake2Y == powerY)) {
+                getPowerUp().eatPowerUp(getPowerUp(), getPlayerTwo(), getGame());
 
-                powerUp.eatEdible(powerUp, getPlayerTwo(), getGame());
-
-                setPowerUpHidden(true);
-
-                //this.addPowerUp();
+                // Add power up
+                super.getGame().addPowerUp();
             }
         }
-
-        if (isPowerUpHidden) {
-            timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    setPowerUpHidden(false);
-                    addPowerUp();
-                }
-            };
-
-            timer.schedule(timerTask, 2000);
-        }
-
     }
 
     /**
@@ -693,13 +688,13 @@ public class GameBoard extends DaddyPanel implements Serializable {
         return null;
     }
 
-    public boolean isPowerUpHidden() {
+    /*public boolean isPowerUpHidden() {
         return isPowerUpHidden;
     }
 
     public void setPowerUpHidden(boolean powerUpHidden) {
         isPowerUpHidden = powerUpHidden;
-    }
+    }*/
 
     public Edible getFruit1() {
         return super.getGame().getFruit1();
@@ -707,6 +702,22 @@ public class GameBoard extends DaddyPanel implements Serializable {
 
     public void setFruit1(Edible fruit1) {
         this.fruit1 = fruit1;
+    }
+
+    public Edible getFruit2() {
+        return super.getGame().getFruit2();
+    }
+
+    public void setFruit2(Edible fruit2) {
+        this.fruit2 = fruit2;
+    }
+
+    public PowerUp getPowerUp() {
+        return super.getGame().getPowerUp();
+    }
+
+    public void setPowerUp(PowerUp powerUp) {
+        this.powerUp = powerUp;
     }
 
     /**

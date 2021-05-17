@@ -1,10 +1,12 @@
 package domain;
 
 import domain.edibles.Edible;
+import domain.edibles.PowerUp;
 import domain.snakes.SuperSnake;
 import presentation.GameBoard;
 import presentation.GameSetup;
 
+import java.awt.*;
 import java.io.*;
 import java.util.Random;
 
@@ -25,17 +27,15 @@ public class Game implements Runnable, Serializable {
     Edible fruit1;
     Edible fruit2;
 
+    // Power Ups
+    PowerUp powerUp;
+
     // Dimensions
     private int rows = 100;
     private int cols = 100;
 
-
-
     // Thread
     transient Thread thread;
-
-    // Timers
-    transient Timers timers;
 
     // Fruit timers
     long timerFruit1 = 0;
@@ -53,10 +53,7 @@ public class Game implements Runnable, Serializable {
      * Method for starting the game
      */
     public void startGame(){
-        System.out.println("game started");
-
         thread = new Thread(this);
-        timers = new Timers(this);
 
         this.exit = false;
 
@@ -67,7 +64,10 @@ public class Game implements Runnable, Serializable {
         this.createBoard();
 
         // Add fruit 1
-        this.addFruit1();
+        //this.addFruit1();
+
+        // Add power up
+        //this.addPowerUp();
 
     }
 
@@ -181,7 +181,8 @@ public class Game implements Runnable, Serializable {
         long lastGame = 0;
         long lastSnake1 = 0;
         long lastSnake2 = 0;
-        long fruit1Timer = 0;
+
+        long powerUp = 0;
 
         int gameFrequency = 10;
 
@@ -232,6 +233,24 @@ public class Game implements Runnable, Serializable {
                             this.getGameBoard().refresh();
                         }
 
+                        // Power up
+                        if (getPowerUp() == null){
+                            System.out.println("LOOKING FOR POWER UP");
+                            powerUp = random.nextInt(10);
+                            powerUp++;
+
+                            if ((System.currentTimeMillis() % powerUp) == 0){
+                                int a = random.nextInt(10);
+                                int b = random.nextInt(10);
+
+                                if (a == b) {
+                                    System.out.println(a + " == " + b);
+                                    addPowerUp();
+                                }
+                            }
+                        }
+
+
                         lastGame = System.currentTimeMillis();
                     } else {
                         System.out.println("game over");
@@ -252,7 +271,6 @@ public class Game implements Runnable, Serializable {
             this.addFruit2();
         }
     }
-
 
     /**
      * Method for adding the fruit1
@@ -276,30 +294,52 @@ public class Game implements Runnable, Serializable {
      * Method for adding power ups
      */
     public void addPowerUp() {
-        int x = random.nextInt(cols - 1);
-        int y = random.nextInt(rows - 1);
+        System.out.println("buscando power up");
+        /*System.out.println("Se está buscando un power up");
+        int a = random.nextInt(5000);
+        int b = random.nextInt(5000);
+        int c = random.nextInt(5000);
 
-        if (x == 0) {
-            x++;
+        while(true){
+            if ((a != b) && (b != c) && (a != c)){
+                System.out.println("seatching");
+
+                a = random.nextInt(5000);
+                b = random.nextInt(5000);
+                c = random.nextInt(5000);
+            } else {*/
+        PowerUp newPowerUp = this.board.addPowerUp();
+
+        this.setPowerUp(newPowerUp);
+        System.out.println("SE ENCONTRÓ UN POWER UP");
+
+
+
+
         }
 
-        if (x == cols) {
-            x--;
-        }
 
-        if (y == 0) {
-            y++;
-        }
 
-        if (y == rows) {
-            y--;
-        }
 
-        int[] fruit1Coordinate = new int[]{x,y};
+        /*while (((a != b) && (b != c) && (a != c)) && this.getPowerUp() == null){
+            System.out.println("ring");
 
-        // Create the fruit
-        this.updateCoordinates(x, y,2);
-    }
+            a = random.nextInt(100);
+            b = random.nextInt(500);
+            c = random.nextInt(50);
+
+            if ((a == b) && (b == c)){
+
+            }
+        }*/
+
+
+
+
+
+
+
+
 
     /**
      * Method for getting the game type
@@ -407,6 +447,14 @@ public class Game implements Runnable, Serializable {
 
     public void setTimerFruit1(long timerFruit1) {
         this.timerFruit1 = timerFruit1;
+    }
+
+    public PowerUp getPowerUp() {
+        return powerUp;
+    }
+
+    public void setPowerUp(PowerUp powerUp) {
+        this.powerUp = powerUp;
     }
 
     /*public static void main(String[] args) {

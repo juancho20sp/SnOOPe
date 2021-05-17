@@ -17,6 +17,9 @@ public class Board {
     // List of fruits
     HashMap<Integer, Edible> fruits;
 
+    // List of power ups
+    HashMap<Integer, PowerUp> powerUps;
+
     // Edible board
     private Edible[][] board;
 
@@ -36,7 +39,12 @@ public class Board {
         // Create the list of fruits
         this.createFruitList();
 
+        // Create the list of power ups
+        this.createPowerUpList();
+
+
         this.addFruit();
+        //this.addPowerUp();
     }
 
     /**
@@ -75,12 +83,36 @@ public class Board {
     }
 
     /**
+     * Method for creating the power up hashmap
+     */
+    private void createPowerUpList(){
+        powerUps = new HashMap<Integer, PowerUp>();
+
+        // All power ups
+        SpeedArrow speedArrow = new SpeedArrow(0, 0, null, 5);
+        BadArrow badArrow = new BadArrow(0, 0, null, 5);
+        Division division = new Division(0, 0, null, 5);
+        Brick brick = new Brick(0,0, null, 5);
+        FireStar fireStar = new FireStar(0,0,null, 5);
+        Lupa lupa = new Lupa(0, 0, null, 5);
+
+        // Add fruits
+        powerUps.put(0, speedArrow);
+        powerUps.put(1, badArrow);
+        powerUps.put(2, division);
+        powerUps.put(3, brick);
+        powerUps.put(4, fireStar);
+        powerUps.put(5, lupa);
+
+        //fruits.put(0, venom);
+    }
+
+    /**
      * Method for creating fruits
      * @return The created fruit
      */
     public Edible addFruit(){
         ArrayList<Color> colors = this.getSnakeColors();
-
 
         int x = random.nextInt(cols - 1);
         int y = random.nextInt(rows - 1);
@@ -137,6 +169,52 @@ public class Board {
         }
 
         return colors;
+    }
+
+    /**
+     * Method for adding power ups
+     */
+    public PowerUp addPowerUp(){
+        ArrayList<Color> colors = new ArrayList<>();
+
+        colors.add(Color.yellow);
+
+        int x = random.nextInt(cols - 1);
+        int y = random.nextInt(rows - 1);
+
+        if (x == 0) {
+            x++;
+        }
+
+        if (x == cols) {
+            x--;
+        }
+
+        if (y == 0) {
+            y++;
+        }
+
+        if (y == rows) {
+            y--;
+        }
+
+        int option = random.nextInt(powerUps.size());
+        int color = random.nextInt(colors.size());
+
+        if (this.isOccupied(x, y)){
+            this.addPowerUp();
+        }
+
+        // Pick the fruit
+        PowerUp selectedPowerUp = powerUps.get(option);
+        //Edible selectedFruit = fruits.get(0);
+
+        // Edit the fruit
+        selectedPowerUp.setX(x);
+        selectedPowerUp.setY(y);
+        selectedPowerUp.setColor(colors.get(color));
+
+        return selectedPowerUp;
     }
 
     /**
