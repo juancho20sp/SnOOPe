@@ -292,51 +292,10 @@ public class Game implements Runnable, Serializable {
      * Method for adding power ups
      */
     public void addPowerUp() {
-        System.out.println("buscando power up");
-        /*System.out.println("Se está buscando un power up");
-        int a = random.nextInt(5000);
-        int b = random.nextInt(5000);
-        int c = random.nextInt(5000);
-
-        while(true){
-            if ((a != b) && (b != c) && (a != c)){
-                System.out.println("seatching");
-
-                a = random.nextInt(5000);
-                b = random.nextInt(5000);
-                c = random.nextInt(5000);
-            } else {*/
         PowerUp newPowerUp = this.board.addPowerUp();
 
         this.setPowerUp(newPowerUp);
-        System.out.println("SE ENCONTRÓ UN POWER UP");
-
-
-
-
-        }
-
-
-
-
-        /*while (((a != b) && (b != c) && (a != c)) && this.getPowerUp() == null){
-            System.out.println("ring");
-
-            a = random.nextInt(100);
-            b = random.nextInt(500);
-            c = random.nextInt(50);
-
-            if ((a == b) && (b == c)){
-
-            }
-        }*/
-
-
-
-
-
-
-
+    }
 
 
     /**

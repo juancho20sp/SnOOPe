@@ -661,11 +661,6 @@ public class GameBoard extends DaddyPanel implements Serializable {
     public class myKeys extends KeyAdapter implements Serializable{
         @Override
         public void keyPressed(KeyEvent e) {
-
-            if (!gameOver) {
-                //System.out.println("Game over");
-            }
-
             // Trigger power up of player 1 on spacebar
             if (e.getKeyCode() == KeyEvent.VK_SPACE){
                 if (getPlayerOne().getPowerUp() != null){
@@ -675,9 +670,8 @@ public class GameBoard extends DaddyPanel implements Serializable {
 
             // Trigger power up of player 1 on shift
             if (!isSinglePlayer()){
-                if (e.getKeyCode() == KeyEvent.VK_SHIFT){
-                    System.out.println("shift pressed");
-                    getPowerUp().usePowerUp(getPlayerTwo(), getPlayerOne());
+                if (getPlayerTwo().getPowerUp() != null){
+                    getPlayerTwo().getPowerUp().usePowerUp(getPlayerOne(), getPlayerTwo());
                 }
             }
 
