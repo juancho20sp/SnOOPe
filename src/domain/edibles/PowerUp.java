@@ -27,9 +27,17 @@ public class PowerUp extends Edible implements Serializable {
             // Add to the stack
             player.setPowerUp(edible);
 
+            // Add one to the number of surprises used
+            int oldSurprises = player.getSurprises();
+            int newSurprises = oldSurprises + 1;
+
+            player.setSurprises(newSurprises);
+
             // Clear the position
             game.getBoard().cleanPosition(edible.getX(), edible.getY());
         }
+
+        System.out.println("Surprises used: " + player.getSurprises());
     }
 
     /**

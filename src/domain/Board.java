@@ -148,8 +148,8 @@ public class Board {
             this.addFruit();
         } else {
             // Pick the fruit
-            //Edible selectedFruit = fruits.get(option);
-            Edible selectedFruit = fruits.get(2);
+            Edible selectedFruit = fruits.get(option);
+            //Edible selectedFruit = fruits.get(2);
 
             this.board[x][y] = selectedFruit;
 
