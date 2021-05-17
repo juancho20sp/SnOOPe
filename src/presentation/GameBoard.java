@@ -731,12 +731,21 @@ public class GameBoard extends DaddyPanel implements Serializable {
                 //System.out.println("Game over");
             }
 
-            // Trigger power up on spacebar
+            // Trigger power up of player 1 on spacebar
             if (e.getKeyCode() == KeyEvent.VK_SPACE){
-                getPlayerOne().usePowerUp();
-
-
+                if (getPlayerOne().getPowerUp() != null){
+                    getPowerUp().usePowerUp(getPlayerOne(), getPlayerTwo());
+                }
             }
+
+            // Trigger power up of player 1 on shift
+            if (!isSinglePlayer()){
+                if (e.getKeyCode() == KeyEvent.VK_SHIFT){
+                    System.out.println("shift pressed");
+                    getPowerUp().usePowerUp(getPlayerTwo(), getPlayerOne());
+                }
+            }
+
 
             // Add fuit when spacebar is clicked
             /*if (e.getKeyCode() == KeyEvent.VK_SPACE) {

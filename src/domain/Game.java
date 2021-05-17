@@ -235,7 +235,6 @@ public class Game implements Runnable, Serializable {
 
                         // Power up
                         if (getPowerUp() == null){
-                            System.out.println("LOOKING FOR POWER UP");
                             powerUp = random.nextInt(10);
                             powerUp++;
 
@@ -244,12 +243,11 @@ public class Game implements Runnable, Serializable {
                                 int b = random.nextInt(10);
 
                                 if (a == b) {
-                                    System.out.println(a + " == " + b);
                                     addPowerUp();
                                 }
                             }
+                            //addPowerUp();
                         }
-
 
                         lastGame = System.currentTimeMillis();
                     } else {

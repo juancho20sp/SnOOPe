@@ -36,11 +36,11 @@ public abstract class SuperPlayer implements Serializable {
      * Method for using the power up
      * @return
      */
-    public void usePowerUp() {
+    /*public void usePowerUp() {
         if (this.getPowerUp() != null){
-            this.getPowerUp().usePowerUp(this);
+            this.getPowerUp().usePowerUp(this, );
         }
-    }
+    }*/
 
     public String getName() {
         return name;

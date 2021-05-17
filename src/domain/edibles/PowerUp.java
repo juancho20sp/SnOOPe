@@ -7,6 +7,8 @@ import java.awt.*;
 import java.io.Serializable;
 
 public class PowerUp extends Edible implements Serializable {
+    // Game
+    Game game;
 
     public PowerUp(int x, int y, Color color, int points) {
         super(x, y, color, points);
@@ -16,15 +18,17 @@ public class PowerUp extends Edible implements Serializable {
      * Method for eating a power up
      */
     public void eatPowerUp(PowerUp edible, SuperPlayer player, Game game){
+        this.game = game;
+
         // Add points
         int newPoints = player.getPoints() + edible.getPoints();
         player.setPoints(newPoints);
 
-        // Delete the coordinate
-        game.updateCoordinates(edible.getX(), edible.getY(), 0);
-
         // Add to the stack
         player.setPowerUp(edible);
+
+        // Clear the position
+        game.getBoard().cleanPosition(edible.getX(), edible.getY());
 
         System.out.println("JUGADOR 1 + FLECHAS DE VELOCIDAD");
     }
@@ -32,5 +36,5 @@ public class PowerUp extends Edible implements Serializable {
     /**
      * Method for using a PowerUp
      */
-    public void usePowerUp(SuperPlayer player){ }
+    public void usePowerUp(SuperPlayer player, SuperPlayer player2){ }
 }

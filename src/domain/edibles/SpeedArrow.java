@@ -30,7 +30,7 @@ public class SpeedArrow extends PowerUp implements Serializable {
      * Method for using a PowerUp
      */
     @Override
-    public void usePowerUp(SuperPlayer player){
+    public void usePowerUp(SuperPlayer player, SuperPlayer player2){
         int oldFrequency = player.getSnake().getFrequency();
 
         player.getSnake().setFrequency(40);
@@ -45,12 +45,6 @@ public class SpeedArrow extends PowerUp implements Serializable {
         };
 
         timer.schedule(timerTask, 5000);
-
-
-
-
-
-
 
         System.out.println("power up used");
     }

@@ -89,7 +89,7 @@ public class SnOOPeTests {
 
         game.getGameData().getPlayerOne().setPowerUp(new SpeedArrow(2,2, null, 5));
 
-        game.getGameData().getPlayerOne().usePowerUp();
+        //game.getGameData().getPlayerOne().usePowerUp();
 
         int finalFreq = game.getSnake1().getFrequency();
 
@@ -124,7 +124,7 @@ public class SnOOPeTests {
 
         game.getGameData().getPlayerOne().setPowerUp(new SpeedArrow(2,2, null, 5));
 
-        game.getGameData().getPlayerOne().usePowerUp();
+        //game.getGameData().getPlayerOne().usePowerUp();
 
         int finalPoints = game.getGameData().getPlayerOne().getPoints();
 

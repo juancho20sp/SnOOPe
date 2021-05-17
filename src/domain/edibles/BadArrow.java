@@ -27,21 +27,34 @@ public class BadArrow extends PowerUp implements Serializable {
      * Method for using a PowerUp
      */
     public void usePowerUp(SuperPlayer player, SuperPlayer player2){
-        int oldFrequency = player.getSnake().getFrequency();
+        if (super.game.isSinglePlayer()){
+            int oldFrequency = player.getSnake().getFrequency();
+            player.getSnake().setFrequency(150);
 
-        player.getSnake().setFrequency(40);
+            timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    player.getSnake().setFrequency(oldFrequency);
+                }
+            };
 
+            timer.schedule(timerTask, 5000);
 
-        timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                player.getSnake().setFrequency(oldFrequency);
-            }
-        };
+        } else {
+            int oldFrequency = player2.getSnake().getFrequency();
+            player2.getSnake().setFrequency(150);
 
-        timer.schedule(timerTask, 5000);
+            timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    player2.getSnake().setFrequency(oldFrequency);
+                }
+            };
 
+            timer.schedule(timerTask, 5000);
+        }
 
         System.out.println("power up used");
     }

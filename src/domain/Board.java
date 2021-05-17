@@ -54,9 +54,14 @@ public class Board {
         this.rows = game.getGameData().getGameBoardRows();
         this.cols = game.getGameData().getGetGameBoardCols();
 
-        for (int i = 0; i < this.cols; i++) {
-            for (int j = 0; j < this.rows; j++) {
-                this.board = null;
+        System.out.println("cols: " + this.rows);
+        System.out.println("rows: " + this.cols);
+
+        this.board = new Edible[rows][cols];
+
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                this.board[i][j] = null;
             }
         }
     }
@@ -96,15 +101,15 @@ public class Board {
         FireStar fireStar = new FireStar(0,0,null, 5);
         Lupa lupa = new Lupa(0, 0, null, 5);
 
-        // Add fruits
-        powerUps.put(0, speedArrow);
+        // Add power ups
+        /*powerUps.put(0, speedArrow);
         powerUps.put(1, badArrow);
         powerUps.put(2, division);
         powerUps.put(3, brick);
         powerUps.put(4, fireStar);
-        powerUps.put(5, lupa);
+        powerUps.put(5, lupa);*/
 
-        //fruits.put(0, venom);
+        powerUps.put(0, badArrow);
     }
 
     /**
@@ -114,8 +119,8 @@ public class Board {
     public Edible addFruit(){
         ArrayList<Color> colors = this.getSnakeColors();
 
-        int x = random.nextInt(cols - 1);
-        int y = random.nextInt(rows - 1);
+        int x = random.nextInt(rows - 1);
+        int y = random.nextInt(cols - 1);
 
         if (x == 0) {
             x++;
@@ -143,6 +148,8 @@ public class Board {
         // Pick the fruit
         Edible selectedFruit = fruits.get(option);
         //Edible selectedFruit = fruits.get(0);
+
+        this.board[x][y] = selectedFruit;
 
         // Edit the fruit
         selectedFruit.setX(x);
@@ -179,8 +186,8 @@ public class Board {
 
         colors.add(Color.yellow);
 
-        int x = random.nextInt(cols - 1);
-        int y = random.nextInt(rows - 1);
+        int x = random.nextInt(rows - 1);
+        int y = random.nextInt(cols - 1);
 
         if (x == 0) {
             x++;
@@ -206,8 +213,10 @@ public class Board {
         }
 
         // Pick the fruit
-        PowerUp selectedPowerUp = powerUps.get(option);
-        //Edible selectedFruit = fruits.get(0);
+        //PowerUp selectedPowerUp = powerUps.get(option);
+        PowerUp selectedPowerUp = powerUps.get(0);
+
+        this.board[x][y] = selectedPowerUp;
 
         // Edit the fruit
         selectedPowerUp.setX(x);
@@ -234,7 +243,22 @@ public class Board {
             }
         }
 
+        if (this.board[x][y] != null){
+            return true;
+        }
+
         return false;
+    }
+
+    /**
+     * Method for cleaning a position of the board
+     * @param x The x position to be cleaned
+     * @param y The y position to be cleaned
+     */
+    public void cleanPosition(int x, int y){
+        System.out.println("LIMPIANDO TABLERO");
+
+        this.board[x][y] = null;
     }
 
     public int getRows() {

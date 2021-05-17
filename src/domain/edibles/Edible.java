@@ -29,8 +29,8 @@ public class Edible implements Serializable {
         int newPoints = player.getPoints() + edible.getPoints();
         player.setPoints(newPoints);
 
-        // Delete the coordinate
-        game.updateCoordinates(x, y, 0);
+        // Clear board
+        game.getBoard().cleanPosition(edible.getX(), edible.getY());
 
         // Increase size
         player.getSnake().increaseSize(edible.getPoints());
