@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 
-public class EndGame extends DaddyPanel implements Serializable {
+public class EndGame extends DaddyPanel {
     private JLabel title;
     private JLabel firstPlace;
     private JLabel secondPlace;

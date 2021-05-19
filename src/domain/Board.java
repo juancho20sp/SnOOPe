@@ -3,11 +3,12 @@ package domain;
 import domain.edibles.*;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Board {
+public class Board implements Serializable {
     private int rows;
     private int cols;
 

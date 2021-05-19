@@ -2,6 +2,7 @@ package domain;
 
 import domain.edibles.Edible;
 import domain.edibles.PowerUp;
+import domain.exceptions.SnOOPeExceptions;
 import domain.snakes.SuperSnake;
 import presentation.GameBoard;
 import presentation.GameSetup;
@@ -19,7 +20,7 @@ public class Game implements Runnable, Serializable {
     private GUIConfiguration guiConfiguration;
 
     // Game Board
-    GameBoard gameBoard;
+    transient GameBoard gameBoard;
 
     // Board
     Board board;
@@ -178,6 +179,20 @@ public class Game implements Runnable, Serializable {
 
         } catch (IOException ex) {
             throw new IOException();
+        }
+    }
+
+    public static Game open(File file) throws SnOOPeExceptions {
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()));
+
+            Game game = (Game) in.readObject();
+
+            in.close();
+
+            return game;
+        }catch (IOException | ClassNotFoundException e){
+            throw new SnOOPeExceptions(SnOOPeExceptions.ERROR_OPEN);
         }
     }
 

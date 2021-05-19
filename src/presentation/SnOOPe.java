@@ -3,14 +3,16 @@ package presentation;
 import domain.GUIConfiguration;
 import domain.Game;
 import domain.GameData;
+import domain.exceptions.SnOOPeExceptions;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
-public class SnOOPe extends JFrame implements Serializable {
+public class SnOOPe extends JFrame {
     JPanel menuPanel;
     JLabel menuLabel;
     JButton newGameButton;
@@ -247,7 +249,7 @@ public class SnOOPe extends JFrame implements Serializable {
     /**
      * Method for creating a new game
      */
-    private void newGame() {
+    private void newGame(){
         SelectMode selectMode = new SelectMode(this, this.game);
 
         cards.add(selectMode, SELECT_GAME_MODE);
@@ -266,9 +268,11 @@ public class SnOOPe extends JFrame implements Serializable {
         switch(selected){
             case JFileChooser.APPROVE_OPTION:
                 File file = chooser.getSelectedFile();
-
-                System.out.println("\nEsta lógica está en construcción");
-                System.out.println("Opening " + file.getName() + " in " +file.getAbsolutePath());
+                try {
+                    game= game.open(file);
+                } catch (SnOOPeExceptions e) {
+                    e.printStackTrace();
+                }
 
                 // Lógica con el documento
                 JOptionPane.showMessageDialog(null, "Message selected");

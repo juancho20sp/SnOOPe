@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 
-public class GameSetup extends DaddyPanel implements Serializable {
+public class GameSetup extends DaddyPanel {
     private JLabel title;
     private JButton namePlayerOne;
     private JButton colorPlayerOne;

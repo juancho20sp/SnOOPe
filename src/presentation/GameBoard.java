@@ -22,7 +22,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GameBoard extends DaddyPanel implements Serializable {
+public class GameBoard extends DaddyPanel {
     private JPanel upperPanel;
     private JPanel boardPanel;
     private JButton mainMenuButton;

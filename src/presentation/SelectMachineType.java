@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 
-public class SelectMachineType extends DaddyPanel implements Serializable {
+public class SelectMachineType extends DaddyPanel {
     private JLabel title;
     private JButton distractedButton;
     private JButton cautiousButton;

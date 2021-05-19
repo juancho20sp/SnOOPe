@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 
-public class DaddyPanel extends JPanel implements Serializable {
+public class DaddyPanel extends JPanel {
     private JFrame frame;
     private Game game;
 

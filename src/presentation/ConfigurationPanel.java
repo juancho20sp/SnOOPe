@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 
-public class ConfigurationPanel extends DaddyPanel implements Serializable {
+public class ConfigurationPanel extends DaddyPanel {
         private JLabel title;
         private JButton infiniteBoardButton;
         private JButton validationsButton;
